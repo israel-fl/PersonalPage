@@ -1,0 +1,10 @@
+flask
+sqlalchemy
+alembic
+WTForms
+requests
+pyodbc
+pymssql
+Flask-APScheduler
+psycopg2
+pyodbc
