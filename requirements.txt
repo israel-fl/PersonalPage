@@ -8,6 +8,8 @@ pymssql
 Flask-APScheduler
 psycopg2
 pyodbc
-gmaps
 numpy
 pandas
+flask-socketio
+eventlet
+Flask-mail
