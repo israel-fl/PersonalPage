@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, flash, redirect, url_for, jsonify, send_from_directory, Mail, Message
+from flask import Flask, render_template, request, flash, redirect, url_for, jsonify, send_from_directory
+from flask_mail import Mail, Message
 from flask_socketio import SocketIO, emit
 from werkzeug.serving import run_simple
 from werkzeug.debug import DebuggedApplication
@@ -18,7 +19,7 @@ app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 with open("config.json") as config_file:
     keys = json.load(config_file)
-    app.config['MAIL_PASSWORD'] = keys.get("MAIL_PASSWORD")
+    app.config['MAIL_PASSWORD'] = keys.get("MAIL_PASS")
     app.config['MAIL_USERNAME'] = keys.get("MAIL_USERNAME")
     app.config['MAIL_PORT'] = keys.get("MAIL_PORT")
     app.config['MAIL_SERVER'] = keys.get("MAIL_SERVER")
