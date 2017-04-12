@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, redirect, url_for, jsonify
+from flask import Flask, render_template, request, flash, redirect, url_for, jsonify, send_from_directory, Mail, Message
 from flask_socketio import SocketIO, emit
 from werkzeug.serving import run_simple
 from werkzeug.debug import DebuggedApplication
@@ -12,7 +12,12 @@ from functools import wraps
 VERSION = 0.1
 app = Flask(__name__)
 socketio = SocketIO(app)
-
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'iflore04@gmail.com'
+app.config['MAIL_PASSWORD'] = 'ce651edaf59be5ef2badb77d2833f3feac9fbab8abd4cc8b5e1af7921f58a9db'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
 
 @app.errorhandler(404)
 def not_found(e):
@@ -28,6 +33,16 @@ def landing():
         message = request.form.get("message")
         pass
     return render_template("main/index.html")
+
+
+@app.route("/resume", methods=["GET"])
+def show_resume():
+    return render_template("main/resume.html")
+
+
+@app.route('/resume/download', methods=['GET'])
+def download():
+    return send_from_directory(url_for("static", filename="work_resume.pdf"))
 
 
 @app.route('/data', methods=["GET"])

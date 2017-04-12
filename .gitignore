@@ -5,3 +5,4 @@ access.log
 *.pyc
 token.json
 alembic.ini
+.idea
