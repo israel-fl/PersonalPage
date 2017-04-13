@@ -13,3 +13,4 @@ pandas
 flask-socketio
 eventlet
 Flask-mail
+gunicorn
