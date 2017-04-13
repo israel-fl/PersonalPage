@@ -2,38 +2,42 @@
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-
-    <title>Freelancer - Start Bootstrap Theme</title>
-
+    <title>Israel Flores - Interactive Resume</title>
     <!-- Bootstrap Core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
+    <link href="{{url_for('.static', filename='bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
     <!-- Theme CSS -->
-    <link href="css/freelancer.min.css" rel="stylesheet">
+    <link href="{{url_for('.static', filename='css/freelancer.min.css')}}" rel="stylesheet">
+    <link href="{{url_for('.static', filename='css/index.css')}}" rel="stylesheet">
+    <link href="{{url_for('.static', filename='css/data.css')}}" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.js"></script>
+    <!-- Socket.IO -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
+    <!-- UUID -->
+    <script src="http://wzrd.in/standalone/uuid@latest"></script>
+    <!-- Material UI -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <script src="//d3js.org/d3.v3.min.js"></script>
+    <script src="//d3js.org/topojson.v1.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="screen" href="//cdn.muicss.com/mui-0.9.15/css/mui.css" />
+    <script src="//cdn.muicss.com/mui-0.9.15/js/mui.js"></script>
 
 </head>
 
 <body id="page-top" class="index">
-<div id="skipnav"><a href="#maincontent">Skip to main content</a></div>
-
+    <div id="skipnav"><a href="#maincontent">Skip to main content</a></div>
     <!-- Navigation -->
     <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom">
         <div class="container">
@@ -42,9 +46,8 @@
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" href="#page-top">Start Bootstrap</a>
+                <a class="navbar-brand" href="#page-top">Israel Flores</a>
             </div>
-
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
@@ -55,7 +58,16 @@
                         <a href="#portfolio">Portfolio</a>
                     </li>
                     <li class="page-scroll">
-                        <a href="#about">About</a>
+                        <a href="#skills">Skills</a>
+                    </li>
+                    <li class="page-scroll">
+                        <a href="#data-science">Data Science</a>
+                    </li>
+                    <li class="page-scroll">
+                        <a href="#sockets">Sockets</a>
+                    </li>
+                    <li class="page-scroll">
+                        <a href="#resume">Resume</a>
                     </li>
                     <li class="page-scroll">
                         <a href="#contact">Contact</a>
@@ -66,23 +78,15 @@
         </div>
         <!-- /.container-fluid -->
     </nav>
-
     <!-- Header -->
     <header>
         <div class="container" id="maincontent" tabindex="-1">
             <div class="row">
-                <div class="col-lg-12">
-                    <img class="img-responsive" src="img/profile.png" alt="">
-                    <div class="intro-text">
-                        <h1 class="name">Start Bootstrap</h1>
-                        <hr class="star-light">
-                        <span class="skills">Web Developer - Graphic Artist - User Experience Designer</span>
-                    </div>
-                </div>
+                <input type="hidden" value="{{url_for('static', filename='resume.txt')}}" id="hidden-resume">
+                <div id="console" class="console-left"></div>
             </div>
         </div>
     </header>
-
     <!-- Portfolio Grid Section -->
     <section id="portfolio">
         <div class="container">
@@ -100,7 +104,7 @@
                                 <i class="fa fa-search-plus fa-3x"></i>
                             </div>
                         </div>
-                        <img src="img/portfolio/cabin.png" class="img-responsive" alt="Cabin">
+                        <img src="{{url_for('.static', filename='images/portfolio/offsite_logo.png')}}" class="img-responsive img-portfolio" alt="Cabin">
                     </a>
                 </div>
                 <div class="col-sm-4 portfolio-item">
@@ -110,7 +114,7 @@
                                 <i class="fa fa-search-plus fa-3x"></i>
                             </div>
                         </div>
-                        <img src="img/portfolio/cake.png" class="img-responsive" alt="Slice of cake">
+                        <img src="{{url_for('.static', filename='images/portfolio/green_facades/logo_green_facades.png')}}" class="img-responsive img-portfolio" alt="Slice of cake">
                     </a>
                 </div>
                 <div class="col-sm-4 portfolio-item">
@@ -120,63 +124,146 @@
                                 <i class="fa fa-search-plus fa-3x"></i>
                             </div>
                         </div>
-                        <img src="img/portfolio/circus.png" class="img-responsive" alt="Circus tent">
-                    </a>
-                </div>
-                <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal4" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img src="img/portfolio/game.png" class="img-responsive" alt="Game controller">
-                    </a>
-                </div>
-                <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal5" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img src="img/portfolio/safe.png" class="img-responsive" alt="Safe">
-                    </a>
-                </div>
-                <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal6" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
-                            </div>
-                        </div>
-                        <img src="img/portfolio/submarine.png" class="img-responsive" alt="Submarine">
+                        <img src="{{url_for('.static', filename='images/portfolio/soul_voyage/sv_logo.png')}}" class="img-responsive img-portfolio" alt="Circus tent">
                     </a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- About Section -->
-    <section class="success" id="about">
+    <!-- SKILLS -->
+    <section id="skills" class="success">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2>About</h2>
-                    <hr class="star-light">
+                    <h2>Skills</h2>
+                    <hr class="star">
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-4 col-lg-offset-2">
-                    <p>Freelancer is a free bootstrap theme created by Start Bootstrap. The download includes the complete source files including HTML, CSS, and JavaScript as well as optional LESS stylesheets for easy customization.</p>
-                </div>
-                <div class="col-lg-4">
-                    <p>Whether you're a student looking to showcase your work, a professional looking to attract clients, or a graphic artist looking to share your projects, this template is the perfect starting point!</p>
-                </div>
-                <div class="col-lg-8 col-lg-offset-2 text-center">
-                    <a href="#" class="btn btn-lg btn-outline">
-                        <i class="fa fa-download"></i> Download Theme
+                <div class="col-sm-4 portfolio-item">
+                    <a href="#portfolioModal4" class="portfolio-link" data-toggle="modal">
+                        <!-- <div class="caption">
+                            <div class="caption-content">
+                                <i class="fa fa-search-plus fa-3x"></i>
+                            </div>
+                        </div> -->
+                        <img src="{{url_for('.static', filename='images/skills/architecture.png')}}" class="img-responsive" alt="web">
                     </a>
+                    <h3>Web Architecture</h3>
+                </div>
+                <div class="col-sm-4 portfolio-item h3-skills">
+                    <a href="#portfolioModal5" class="portfolio-link" data-toggle="modal">
+                        <!-- <div class="caption">
+                            <div class="caption-content">
+                                <i class="fa fa-search-plus fa-3x"></i>
+                            </div>
+                        </div> -->
+                        <img src="{{url_for('.static', filename='images/skills/android4.png')}}" class="img-responsive img-portfolio" alt="Safe">
+                    </a>
+                    <h3>Android</h3>
+                </div>
+                <div class="col-sm-4 portfolio-item">
+                    <a href="#portfolioModal6" class="portfolio-link" data-toggle="modal">
+                        <!-- <div class="caption">
+                            <div class="caption-content">
+                                <i class="fa fa-search-plus fa-3x"></i>
+                            </div>
+                        </div> -->
+                        <img src="{{url_for('.static', filename='images/portfolio/languages.png')}}" class="img-responsive" alt="Submarine">
+                    </a>
+                    <h3>Programming Languages</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="data-science">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2>Data Science</h2>
+                <hr class="star-primary">
+                <p>The world is driven by it, and with my strong math background I'm in a position to take advantage of it.</p>
+            </div>
+            <div class="svg-align">
+                <svg width="960" height="500" id="svg-dots"></svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sockets Section -->
+    <section class="success" id="sockets">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>Sockets</h2>
+                    <hr class="star">
+                    <p>Because it is important to keep up with web technologies. Try chatting!</p>
+                </div>
+            </div>
+    <div class="row chat-section">
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-comment"></span> Chat
+                </div>
+                <div class="panel-body" id="holder">
+                    <ul class="chat" id="chatbox">
+                    </ul>
+                    <input type="hidden" id="robot-icon" value="{{url_for('static', filename='images/robot.png')}}">
+                    <input type="hidden" id="user-icon" value="{{url_for('static', filename='images/person.png')}}">
+                </div>
+                <div class="panel-footer">
+                    <div class="input-group">
+                        <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here..." />
+                        <span class="input-group-btn">
+                            <button class="btn btn-warning btn-sm" id="btn-chat">
+                                Send</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-comment"></span> Chat
+                </div>
+                <div class="panel-body" id="holder2">
+                    <ul class="chat" id="chatbox2">
+                    </ul>
+                </div>
+                <div class="panel-footer">
+                    <div class="input-group">
+                        <input id="btn-input2" type="text" class="form-control input-sm" placeholder="Type your message here..." />
+                        <span class="input-group-btn">
+                            <button class="btn btn-warning btn-sm" id="btn-chat2">
+                                Send</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+                <div id="log"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="resume">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>Resume</h2>
+                    <hr class="star">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-offset-3 col-md-6 text-center">
+                    <input type="hidden" id="download-resume-url" value="{{url_for('static', filename='work_resume.pdf')}}">
+                    <button class="mui-btn mui-btn--primary" id="download-resume">Download</button>
                 </div>
             </div>
         </div>
@@ -193,42 +280,40 @@
             </div>
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2">
-                    <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19. -->
-                    <!-- The form should work on most web servers, but if the form is not working you may need to configure your web server differently. -->
-                    <form name="sentMessage" id="contactForm" novalidate>
+                    <form name="sentMessage" id="contactForm" novalidate method="post">
                         <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label for="name">Name</label>
-                                <input type="text" class="form-control" placeholder="Name" id="name" required data-validation-required-message="Please enter your name.">
+                            <div class="mui-textfield mui-textfield--float-label">
+                                <input type="text" id="name" name="name" required data-validation-required-message="Please enter your name.">
                                 <p class="help-block text-danger"></p>
+                                <label>Name</label>
                             </div>
                         </div>
                         <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label for="email">Email Address</label>
-                                <input type="email" class="form-control" placeholder="Email Address" id="email" required data-validation-required-message="Please enter your email address.">
+                            <div class="mui-textfield mui-textfield--float-label">
+                                <input type="email" id="email" name="email" required data-validation-required-message="Please enter your email address.">
                                 <p class="help-block text-danger"></p>
+                                <label>Email Address</label>
                             </div>
                         </div>
                         <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label for="phone">Phone Number</label>
-                                <input type="tel" class="form-control" placeholder="Phone Number" id="phone" required data-validation-required-message="Please enter your phone number.">
+                            <div class="mui-textfield mui-textfield--float-label">
+                                <input type="tel" id="phone" name="phone"  required data-validation-required-message="Please enter your phone number.">
                                 <p class="help-block text-danger"></p>
+                                <label>Phone Number</label>
                             </div>
                         </div>
                         <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label for="message">Message</label>
-                                <textarea rows="5" class="form-control" placeholder="Message" id="message" required data-validation-required-message="Please enter a message."></textarea>
+                            <div class="mui-textfield mui-textfield--float-label">
+                                <textarea rows="5" id="message" name="message" required data-validation-required-message="Please enter a message."></textarea>
                                 <p class="help-block text-danger"></p>
+                                <label>Message</label>
                             </div>
                         </div>
                         <br>
                         <div id="success"></div>
                         <div class="row">
                             <div class="form-group col-xs-12">
-                                <button type="submit" class="btn btn-success btn-lg">Send</button>
+                                <button class="mui-btn mui-btn--primary">Send</button>
                             </div>
                         </div>
                     </form>
@@ -236,7 +321,6 @@
             </div>
         </div>
     </section>
-
     <!-- Footer -->
     <footer class="text-center">
         <div class="footer-above">
@@ -244,32 +328,27 @@
                 <div class="row">
                     <div class="footer-col col-md-4">
                         <h3>Location</h3>
-                        <p>3481 Melrose Place
-                            <br>Beverly Hills, CA 90210</p>
+                        <p>Los Angeles, CA</p>
                     </div>
                     <div class="footer-col col-md-4">
                         <h3>Around the Web</h3>
                         <ul class="list-inline">
                             <li>
-                                <a href="#" class="btn-social btn-outline"><span class="sr-only">Facebook</span><i class="fa fa-fw fa-facebook"></i></a>
+                                <a href="https://www.facebook.com/israel.flores.735" class="btn-social btn-outline"><span class="sr-only">Facebook</span><i class="fa fa-fw fa-facebook"></i></a>
                             </li>
                             <li>
-                                <a href="#" class="btn-social btn-outline"><span class="sr-only">Google Plus</span><i class="fa fa-fw fa-google-plus"></i></a>
+                                <a href="https://plus.google.com/106320681416371522429" class="btn-social btn-outline"><span class="sr-only">Google Plus</span><i class="fa fa-fw fa-google-plus"></i></a>
                             </li>
                             <li>
-                                <a href="#" class="btn-social btn-outline"><span class="sr-only">Twitter</span><i class="fa fa-fw fa-twitter"></i></a>
+                                <a href="https://twitter.com/_israelfl" class="btn-social btn-outline"><span class="sr-only">Twitter</span><i class="fa fa-fw fa-twitter"></i></a>
                             </li>
                             <li>
-                                <a href="#" class="btn-social btn-outline"><span class="sr-only">Linked In</span><i class="fa fa-fw fa-linkedin"></i></a>
+                                <a href="https://www.linkedin.com/in/israel-flores-9b4037108/" class="btn-social btn-outline"><span class="sr-only">Linked In</span><i class="fa fa-fw fa-linkedin"></i></a>
                             </li>
                             <li>
-                                <a href="#" class="btn-social btn-outline"><span class="sr-only">Dribble</span><i class="fa fa-fw fa-dribbble"></i></a>
+                                <a href="https://github.com/israel-fl" class="btn-social btn-outline"><span class="sr-only">Dribble</span><i class="fa fa-fw fa-github"></i></a>
                             </li>
                         </ul>
-                    </div>
-                    <div class="footer-col col-md-4">
-                        <h3>About Freelancer</h3>
-                        <p>Freelance is a free to use, open source Bootstrap theme created by <a href="http://startbootstrap.com">Start Bootstrap</a>.</p>
                     </div>
                 </div>
             </div>
@@ -278,20 +357,18 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        Copyright &copy; Your Website 2016
+                        Copyright &copy; Israel Flores 2017
                     </div>
                 </div>
             </div>
         </div>
     </footer>
-
     <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
     <div class="scroll-top page-scroll hidden-sm hidden-xs hidden-lg hidden-md">
         <a class="btn btn-primary" href="#page-top">
             <i class="fa fa-chevron-up"></i>
         </a>
     </div>
-
     <!-- Portfolio Modals -->
     <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-content">
@@ -305,22 +382,77 @@
                 <div class="row">
                     <div class="col-lg-8 col-lg-offset-2">
                         <div class="modal-body">
-                            <h2>Project Title</h2>
+                            <h2>AWS Glacier Web App</h2>
                             <hr class="star-primary">
-                            <img src="img/portfolio/cabin.png" class="img-responsive img-centered" alt="">
-                            <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
+                            <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                                <!-- Indicators -->
+                                <ol class="carousel-indicators">
+                                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                                    <li data-target="#myCarousel" data-slide-to="2"></li>
+                                    <li data-target="#myCarousel" data-slide-to="3"></li>
+                                </ol>
+                                <!-- Wrapper for slides -->
+                                <div class="carousel-inner" role="listbox">
+                                    <div class="item active">
+                                        <img src="{{url_for('.static', filename='images/portfolio/aws/aws_glacier1.png')}}" alt="Chania">
+                                    </div>
+                                    <div class="item">
+                                        <img src="{{url_for('.static', filename='images/portfolio/aws/aws_glacier7.png')}}" alt="Chania">
+                                    </div>
+                                    <div class="item">
+                                        <img src="{{url_for('.static', filename='images/portfolio/aws/aws_glacier2.png')}}" alt="Flower">
+                                    </div>
+                                    <div class="item">
+                                        <img src="{{url_for('.static', filename='images/portfolio/aws/aws_glacier3.png')}}" alt="Flower">
+                                    </div>
+                                    <div class="item">
+                                        <img src="{{url_for('.static', filename='images/portfolio/aws/aws_glacier4.png')}}" alt="Flower">
+                                    </div>
+                                    <div class="item">
+                                        <img src="{{url_for('.static', filename='images/portfolio/aws/aws_glacier5.png')}}" alt="Flower">
+                                    </div>
+                                    <div class="item">
+                                        <img src="{{url_for('.static', filename='images/portfolio/aws/aws_glacier6.png')}}" alt="Flower">
+                                    </div>
+                                </div>
+                                <!-- Left and right controls -->
+                                <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                            <div class="p-portfolio">
+                                <p>
+                                    </br>
+                                    <h3>FLASK-PYTHON-SQLALCHEMY</h3></br>
+                                    This is a web interface in the form of a dashboard to facilitate the upload, retrieval and storage of archives uploaded to AWS Glacier.</br>
+                                    This app has been highly tailored to be integrated into the Kaseya suite for IT management, and hence, many of the features are meant to be used with the software.</br>
+                                    </br>
+                                    <h4>Overall Structure</h4></br>
+                                    </br>
+                                    This was highly customized to represent the structure within the Kaseya suite. You must first start by adding an organization under Configuration > Add Organization. Here you add the Secret Key, Access Key, and Account ID required to interface with AWS services.</br>
+                                    </br>
+                                    Then you add an agent to the organization, including the name of the vault you want to backup the specific machine to, and the location of the backups. More detailed documentation to follow.</br>
+                                    </br>
+                                    <h6>Note</h6></br>
+                                    This web app has been built in such a way that it interfaces with the other script I wrote called <a href="https://github.com/israel-fl/Glacier">glacier.py</a></br>
+                                </p>
+                            </div>
                             <ul class="list-inline item-details">
                                 <li>Client:
-                                    <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
+                                    <strong><a href="http://www.healthcarepracticeit.com">Healthcare Practice IT</a>
                                     </strong>
                                 </li>
                                 <li>Date:
-                                    <strong><a href="http://startbootstrap.com">April 2014</a>
-                                    </strong>
+                                    <strong>Spring 2017</strong>
                                 </li>
                                 <li>Service:
-                                    <strong><a href="http://startbootstrap.com">Web Development</a>
-                                    </strong>
+                                    <strong>Web Application</strong>
                                 </li>
                             </ul>
                             <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
@@ -342,21 +474,81 @@
                 <div class="row">
                     <div class="col-lg-8 col-lg-offset-2">
                         <div class="modal-body">
-                            <h2>Project Title</h2>
+                            <h2>Green Facades (Android App)</h2>
                             <hr class="star-primary">
-                            <img src="img/portfolio/cake.png" class="img-responsive img-centered" alt="">
-                            <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
+                            <div id="green_facades_carousel" class="carousel slide" data-ride="carousel">
+                                <!-- Indicators -->
+                                <ol class="carousel-indicators">
+                                    <li data-target="#green_facades_carousel" data-slide-to="0" class="active"></li>
+                                    <li data-target="#green_facades_carousel" data-slide-to="1"></li>
+                                    <li data-target="#green_facades_carousel" data-slide-to="2"></li>
+                                    <li data-target="#green_facades_carousel" data-slide-to="3"></li>
+                                    <li data-target="#green_facades_carousel" data-slide-to="4"></li>
+                                    <li data-target="#green_facades_carousel" data-slide-to="5"></li>
+                                    <li data-target="#green_facades_carousel" data-slide-to="6"></li>
+                                    <li data-target="#green_facades_carousel" data-slide-to="7"></li>
+                                    <li data-target="#green_facades_carousel" data-slide-to="8"></li>
+                                </ol>
+                                <!-- Wrapper for slides -->
+                                <div class="carousel-inner" role="listbox">
+                                    <div class="item active">
+                                        <img src="{{url_for('.static', filename='images/portfolio/green_facades/gf1.png')}}" alt="Chania" class="img-portfolio">
+                                    </div>
+                                    <div class="item">
+                                        <img src="{{url_for('.static', filename='images/portfolio/green_facades/gf2.png')}}" alt="Chania" class="img-portfolio">
+                                    </div>
+                                    <div class="item">
+                                        <img src="{{url_for('.static', filename='images/portfolio/green_facades/gf3.png')}}" alt="Flower" class="img-portfolio">
+                                    </div>
+                                    <div class="item">
+                                        <img src="{{url_for('.static', filename='images/portfolio/green_facades/gf4.png')}}" alt="Flower" class="img-portfolio">
+                                    </div>
+                                    <div class="item">
+                                        <img src="{{url_for('.static', filename='images/portfolio/green_facades/gf5.png')}}" alt="Flower" class="img-portfolio">
+                                    </div>
+                                    <div class="item">
+                                        <img src="{{url_for('.static', filename='images/portfolio/green_facades/gf6.png')}}" alt="Flower" class="img-portfolio">
+                                    </div>
+                                    <div class="item">
+                                        <img src="{{url_for('.static', filename='images/portfolio/green_facades/gf7.png')}}" alt="Flower" class="img-portfolio">
+                                    </div>
+                                    <div class="item">
+                                        <img src="{{url_for('.static', filename='images/portfolio/green_facades/gf8.png')}}" alt="Flower" class="img-portfolio">
+                                    </div>
+                                </div>
+                                <!-- Left and right controls -->
+                                <a class="left carousel-control" href="#green_facades_carousel" role="button" data-slide="prev">
+                                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="right carousel-control" href="#green_facades_carousel" role="button" data-slide="next">
+                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                            <p>
+                                <br/> Green Facades is meant to be used as an educational tool for those with an interest in green facades. It is meant to provide unified information about both past and current green facades research integrated into a taxonomy to follow design guidelines, strategies, and sustainable education. You can select your parameters and get a research based design recommendation based on your preferences.
+                                <br/>
+                                <br/> The app provides a list of the USDA Zones used for agricultural research. The user then selects a zone that most closely corresponds to their location, or the location in which they wish to grow. The user is then presented with a list of parameters such as plant life expectancy, cost of maintenance, and energy savings possibilities.
+                                <br/>
+                                <br/> Through an integration with the Parse database, the app then searches through the server to retrieve the information of both plants and available systems for vegetation growth.
+                                <br/>
+                                <br/> Although this feature is still in progress, the user will then be able to save the plants they like to a list of their "Favorites".
+                                <br/>
+                                <br/> The app also provides previous case studies performed on different Green Facades systems. The user may also add their own case studies, which are saved locally.
+                                <br/>
+                                <br/>
+                            </p>
                             <ul class="list-inline item-details">
-                                <li>Client:
-                                    <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
-                                    </strong>
-                                </li>
                                 <li>Date:
-                                    <strong><a href="http://startbootstrap.com">April 2014</a>
+                                    <strong>Spring 2016</strong>
+                                </li>
+                                <li><strong>Repository</strong>:
+                                    <strong><a href="https://github.com/israel-fl/GreenFacades">Github</a>
                                     </strong>
                                 </li>
-                                <li>Service:
-                                    <strong><a href="http://startbootstrap.com">Web Development</a>
+                                <li><strong>Play Store</strong>:
+                                    <strong><a href="https://play.google.com/store/apps/details?id=com.israel_fl.greenfacades">Green Facades</a>
                                     </strong>
                                 </li>
                             </ul>
@@ -379,21 +571,91 @@
                 <div class="row">
                     <div class="col-lg-8 col-lg-offset-2">
                         <div class="modal-body">
-                            <h2>Project Title</h2>
+                            <h2>Soul Voyage</h2>
                             <hr class="star-primary">
-                            <img src="img/portfolio/circus.png" class="img-responsive img-centered" alt="">
-                            <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
+                            <div id="soul_voyage_carousel" class="carousel slide" data-ride="carousel">
+                                <!-- Indicators -->
+                                <ol class="carousel-indicators">
+                                    <li data-target="#soul_voyage_carousel" data-slide-to="0" class="active"></li>
+                                    <li data-target="#soul_voyage_carousel" data-slide-to="1"></li>
+                                    <li data-target="#soul_voyage_carousel" data-slide-to="2"></li>
+                                    <li data-target="#soul_voyage_carousel" data-slide-to="3"></li>
+                                </ol>
+                                <!-- Wrapper for slides -->
+                                <div class="carousel-inner" role="listbox">
+                                    <div class="item active">
+                                        <img src="{{url_for('.static', filename='images/portfolio/soul_voyage/sv_1.png')}}" alt="Chania" class="img-portfolio">
+                                    </div>
+                                    <div class="item">
+                                        <img src="{{url_for('.static', filename='images/portfolio/soul_voyage/sv_2.png')}}" alt="Flower" class="img-portfolio">
+                                    </div>
+                                    <div class="item">
+                                        <img src="{{url_for('.static', filename='images/portfolio/soul_voyage/sv_3.png')}}" alt="Flower" class="img-portfolio">
+                                    </div>
+                                </div>
+                                <!-- Left and right controls -->
+                                <a class="left carousel-control" href="#soul_voyage_carousel" role="button" data-slide="prev">
+                                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="right carousel-control" href="#soul_voyage_carousel" role="button" data-slide="next">
+                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                            <div class="p-portfolio">
+                                <p>
+                                    </br>
+                                    </br>
+                                    <h1>Mobile App Game</h1>
+                                    <br/>
+                                    <br/>
+                                    <h3>Strange Attractor:</h3> One player, four friends - coordinate with your team to guide a ship through the realms of space with the use of magical forces.
+                                    <br/>
+                                    <br/>
+                                    <h3>Basic Summary:</h3>There will be controls at all four corners of the screen (like a magnet that can be turned on or off), which allows for multiple people to control a single character. There will be obstacles and enemies to avoid/defeat, which may differ depending on the game mode.
+                                    <br/>
+                                    <br/>
+                                    <h3>Major Features:</h3>
+                                    <br/>
+                                    <br/> Main character is controlled by four buttons on the corners of the screen, which act as magnets that “pull” the characters in that direction.
+                                    <br/>
+                                    <br/> Particle systems to illustrate what direction the player is being pulled
+                                    <br/>
+                                    <br/> Procedurally generated obstacles/enemies that make the game harder over time / as you progress
+                                    <br/>
+                                    <br/> Different types of obstacles and enemies, for example:
+                                    <br/>
+                                    <br/> Obstacles can block the way so that the player cannot move in that direction
+                                    <br/>
+                                    <br/> Obstacles can have a force (attractive or repulsive) that affects the character and must be counteracted by the players
+                                    <br/>
+                                    <br/> Obstacles that change the behavior of the controls (for example, instead of acting like magnets that pull the character in, the controls may switch over to acting like air jets that push the character away)
+                                    <br/>
+                                    <br/> Obstacles (passive enemies) such as mines that do damage to the character
+                                    <br/>
+                                    <br/> Enemies (active enemies) that actively try to follow and damage the character
+                                    <br/>
+                                    <br/> Multiple play modes
+                                    <br/>
+                                    <br/> Game Center integration for high scores and achievements.
+                                    <br/>
+                                    <br/>
+                                    <h3>Art Considerations:</h3> The game will have a simplistic and clean art style, featuring mostly monochromatic characters of common shapes and simple particle systems.
+                                    <br/>
+                                    <br/>
+                                </p>
+                            </div>
                             <ul class="list-inline item-details">
-                                <li>Client:
-                                    <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
-                                    </strong>
-                                </li>
                                 <li>Date:
-                                    <strong><a href="http://startbootstrap.com">April 2014</a>
+                                    <strong>Spring 2016</strong>
+                                </li>
+                                <li><strong>Repository</strong>:
+                                    <strong><a href="https://github.com/israel-fl/SoulVoyage">Github</a>
                                     </strong>
                                 </li>
-                                <li>Service:
-                                    <strong><a href="http://startbootstrap.com">Web Development</a>
+                                <li><strong>Play Store</strong>:
+                                    <strong><a href="https://play.google.com/store/apps/details?id=com.israel_fl.soulvoyage">Soul Voyage</a>
                                     </strong>
                                 </li>
                             </ul>
@@ -416,24 +678,19 @@
                 <div class="row">
                     <div class="col-lg-8 col-lg-offset-2">
                         <div class="modal-body">
-                            <h2>Project Title</h2>
+                            <h2>Web Design and Frameworks</h2>
                             <hr class="star-primary">
-                            <img src="img/portfolio/game.png" class="img-responsive img-centered" alt="">
-                            <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
-                            <ul class="list-inline item-details">
-                                <li>Client:
-                                    <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
-                                    </strong>
-                                </li>
-                                <li>Date:
-                                    <strong><a href="http://startbootstrap.com">April 2014</a>
-                                    </strong>
-                                </li>
-                                <li>Service:
-                                    <strong><a href="http://startbootstrap.com">Web Development</a>
-                                    </strong>
-                                </li>
-                            </ul>
+                            <img src="{{url_for('.static', filename='images/skills/architecture.png')}}" class="img-responsive img-centered img-portfolio" alt="">
+                            <div class="p-portfolio">
+                                <p>
+                                    </br>
+                                    <h3>Fullstack Developer</h3></br>
+                                    </br>
+                                    I have experience developing full web applications (this entire website for example!), both front end and back end. I develop with User Experience (UX) in mind ensuring that applications are intuitive, easy to use, and aesthetically pleasing. I've used various frameworks such as Laravel in PHP, Express for NodeJS, and Flask for Python to name a few.</br>
+                                    </br>
+                                    I can develop apis, have used different database technologies (Postgresql, Mysql, MSSQL), and regularly work in Unix environments, AWS services, and the LEMP stack.
+                                </p>
+                            </div>
                             <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
                         </div>
                     </div>
@@ -453,24 +710,14 @@
                 <div class="row">
                     <div class="col-lg-8 col-lg-offset-2">
                         <div class="modal-body">
-                            <h2>Project Title</h2>
+                            <h2>Android Applications</h2>
                             <hr class="star-primary">
-                            <img src="img/portfolio/safe.png" class="img-responsive img-centered" alt="">
-                            <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
-                            <ul class="list-inline item-details">
-                                <li>Client:
-                                    <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
-                                    </strong>
-                                </li>
-                                <li>Date:
-                                    <strong><a href="http://startbootstrap.com">April 2014</a>
-                                    </strong>
-                                </li>
-                                <li>Service:
-                                    <strong><a href="http://startbootstrap.com">Web Development</a>
-                                    </strong>
-                                </li>
-                            </ul>
+                            <img src="{{url_for('.static', filename='images/portfolio/android.jpg')}}" class="img-responsive img-centered" alt="">
+                            <p>
+                                Experience creating android applications in Java, that follow the MVC pattern and the Material Design guidelines. I've created multiple apps for clients.</br>
+                                </br>
+                                See <strong><a href="https://play.google.com/store/apps/details?id=com.israel_fl.greenfacades">Green Facades</a></strong> here.
+                            </p>
                             <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
                         </div>
                     </div>
@@ -490,23 +737,29 @@
                 <div class="row">
                     <div class="col-lg-8 col-lg-offset-2">
                         <div class="modal-body">
-                            <h2>Project Title</h2>
+                            <h2>Languages</h2>
                             <hr class="star-primary">
-                            <img src="img/portfolio/submarine.png" class="img-responsive img-centered" alt="">
-                            <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
-                            <ul class="list-inline item-details">
-                                <li>Client:
-                                    <strong><a href="http://startbootstrap.com">Start Bootstrap</a>
-                                    </strong>
-                                </li>
-                                <li>Date:
-                                    <strong><a href="http://startbootstrap.com">April 2014</a>
-                                    </strong>
-                                </li>
-                                <li>Service:
-                                    <strong><a href="http://startbootstrap.com">Web Development</a>
-                                    </strong>
-                                </li>
+                            <img src="{{url_for('.static', filename='images/portfolio/languages.png')}}" class="img-responsive img-centered" alt="">
+                            <p>Knowledge of various programming languages in Object Oriented design:
+                            <ul>
+                                <li>Python (Very Proficient)</li>
+                                <li>Java</li>
+                                <li>C++</li>
+                                <li>PHP</li>
+                                <li>HTML, CSS, Javascript (React, Express, Node JS, Angular)</li>
+                                <li>C# (Unity Game Developing)</li>
+                                <li>SQL, MYSQL, MSSQL, NOSQL</li>
+                            </ul>
+                            In fact, this entire website is written in Python!
+                            </p>
+                            I also have experience in implementing design structures, such as using the following patterns:
+                            <ul>
+                                <li>Git (with branching, pull requests and issues)</li>
+                                <li>Model, View, Controllers (MVC)</li>
+                                <li>Object Relational Mappings (ORMs)</li>
+                                <li>RESTless Application Programming Interfaces (APIs)</li>
+                                <li>Promises (in Node JS)</li>
+                                <li>Numerical Analysis (with Numpy and Pandas)</li>
                             </ul>
                             <button id="btnSubmit" type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
                         </div>
@@ -515,23 +768,23 @@
             </div>
         </div>
     </div>
-
-    <!-- jQuery -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-
-    <!-- Plugin JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-
-    <!-- Contact Form JavaScript -->
-    <script src="js/jqBootstrapValidation.js"></script>
-    <script src="js/contact_me.js"></script>
-
-    <!-- Theme JavaScript -->
-    <script src="js/freelancer.min.js"></script>
-
 </body>
-
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="{{url_for('.static', filename='bootstrap/js/bootstrap.min.js')}}"></script>
+<!-- Plugin JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+<!-- Contact Form JavaScript -->
+<script src="{{url_for('.static', filename='js/jqBootstrapValidation.js')}}"></script>
+<script src="{{url_for('.static', filename='js/contact_me.js')}}"></script>
+<!-- Theme JavaScript -->
+<script src="{{url_for('.static', filename='js/freelancer.min.js')}}"></script>
+<!-- Other Scripts -->
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+<script src="//d3js.org/topojson.v1.min.js"></script>
+<script src="{{url_for('.static', filename='js/index.js')}}"></script>
+<script src="{{url_for('.static', filename='js/resume.js')}}"></script>
+<script src="{{url_for('.static', filename='js/data.js')}}"></script>
 </html>
