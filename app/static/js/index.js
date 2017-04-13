@@ -46,4 +46,4 @@ $("#download-resume").click(function (){
         },
     });
 });
-s
+
