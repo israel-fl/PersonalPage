@@ -4,3 +4,5 @@ config.json
 *.pyc
 alembic.ini
 .idea
+error.log
+access.log
