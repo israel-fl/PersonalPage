@@ -13,4 +13,4 @@ pandas
 flask-socketio
 eventlet
 Flask-mail
-gunicorn
+gunicorn==18.0
