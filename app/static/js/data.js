@@ -1,37 +1,4 @@
-<!DOCTYPE html>
-<style>
-
-.point {
-  fill: #000;
-  fill-opacity: 0.4;
-}
-
-.point--scanned {
-  fill: orange;
-  fill-opacity: 1;
-  stroke: orange;
-  stroke-width: 3px;
-}
-
-.point--selected {
-  fill: red;
-  fill-opacity: 1;
-  stroke: red;
-  stroke-width: 5px;
-}
-
-.node {
-  fill: none;
-  stroke: #ccc;
-  shape-rendering: crispEdges;
-}
-
-</style>
-<svg width="960" height="500"></svg>
-<script src="https://d3js.org/d3.v4.min.js"></script>
-<script>
-
-var svg = d3.select("svg"),
+var svg = d3.select("#svg-dots"),
     width = +svg.attr("width"),
     height = +svg.attr("height"),
     selected;
@@ -100,5 +67,3 @@ function nodes(quadtree) {
   });
   return nodes;
 }
-
-</script>
