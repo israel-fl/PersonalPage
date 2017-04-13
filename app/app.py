@@ -10,15 +10,13 @@ from sqlalchemy import desc
 from functools import wraps
 import json
 
-
-VERSION = 0.1
 app = Flask(__name__)
 socketio = SocketIO(app)
-app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 
 with open("config.json") as config_file:
     keys = json.load(config_file)
+    app.secret_key = keys.get("SECRET_KEY")
     app.config['MAIL_PASSWORD'] = keys.get("MAIL_PASS")
     app.config['MAIL_USERNAME'] = keys.get("MAIL_USERNAME")
     app.config['MAIL_PORT'] = keys.get("MAIL_PORT")
@@ -57,16 +55,6 @@ def landing():
 @app.route("/resume", methods=["GET"])
 def show_resume():
     return render_template("main/resume.html")
-
-
-@app.route('/resume/download', methods=['GET'])
-def download():
-    return send_from_directory(url_for("static", filename="work_resume.pdf"))
-
-
-@app.route('/data', methods=["GET"])
-def render():
-    return render_template("main/data.html")
 
 
 @socketio.on('message', namespace='/test')

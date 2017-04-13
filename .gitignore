@@ -1,8 +1,6 @@
 env/
 __pycache__
 config.json
-access.log
 *.pyc
-token.json
 alembic.ini
 .idea
