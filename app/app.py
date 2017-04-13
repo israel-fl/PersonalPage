@@ -55,11 +55,11 @@ def show_resume():
     return render_template("main/resume.html")
 
 
-@socketio.on('message', namespace='/chat')
+@socketio.on('message', namespace='/test')
 def handle_message(message):
     emit('MESSAGE', {'data': message['data'], 'user': 'SAMMY', 'position': 'left'}, broadcast=True)
 
 
-@socketio.on('broadcast', namespace='/chat')
+@socketio.on('broadcast', namespace='/test')
 def test_message(message):
     emit('MESSAGE', {'data': message['data'], 'user': "visitor", 'position': 'right'}, broadcast=True)
