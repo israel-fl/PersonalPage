@@ -6,3 +6,4 @@ alembic.ini
 .idea
 error.log
 access.log
+pid
