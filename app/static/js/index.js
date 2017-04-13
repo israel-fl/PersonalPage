@@ -34,16 +34,3 @@ $(document).ready(function(){
         return false;
     });
 });
-
-
-$("#download-resume").click(function (){
-    var _url = $("#download-resume-url").val();
-    $.ajax({
-        url: _url,
-        method: "GET",
-        success: function(data) {
-            console.log(data)
-        },
-    });
-});
-
