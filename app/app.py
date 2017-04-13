@@ -12,7 +12,7 @@ import json
 
 app = Flask(__name__)
 socketio = SocketIO(app)
-with open("config.json") as config_file:
+with open("../config.json") as config_file:
     keys = json.load(config_file)
     app.secret_key = keys.get("SECRET_KEY")
     app.config['MAIL_PASSWORD'] = keys.get("MAIL_PASS")
