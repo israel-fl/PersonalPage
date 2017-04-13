@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    var socket = io.connect('http://' + document.domain + ':' + location.port + '/test');
+    var socket = io.connect('https://' + document.domain + ':' + location.port + '/chat', {secure: true});
 
     socket.on('MESSAGE', function(msg) {
         var clear = document.createElement("div");
