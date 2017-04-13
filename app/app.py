@@ -4,17 +4,15 @@ from flask_socketio import SocketIO, emit
 from werkzeug.serving import run_simple
 from werkzeug.debug import DebuggedApplication
 from time import sleep
-# from controllers.db_adapter import db
 from sqlalchemy.orm import load_only
 from sqlalchemy import desc
 from functools import wraps
 import json
 
+
 app = Flask(__name__)
 socketio = SocketIO(app)
-
-
-with open("config.json") as config_file:
+with open("../config.json") as config_file:
     keys = json.load(config_file)
     app.secret_key = keys.get("SECRET_KEY")
     app.config['MAIL_PASSWORD'] = keys.get("MAIL_PASS")
@@ -65,8 +63,3 @@ def handle_message(message):
 @socketio.on('broadcast', namespace='/test')
 def test_message(message):
     emit('MESSAGE', {'data': message['data'], 'user': "visitor", 'position': 'right'}, broadcast=True)
-
-
-if __name__ == "__main__":
-    app.config.update(TEMPLATES_AUTO_RELOAD=True)
-    socketio.run(app, host="0.0.0.0", port=8080, debug=True)
