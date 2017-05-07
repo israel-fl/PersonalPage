@@ -2,7 +2,7 @@ var Typer = {
     text: null,
     accessCountimer: null,
     index: 0, // current cursor position
-    speed: 200, // speed of the Typer
+    speed: 0.5, // speed of the Typer
     file: "", //file, must be setted
     accessCount: 0, //times alt is pressed for Access Granted
     deniedCount: 0, //times caps is pressed for Access Denied
@@ -102,15 +102,23 @@ function replaceUrls(text) {
         return text
     }
 }
-Typer.speed = 3;
-Typer.file = $("#hidden-resume").val();
-Typer.init();
 
-var timer = setInterval("t();", 30);
-
+var timer = null;
 function t() {
     Typer.addText({ "keyCode": 123748 });
     if (Typer.index > Typer.text.length) {
         clearInterval(timer);
     }
 }
+
+$(window).bind('scroll', function() {
+    var aboutPosition = $("#about").position().top;
+    var y_scroll_pos = window.pageYOffset;
+    if ((y_scroll_pos + 500) >= aboutPosition) {
+        timer = setInterval("t();", 30);
+        console.log("triggered");
+        Typer.speed = 0.5;
+        Typer.file = $("#hidden-resume").val();
+        Typer.init();
+    }
+});
