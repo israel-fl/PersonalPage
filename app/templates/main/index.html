@@ -2,44 +2,35 @@
 <html lang="en">
 
 <head>
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-73276042-2', 'auto');
+        ga('send', 'pageview');
+    </script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Israel Flores - Interactive Resume</title>
-    <!-- Bootstrap Core CSS -->
-    <link href="{{url_for('.static', filename='bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
-    <!-- Theme CSS -->
-    <link href="{{url_for('.static', filename='css/freelancer.min.css')}}" rel="stylesheet">
-    <link href="{{url_for('.static', filename='css/index.css')}}" rel="stylesheet">
-    <link href="{{url_for('.static', filename='css/data.css')}}" rel="stylesheet">
+    <link rel="shortcut icon" type="image/png" href="{{url_for('.static', filename='images/favicon.png')}}"/>
 
-    <!-- Custom Fonts -->
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.js"></script>
+    <!-- jQuery -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!-- Socket.IO -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
-    <!-- UUID -->
-    <script src="https://wzrd.in/standalone/uuid@latest"></script>
-    <!-- Material UI -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-    <script src="//d3js.org/d3.v3.min.js"></script>
-    <script src="//d3js.org/topojson.v1.min.js"></script>
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" media="screen" href="//cdn.muicss.com/mui-0.9.15/css/mui.css" />
-    <script src="//cdn.muicss.com/mui-0.9.15/js/mui.js"></script>
-
+    <script defer src="{{url_for('.static', filename='bower_components/socket.io-client/dist/socket.io.min.js')}}"></script>
+    <script defer src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 
 <body id="page-top" class="index">
+
     <div id="skipnav"><a href="#maincontent">Skip to main content</a></div>
     <!-- Navigation -->
-    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom">
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom affix">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header page-scroll">
@@ -70,6 +61,9 @@
                         <a href="#resume">Resume</a>
                     </li>
                     <li class="page-scroll">
+                        <a href="#resume">About Me</a>
+                    </li>
+                    <li class="page-scroll">
                         <a href="#contact">Contact</a>
                     </li>
                 </ul>
@@ -79,14 +73,22 @@
         <!-- /.container-fluid -->
     </nav>
     <!-- Header -->
-    <header>
-        <div class="container" id="maincontent" tabindex="-1">
-            <div class="row">
-                <input type="hidden" value="{{url_for('static', filename='resume.txt')}}" id="hidden-resume">
-                <div id="console" class="console-left"></div>
+
+    <header id="main-header">
+        <div class="row">
+            <div class="col-lg-12">
+                <canvas id="bg"></canvas>
+                <div class="main-title">
+                    <p class="h1">Software Engineer</p>
+                </div>
             </div>
         </div>
     </header>
+    <script type="text/javascript">
+        var header = document.getElementById("main-header");
+        header.height = window.innerHeight;
+    </script>
+
     <!-- Portfolio Grid Section -->
     <section id="portfolio">
         <div class="container">
@@ -127,6 +129,26 @@
                         <img src="{{url_for('.static', filename='images/portfolio/soul_voyage/sv_logo.png')}}" class="img-responsive img-portfolio" alt="Circus tent">
                     </a>
                 </div>
+                <div class="col-sm-4 portfolio-item">
+                    <a href="#portfolioModal4" class="portfolio-link" data-toggle="modal">
+                        <div class="caption">
+                            <div class="caption-content">
+                                <i class="fa fa-search-plus fa-3x"></i>
+                            </div>
+                        </div>
+                        <img src="{{url_for('.static', filename='images/portfolio/data_rhino/logo.png')}}" class="img-responsive img-portfolio" alt="Circus tent">
+                    </a>
+                </div>
+                <div class="col-sm-4 portfolio-item">
+                    <a href="#portfolioModal5" class="portfolio-link" data-toggle="modal">
+                        <div class="caption">
+                            <div class="caption-content">
+                                <i class="fa fa-search-plus fa-3x"></i>
+                            </div>
+                        </div>
+                        <img src="{{url_for('.static', filename='images/portfolio/pokemon/pk1.png')}}" class="img-responsive img-portfolio" alt="Circus tent">
+                    </a>
+                </div>
             </div>
         </div>
     </section>
@@ -153,18 +175,18 @@
                     <h3>Web Architecture</h3>
                 </div>
                 <div class="col-sm-4 portfolio-item h3-skills">
-                    <a href="#portfolioModal5" class="portfolio-link" data-toggle="modal">
+                    <a href="#portfolioModal7" class="portfolio-link" data-toggle="modal">
                         <!-- <div class="caption">
                             <div class="caption-content">
                                 <i class="fa fa-search-plus fa-3x"></i>
                             </div>
                         </div> -->
-                        <img src="{{url_for('.static', filename='images/skills/android4.png')}}" class="img-responsive img-portfolio" alt="Safe">
+                        <img src="{{url_for('.static', filename='images/skills/android.png')}}" class="img-responsive img-portfolio" alt="Safe">
                     </a>
                     <h3>Android</h3>
                 </div>
                 <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal6" class="portfolio-link" data-toggle="modal">
+                    <a href="#portfolioModal8" class="portfolio-link" data-toggle="modal">
                         <!-- <div class="caption">
                             <div class="caption-content">
                                 <i class="fa fa-search-plus fa-3x"></i>
@@ -178,76 +200,81 @@
         </div>
     </section>
 
-
-    <section id="data-science">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <h2>Data Science</h2>
-                <hr class="star-primary">
-                <p>The world is driven by it, and with my strong math background I'm in a position to take advantage of it.</p>
-            </div>
-            <div class="svg-align">
-                <svg width="960" height="500" id="svg-dots"></svg>
-            </div>
-        </div>
-    </section>
-
     <!-- Sockets Section -->
-    <section class="success" id="sockets">
+    <section id="sockets">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <h2>Sockets</h2>
-                    <hr class="star">
+                    <hr class="star-primary">
                     <p>Because it is important to keep up with web technologies. Try chatting!</p>
                 </div>
             </div>
-    <div class="row chat-section">
-        <div class="col-md-6">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <span class="glyphicon glyphicon-comment"></span> Chat
-                </div>
-                <div class="panel-body" id="holder">
-                    <ul class="chat" id="chatbox">
-                    </ul>
-                    <input type="hidden" id="robot-icon" value="{{url_for('static', filename='images/robot.png')}}">
-                    <input type="hidden" id="user-icon" value="{{url_for('static', filename='images/person.png')}}">
-                </div>
-                <div class="panel-footer">
-                    <div class="input-group">
-                        <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here..." />
-                        <span class="input-group-btn">
-                            <button class="btn btn-warning btn-sm" id="btn-chat">
-                                Send</button>
-                        </span>
+        <div class="row chat-section">
+            <div class="col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <span class="glyphicon glyphicon-comment"></span> Chat
+                    </div>
+                    <div class="panel-body" id="holder">
+                        <ul class="chat" id="chatbox">
+                        </ul>
+                        <input type="hidden" id="robot-icon" value="{{url_for('static', filename='images/robot.png')}}">
+                        <input type="hidden" id="user-icon" value="{{url_for('static', filename='images/person.png')}}">
+                    </div>
+                    <div class="panel-footer">
+                        <div class="input-group">
+                            <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here..." />
+                            <span class="input-group-btn">
+                                <button class="btn btn-warning btn-sm" id="btn-chat">
+                                    Send</button>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <span class="glyphicon glyphicon-comment"></span> Chat
-                </div>
-                <div class="panel-body" id="holder2">
-                    <ul class="chat" id="chatbox2">
-                    </ul>
-                </div>
-                <div class="panel-footer">
-                    <div class="input-group">
-                        <input id="btn-input2" type="text" class="form-control input-sm" placeholder="Type your message here..." />
-                        <span class="input-group-btn">
-                            <button class="btn btn-warning btn-sm" id="btn-chat2">
-                                Send</button>
-                        </span>
+            <div class="col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <span class="glyphicon glyphicon-comment"></span> Chat
+                    </div>
+                    <div class="panel-body" id="holder2">
+                        <ul class="chat" id="chatbox2">
+                        </ul>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="input-group">
+                            <input id="btn-input2" type="text" class="form-control input-sm" placeholder="Type your message here..." />
+                            <span class="input-group-btn">
+                                <button class="btn btn-warning btn-sm" id="btn-chat2">
+                                    Send</button>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-                <div id="log"></div>
+    <div id="log"></div>
+    </section>
+
+    <section id="about" class="success">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2>About Me</h2>
+                <hr class="star">
+            </div>
+        </div>
+        <div class="container" id="maincontent" tabindex="-1">
+            <div class="row">
+                <div id="console" class="col-lg-8 col-xs-12 console-left">
+                    <p><span id="a">root@israelfl</span>:<span id="b">~</span><span id="c">$</span> cat israel_resume.txt</p><br/>
+                    <p>Hi, I'm Israel Flores.</p>
+                    <p>
+                    I have a B.S. in Applied and Computational Mathematics, and have been invested in software as a passion since I first got into coding. The more I learn the greater my passion grows, and the more I feel like the possibilites are endless when it comes to programming</p></br>
+                    <p>I have a strong interest in DevOps, and Fullstack engineering, as well as Machine Learning and Data Science. I am currently working as a Systems Engineer for Healthcare Practice IT, which is based in Tustin, California.</p></br>
+                    <p>If you would like to get in touch with me, whether it be for tech support, a business venture, or to just say hi, feel free to send me an email. My email address is: <a href="mailto:iflore04@gmail.com">iflore04@gmail.com</a>.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -262,8 +289,8 @@
             </div>
             <div class="row">
                 <div class="col-md-offset-3 col-md-6 text-center">
-                    <input type="hidden" id="download-resume-url" value="{{url_for('static', filename='work_resume.pdf')}}">
-                    <button class="mui-btn mui-btn--primary" id="download-resume">Download</button>
+                    <a href="{{url_for('static', filename='work_resume.pdf')}}">
+                    <button class="mui-btn mui-btn--primary" id="download-resume">Download</button></a>
                 </div>
             </div>
         </div>
@@ -280,7 +307,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2">
-                    <form name="sentMessage" id="contactForm" novalidate method="post">
+                    <form name="sentMessage" id="contactForm" action="/" novalidate method="post" onsubmit="return verifyCaptcha();">
                         <div class="row control-group">
                             <div class="mui-textfield mui-textfield--float-label">
                                 <input type="text" id="name" name="name" required data-validation-required-message="Please enter your name.">
@@ -311,6 +338,7 @@
                         </div>
                         <br>
                         <div id="success"></div>
+                        <div class="g-recaptcha" data-sitekey="6LfGXiAUAAAAAIimN9IK16whL0QCzGu9VXbcDhk8"></div>
                         <div class="row">
                             <div class="form-group col-xs-12">
                                 <button class="mui-btn mui-btn--primary">Send</button>
@@ -666,7 +694,166 @@
             </div>
         </div>
     </div>
-    <div class="portfolio-modal modal fade" id="portfolioModal4" tabindex="-1" role="dialog" aria-hidden="true">
+     <div class="portfolio-modal modal fade" id="portfolioModal4" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+                <div class="lr">
+                    <div class="rl">
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <div class="modal-body">
+                            <h2>Data Rhino</h2>
+                            <hr class="star-primary">
+                            <div id="data-rhino-carousel" class="carousel slide" data-ride="carousel">
+                                <!-- Indicators -->
+                                <ol class="carousel-indicators">
+                                    <li data-target="#data-rhino-carousel" data-slide-to="0" class="active"></li>
+                                    <li data-target="#data-rhino-carousel" data-slide-to="1"></li>
+                                    <li data-target="#data-rhino-carousel" data-slide-to="2"></li>
+                                    <li data-target="#data-rhino-carousel" data-slide-to="3"></li>
+                                </ol>
+                                <!-- Wrapper for slides -->
+                                <div class="carousel-inner" role="listbox">
+                                    <div class="item active">
+                                        <img src="{{url_for('.static', filename='images/portfolio/data_rhino/dr1.png')}}" alt="Chania" class="img-portfolio">
+                                    </div>
+                                    <div class="item">
+                                        <img src="{{url_for('.static', filename='images/portfolio/data_rhino/dr2.png')}}" alt="Flower" class="img-portfolio">
+                                    </div>
+                                    <div class="item">
+                                        <img src="{{url_for('.static', filename='images/portfolio/data_rhino/dr3.png')}}" alt="Flower" class="img-portfolio">
+                                    </div>
+                                </div>
+                                <!-- Left and right controls -->
+                                <a class="left carousel-control" href="#data-rhino-carousel" role="button" data-slide="prev">
+                                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="right carousel-control" href="#data-rhino-carousel" role="button" data-slide="next">
+                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                            <div class="p-portfolio">
+                                <p>
+                                    </br>
+                                    </br>
+                                    <h1>Php-Laravel-Mysql</h1>
+                                    <h3>Basic Summary:</h3>Built as a final project for one of my classes.
+                                    There is a dashboard for users, as well as a fully implemented register and login process. There is a way to validate your email
+                                    as well as recover your password.
+                                    <br/>
+                                    <br/>
+                                    <li>Adheres to the MVC pattern</li>
+                                    <li>Use of Eloquent ORM for database access</li>
+                                    <li>User authentication through Laravel</li>
+                                    <li>Original MySQL database designed by me that has been populated with appropriate data</li>
+                                    <li>Flash messaging</li>
+                                    <li>Blade templating</li>
+                                    <li>Server-side and client-side data validation</li>
+                                    </br>
+                                    </br>
+                                    <h3>See it in action</h3>
+                                    <br/><a href="https://www.datarhino.ml">www.datarhino.ml</a>
+                                    <br/>
+                                    <h3>A video walkthrough:</h3>
+                                    <iframe width="560" height="315" src="https://www.youtube.com/embed/-R76_r82hQU" frameborder="0" allowfullscreen></iframe>
+                                </p>
+                            </div>
+                            <ul class="list-inline item-details">
+                                <li>Date:
+                                    <strong>Spring 2016</strong>
+                                </li>
+                                <li><strong>Repository</strong>:
+                                    <strong><a href="https://github.com/israel-fl/final_project">Github</a>
+                                    </strong>
+                                </li>
+                            </ul>
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+         <div class="portfolio-modal modal fade" id="portfolioModal5" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+                <div class="lr">
+                    <div class="rl">
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2">
+                        <div class="modal-body">
+                            <h2>Pokemon API</h2>
+                            <hr class="star-primary">
+                            <div class="code-section">
+                                <pre><code>
+[
+    {
+      "name":"Bulbasaur",
+      "type_1":"Grass",
+      "type_2":"Poison",
+      "total":318,
+      "hp":45,
+      "attack":49,
+      "defense":49,
+      "sp_atk":65,
+      "sp_def":65,
+      "speed":45,
+      "generation":1,
+      "legendary":"False",
+      "id":1
+    }
+]
+                                </code></pre>
+                            </div>
+                            <div class="p-portfolio">
+                                <p>
+                                    </br>
+                                    </br>
+                                    <h1>NodeJS-Express-Bookshelf</h1>
+                                    </br>
+                                    <a class="api-link" href="https://api.datarhino.ml/v1/pokemons">api.datarhino.ml/v1/pokemons</a>
+                                    <h3>Basic Summary:</h3>Built as a final project for one of my classes.
+                                    It allows for CRUD operations and retrieves information about Pokemons.
+                                    <br/>
+                                    <br/>
+                                    <li>Secure database reading/writing using either the Bookshelf ORM.</li>
+                                    <li>Use of promises</li>
+                                    <li>Return a list of resource objects (GET)</li>
+                                    <li>Return a single resource object (GET)</li>
+                                    <li>Create a resource object (POST)</li>
+                                    <li>Delete a resource object (DELETE)</li>
+                                    <li>Update a resource object (PUT)</li>
+                                    </br>
+                                    </br>
+                                </p>
+                            </div>
+                            <ul class="list-inline item-details">
+                                <li>Date:
+                                    <strong>Spring 2016</strong>
+                                </li>
+                                <li><strong>Repository</strong>:
+                                    <strong><a href="https://github.com/israel-fl/final_project_api">Github</a>
+                                    </strong>
+                                </li>
+                            </ul>
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="portfolio-modal modal fade" id="portfolioModal6" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-content">
             <div class="close-modal" data-dismiss="modal">
                 <div class="lr">
@@ -698,7 +885,7 @@
             </div>
         </div>
     </div>
-    <div class="portfolio-modal modal fade" id="portfolioModal5" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="portfolio-modal modal fade" id="portfolioModal7" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-content">
             <div class="close-modal" data-dismiss="modal">
                 <div class="lr">
@@ -725,7 +912,7 @@
             </div>
         </div>
     </div>
-    <div class="portfolio-modal modal fade" id="portfolioModal6" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="portfolio-modal modal fade" id="portfolioModal8" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-content">
             <div class="close-modal" data-dismiss="modal">
                 <div class="lr">
@@ -771,23 +958,43 @@
             </div>
         </div>
     </div>
+    <!-- =========================CSS==================== -->
+    <!-- Bootstrap Core CSS -->
+    <link href="{{url_for('.static', filename='bower_components/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet">
+    <!-- Theme CSS -->
+    <link href="{{url_for('.static', filename='css/freelancer.min.css')}}" rel="stylesheet">
+    <link href="{{url_for('.static', filename='css/index.css')}}" rel="stylesheet">
+    <link href="{{url_for('.static', filename='bower_components/ekko-lightbox/dist/ekko-lightbox.min.css')}}" rel="stylesheet">
+
+
+    <!-- Custom Fonts -->
+    <link href="{{url_for('.static', filename='bower_components/fontawesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="screen" href="{{url_for('.static', filename='bower_components/mui/packages/cdn/css/mui.min.css')}}" />
+<!-- ================================CSS=======================-->
 </body>
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+
 <!-- Bootstrap Core JavaScript -->
-<script src="{{url_for('.static', filename='bootstrap/js/bootstrap.min.js')}}"></script>
+<script defer src="{{url_for('.static', filename='bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
 <!-- Plugin JavaScript -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
 <!-- Contact Form JavaScript -->
-<script src="{{url_for('.static', filename='js/jqBootstrapValidation.js')}}"></script>
-<script src="{{url_for('.static', filename='js/contact_me.js')}}"></script>
+<script defer src="{{url_for('.static', filename='js/jqBootstrapValidation.js')}}"></script>
 <!-- Theme JavaScript -->
-<script src="{{url_for('.static', filename='js/freelancer.min.js')}}"></script>
+<script defer src="{{url_for('.static', filename='js/freelancer.min.js')}}"></script>
+
+<script defer src="{{url_for('.static', filename='js/index.js')}}"></script>
+<script defer src="{{url_for('.static', filename='js/ash.js')}}"></script>
+<script defer src="{{url_for('.static', filename='bower_components/mui/packages/cdn/js/mui.min.js')}}"></script>
 <!-- Other Scripts -->
-<script src="https://d3js.org/d3.v4.min.js"></script>
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
-<script src="//d3js.org/topojson.v1.min.js"></script>
-<script src="{{url_for('.static', filename='js/index.js')}}"></script>
-<script src="{{url_for('.static', filename='js/resume.js')}}"></script>
-<script src="{{url_for('.static', filename='js/data.js')}}"></script>
+<script defer src="{{url_for('.static', filename='bower_components/ekko-lightbox/dist/ekko-lightbox.min.js')}}"></script>
+<!-- Material UI -->
+<script defer  src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+
 </html>
+

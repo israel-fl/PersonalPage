@@ -7,3 +7,4 @@ alembic.ini
 error.log
 access.log
 pid
+bower_components
