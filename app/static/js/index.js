@@ -26,3 +26,13 @@ $(document).ready(function() {
         return false;
     });
 });
+
+function verifyCaptcha() {
+    var grecaptcha = $("#g-recaptcha-response").val();
+    if (grecaptcha.length == 0){
+        alert("Please fill the captcha first!");
+        return false;
+    } else {
+        return true;
+    }
+}
