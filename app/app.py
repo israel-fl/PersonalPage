@@ -30,23 +30,20 @@ def not_found(e):
 @app.route("/", methods=["GET", "POST"])
 def landing():
     if (request.method == "POST"):
-        print("HERE")
         name = request.form.get("name")
-        email = request.form.get("email")
+        email_addr = request.form.get("email")
         phone = request.form.get("phone")
         message = request.form.get("message")
         mail = Mail(app)
         email = Message(
-                subject="A new message from IsraelFL!",
+                subject="A new message from {}!".format(name),
                 sender="data.rhino@gmail.com",
-                recipients="iflore04@gmail.com")
-        print("HEEREREEE")
+                recipients=["iflore04@gmail.com"])
         email.html = render_template("emails/contact_email.html",
                                      name=name,
-                                     email=email,
+                                     email=email_addr,
                                      phone=phone,
                                      message=message)
-        print("Then here")
         mail.send(email)
 
     return render_template("main/index.html")

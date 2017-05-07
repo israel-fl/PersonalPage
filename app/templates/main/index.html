@@ -20,7 +20,7 @@
 
     <div id="skipnav"><a href="#maincontent">Skip to main content</a></div>
     <!-- Navigation -->
-    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom">
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom affix">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header page-scroll">
@@ -68,8 +68,8 @@
         <div class="row">
             <div class="col-lg-12">
                 <canvas id="bg" class=""></canvas>
-                <div class="intro-text">
-                    <h1 class="main-title">Software Engineer</h1>
+                <div class="main-title">
+                    <p class="h1">Software Engineer</p>
                 </div>
             </div>
         </div>
@@ -122,7 +122,7 @@
                                 <i class="fa fa-search-plus fa-3x"></i>
                             </div>
                         </div>
-                        <img src="{{url_for('.static', filename='images/portfolio/data_rhino/dr1.png')}}" class="img-responsive img-portfolio" alt="Circus tent">
+                        <img src="{{url_for('.static', filename='images/portfolio/data_rhino/logo.png')}}" class="img-responsive img-portfolio" alt="Circus tent">
                     </a>
                 </div>
                 <div class="col-sm-4 portfolio-item">
@@ -253,8 +253,14 @@
         </div>
         <div class="container" id="maincontent" tabindex="-1">
             <div class="row">
-                <input type="hidden" value="{{url_for('static', filename='resume.txt')}}" id="hidden-resume">
-                <div id="console" class="console-left"></div>
+                <div id="console" class="col-lg-8 col-xs-12 console-left">
+                    <p><span id="a">root@israelfl</span>:<span id="b">~</span><span id="c">$</span> cat israel_resume.txt</p><br/>
+                    <p>Hi, I'm Israel Flores.</p>
+                    <p>
+                    I have a B.S. in Applied and Computational Mathematics, and have been invested in software as a passion since I first got into coding. The more I learn the greater my passion grows, and the more I feel like the possibilites are endless when it comes to programming</p></br>
+                    <p>I have a strong interest in DevOps, and Fullstack engineering, as well as Machine Learning and Data Science. I am currently working as a Systems Engineer for Healthcare Practice IT, which is based in Tustin, California.</p></br>
+                    <p>If you would like to get in touch with me, whether it be for tech support, a business venture, or to just say hi, feel free to send me an email. My email address is: <a href="mailto:iflore04@gmail.com">iflore04@gmail.com</a>.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -964,12 +970,10 @@
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
 <!-- Contact Form JavaScript -->
 <script defer src="{{url_for('.static', filename='js/jqBootstrapValidation.js')}}"></script>
-<script defer src="{{url_for('.static', filename='js/contact_me.js')}}"></script>
 <!-- Theme JavaScript -->
 <script defer src="{{url_for('.static', filename='js/freelancer.min.js')}}"></script>
 
 <script defer src="{{url_for('.static', filename='js/index.js')}}"></script>
-<script defer src="{{url_for('.static', filename='js/resume.js')}}"></script>
 <script defer src="{{url_for('.static', filename='js/ash.js')}}"></script>
 <script defer src="{{url_for('.static', filename='bower_components/mui/packages/cdn/js/mui.min.js')}}"></script>
 <!-- Other Scripts -->
