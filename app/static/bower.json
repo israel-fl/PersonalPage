@@ -1,5 +1,5 @@
 {
-  "name": "portfolio",
+  "name": "personalpage",
   "version": "1.0.0",
   "dependencies": {
     "bootstrap": "3.3.7",
@@ -7,6 +7,8 @@
     "jquery": "3.2.1",
     "jquery-ui": "1.12.1",
     "mui": "0.9.13",
+    "ekko-lightbox": "https://github.com/ashleydw/lightbox.git#^5.1.1",
+    "socket.io-client": "^1.7.4"
   },
   "private": true
 }

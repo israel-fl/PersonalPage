@@ -14,3 +14,4 @@ flask-socketio
 eventlet
 Flask-mail
 gunicorn==18.0
+Flask-UUID
