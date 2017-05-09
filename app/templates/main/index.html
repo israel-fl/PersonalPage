@@ -20,7 +20,7 @@
     <link rel="shortcut icon" type="image/png" href="{{url_for('.static', filename='images/favicon.png')}}"/>
 
     <!-- jQuery -->
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="{{url_for('.static', filename='bower_components/jquery/dist/jquery.min.js')}}"></script>
     <!-- Socket.IO -->
     <script defer src="{{url_for('.static', filename='bower_components/socket.io-client/dist/socket.io.min.js')}}"></script>
     <script defer src='https://www.google.com/recaptcha/api.js'></script>
@@ -74,18 +74,18 @@
     <header id="main-header">
         <div class="row">
             <div class="col-lg-12">
-                <canvas id="bg"></canvas>
                 <div class="main-title">
                     <p class="h1">Software Engineer</p>
                 </div>
+                <canvas id="myCanvas"></canvas>
             </div>
         </div>
     </header>
     <script type="text/javascript">
-        var header = document.getElementById("main-header");
-        header.height = window.innerHeight;
+        var windowHeight = $(window).innerHeight();
+        $("#main-header").css('min-height', windowHeight);
+        $("#main-header").css('height', windowHeight);
     </script>
-
     <!-- Portfolio Grid Section -->
     <section id="portfolio">
         <div class="container">
