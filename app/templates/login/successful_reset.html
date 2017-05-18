@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {{ super() }}
+    {% block title} Register {% endblock %}
+{% endblock %}
+
+{% block body %}
+<body class="hold-transition register-page">
+    {% block styles %}
+        {{ super() }}
+        <!-- Theme CSS -->
+        <link href="{{url_for('.static', filename='bower_components/adminlte/dist/css/AdminLTE.min.css')}}" rel="stylesheet">
+    {% endblock %}
+<div class="register-box">
+  <div class="register-logo">
+    <a href="/"><b>Data</b>Rhino</a>
+  </div>
+
+  <div class="register-box-body">
+    <h3 class="login-box-msg">Your password has been reset</h3>
+  </div>
+  <!-- /.form-box -->
+</div>
+
+{% endblock %}

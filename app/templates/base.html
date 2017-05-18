@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% block head %}
+<head>
+    <!-- GOOGLE ANALYTICS -->
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-73276042-2', 'auto');
+        ga('send', 'pageview');
+    </script>
+    <!-- GOOGLE ANALYTICS -->
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Israel Flores | {% block title %}{% endblock %}</title>
+    <link rel="shortcut icon" type="image/png" href="{{url_for('.static', filename='images/favicon.png')}}"/>
+
+    <!-- jQuery -->
+    <script src="{{url_for('.static', filename='bower_components/jquery/dist/jquery.min.js')}}"></script>
+
+</head>
+{% endblock %}
+
+
+{% block body %}
+
+    {% block styles %}
+        <!-- Bootstrap Core CSS -->
+        <link href="{{url_for('.static', filename='bower_components/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet">
+        <!-- Custom Fonts -->
+        <link href="{{url_for('.static', filename='bower_components/fontawesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" media="screen" href="{{url_for('.static', filename='bower_components/mui/packages/cdn/css/mui.min.css')}}" />
+    {% endblock %}
+
+
+  <footer class="main-footer" style="margin-left: 0;">
+    {% block footer %}
+    {% endblock %}
+  </footer>
+</div>
+
+
+
+
+{% endblock %}
+
+
+{% block scripts %}
+<!-- Bootstrap Core JavaScript -->
+<script defer src="{{url_for('.static', filename='bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+<!-- Plugin JavaScript -->
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+<!-- Contact Form JavaScript -->
+<script defer src="{{url_for('.static', filename='js/jqBootstrapValidation.js')}}"></script>
+<!-- Other Scripts -->
+<script defer src="{{url_for('.static', filename='bower_components/mui/packages/cdn/js/mui.min.js')}}"></script>
+<!-- Material UI -->
+<script defer  src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+{% endblock %}
+
+</html>

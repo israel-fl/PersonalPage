@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {{ super() }}
+    {% block title} Login {% endblock %}
+{% endblock %}
+
+{% block body %}
+<body class="hold-transition login-page">
+    {% block styles %}
+        {{ super() }}
+        <!-- Theme CSS -->
+        <link href="{{url_for('.static', filename='bower_components/adminlte/dist/css/AdminLTE.min.css')}}" rel="stylesheet">
+        <link href="{{url_for('.static', filename='css/login.css')}}" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    {% endblock %}
+
+  <div class="login-box">
+    <div class="login-logo">
+      <a href="/"><b>Israel</b>Fl</a>
+    </div>
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+    <h3 class="login-box-msg">Login</h3>
+      <form class="mui-form" method="post" action="/login" id="login">
+  <div class="mui-textfield">
+    <input type="email" placeholder="Email" name="email" id="email">
+  </div>
+  <div class="mui-textfield">
+    <input type="password" placeholder="Password" name="pass" id="pass">
+  </div>
+  <div class="row">
+    <button type="submit" class="btn-block btn-full-width mui-btn mui-btn--raised mui-btn--primary">Submit</button>
+  </div>
+</form>
+</hr>
+<div class="row text-center">
+      <a href="/reset">I forgot my password</a><br>
+</div>
+<hr></hr>
+    Don't have an account? <a href="/register" class="text-center">Register</a>
+</div>
+<ul id="messages" class="error-category"></ul>
+<div class="row">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <strong>{{ message }}</strong>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+</div>
+</div>
+    <!-- /.login-box-body -->
+
+
+  </div>
+  <!-- /.login-box -->
+</body>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <!-- Theme JavaScript -->
+    <script defer src="{{url_for('.static', filename='js/login.js')}}"></script>
+{% endblock %}

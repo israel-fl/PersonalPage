@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {{ super() }}
+    {% block title} Register {% endblock %}
+{% endblock %}
+
+{% block body %}
+<body class="hold-transition register-page">
+    {% block styles %}
+        {{ super() }}
+        <!-- Theme CSS -->
+        <link href="{{url_for('.static', filename='bower_components/adminlte/dist/css/AdminLTE.min.css')}}" rel="stylesheet">
+    {% endblock %}
+
+ <body class="hold-transition login-page">
+  <div class="login-box">
+    <div class="login-logo">
+      <a href="/"><b>Israel</b>Fl</a>
+    </div>
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+    <h3 class="login-box-msg">Please enter an email so that we may reset your password</h3>
+      <form class="mui-form" method="post" action="/reset" id="login">
+  <div class="mui-textfield">
+    <input type="email" placeholder="Email" name="email" id="email">
+  </div>
+  <div class="row">
+    <button type="submit" class="btn-block btn-full-width mui-btn mui-btn--raised mui-btn--primary">Submit</button>
+  </div>
+</form>
+</div>
+<ul id="messages" class="error-category"></ul>
+<div class="row">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <strong>{{ message }}</strong>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+</div>
+<!-- /.register-box -->
+</body>
+{% endblock %}
