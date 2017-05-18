@@ -1,9 +1,9 @@
 from flask import Blueprint, request, jsonify, current_app as app, render_template
-from .decorators import validate_access, validate_request
+from app.http.middleware.decorators import validate_access, validate_request
 from werkzeug.security import generate_password_hash
-from .database import db
+from database.db_adapter import db
 import json
-from .generators import generate_hash
+from app.http.middleware.generators import generate_hash
 from datetime import timedelta, datetime
 import hashlib
 from flask_mail import Mail, Message

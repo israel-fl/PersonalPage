@@ -2,16 +2,16 @@
 
 {% block head %}
     {{ super() }}
-    {% block title} Login {% endblock %}
 {% endblock %}
+{% block title %} Login {% endblock %}
 
 {% block body %}
-<body class="hold-transition login-page">
+<body class="hold-transition login-page body-background">
     {% block styles %}
         {{ super() }}
         <!-- Theme CSS -->
-        <link href="{{url_for('.static', filename='bower_components/adminlte/dist/css/AdminLTE.min.css')}}" rel="stylesheet">
-        <link href="{{url_for('.static', filename='css/login.css')}}" rel="stylesheet">
+        <link href="{{url_for('static', filename='bower_components/adminlte/dist/css/AdminLTE.min.css')}}" rel="stylesheet">
+        <link href="{{url_for('static', filename='css/login.css')}}" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
     {% endblock %}
 
@@ -66,5 +66,5 @@
 {% block scripts %}
     {{ super() }}
     <!-- Theme JavaScript -->
-    <script defer src="{{url_for('.static', filename='js/login.js')}}"></script>
+    <script defer src="{{url_for('static', filename='js/login.js')}}"></script>
 {% endblock %}

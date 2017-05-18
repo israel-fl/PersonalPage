@@ -8,12 +8,13 @@ import datetime
 class User(Base):
 
     __tablename__ = "users"
-    __id = Column("id", Integer, primary_key=True, autoincrement=True)
+    id = Column("id", Integer, primary_key=True, autoincrement=True)
     name = Column("name", String, nullable=False)
     display_name = Column('display_name', String, nullable=False)
     email = Column("email", String, nullable=False)
     password = Column("password", String, nullable=False)
-    access_level = Column("level", Integer, nullable=False, default=0)
+    # New users are level 1 by default
+    access_level = Column("level", Integer, nullable=False, default=1)
     verified = Column("verified", String, nullable=False, default="false")
 
     def is_authenticated(self):
@@ -26,7 +27,7 @@ class User(Base):
         return False
 
     def get_id(self):
-        return str(self.__id).decode("utf-8")
+        return str(self.id).decode("utf-8")
 
 
 class PasswordResetRequests(Base):

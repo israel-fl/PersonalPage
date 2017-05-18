@@ -6,11 +6,13 @@
 {% endblock %}
 
 {% block body %}
-<body class="hold-transition register-page">
+<body class="hold-transition register-page body-background">
+
     {% block styles %}
         {{ super() }}
         <!-- Theme CSS -->
-        <link href="{{url_for('.static', filename='bower_components/adminlte/dist/css/AdminLTE.min.css')}}" rel="stylesheet">
+        <link href="{{url_for('static', filename='bower_components/adminlte/dist/css/AdminLTE.min.css')}}" rel="stylesheet">
+        <link href="{{url_for('static', filename='css/login.css')}}" rel="stylesheet">
     {% endblock %}
 
 <div class="register-box">
@@ -21,7 +23,7 @@
   <div class="register-box-body">
     <h3 class="login-box-msg">Thank you for creating an account. Please verify your email. If you have not received one, click to resend it.</h3>
     <ul id="messages" class="error-category"></ul>
-    <form id="register" method="post" action="/verify">
+    <form id="register" method="post" action="/register/verify">
       <div class="row">
           <button type="submit" id="register-btn" class="btn-block btn-full-width mui-btn mui-btn--raised mui-btn--primary ">Resend</button>
       </div>

@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block title %} Register {% endblock %}
+
+{% block body %}
+<body class="hold-transition register-page body-background">
+    {% block styles %}
+        {{ super() }}
+        <!-- Theme CSS -->
+        <link href="{{url_for('static', filename='bower_components/adminlte/dist/css/AdminLTE.min.css')}}" rel="stylesheet">
+        <link href="{{url_for('static', filename='css/register.css')}}" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    {% endblock %}
+
+<div class="">
+  <div class="register-logo">
+    <a href="/"><b>Israel</b>Fl</a>
+  </div>
+
+  <div class="register-box-body">
+<p>
+<h1>ISRAEL FL PRIVACY STATEMENT</h1>
+
+Your privacy is important to Israel Fl.  This privacy statement provides information about the personal information that Israel Fl collects,
+and the ways in which Israel Fl uses that personal information.</br></br>
+
+<h3>Personal information collection</h3>
+
+Israel Fl may collect and use the following kinds of personal information:</br>
+<ul>
+    <li>
+        information about your use of this website;
+    </li>
+    <li>
+        information that you provide using for the purpose of registering with the website
+    </li>
+    <li>
+        information about transactions carried out over this website
+    </li>
+    <li>
+        information that you provide for the purpose of subscribing to the website services
+    </li>
+    <li>
+        any other information that you send to Israel Fl.
+    </li>
+</ul>
+
+
+
+
+<h3>Using personal information</h3>
+
+Israel Fl may use your personal information to:
+
+<ul>
+    <li>
+        administer this website;
+    </li>
+    <li>
+        personalize the website for you;
+    </li>
+    <li>
+        enable your access to and use of the website services;
+    </li>
+    <li>
+        publish information about you on the website;
+    </li>
+    <li>
+        send to you products that you purchase;
+    </li>
+    <li>
+        supply to you services that you purchase;
+    </li>
+    <li>
+        send to you statements and invoices;
+    </li>
+    <li>
+        collect payments from you;
+    </li>
+    <li>
+        send you marketing communications.
+    </li>
+</ul>
+
+
+Where Israel Fl discloses your personal information to its agents or sub-contractors for these purposes, the agent or sub-contractor in question will be obligated to use that personal information in accordance with the terms of this privacy statement.
+
+In addition to the disclosures reasonably necessary for the purposes identified elsewhere above, Israel Fl may disclose your personal information to the extent that it is required to do so by law, in connection with any legal proceedings or prospective legal proceedings, and in order to establish, exercise or defend its legal rights.
+
+<h3>Securing your data</h3>
+
+Israel Fl will take reasonable technical and organisational precautions to prevent the loss, misuse or alteration of your personal information.
+
+Israel Fl will store all the personal information you provide on its secure servers.
+
+Information relating to electronic transactions entered into via this website will be protected by encryption technology.
+
+Cross-border data transfers
+
+Information that Israel Fl collects may be stored and processed in and transferred between any of the countries in which Israel Fl operates to enable the use of the information in accordance with this privacy policy.
+
+In addition, personal information that you submit for publication on the website will be published on the internet and may be available around the world.
+
+You agree to such cross-border transfers of personal information.
+
+Updating this statement
+
+Israel Fl may update this privacy policy by posting a new version on this website.
+
+You should check this page occasionally to ensure you are familiar with any changes.
+
+<h4>Other websites</h4>
+
+This website contains links to other websites.
+
+Israel Fl is not responsible for the privacy policies or practices of any third party.
+
+<h3>Contact Israel Fl</h3>
+
+If you have any questions about this privacy policy or Israel Fl’s treatment of your personal information, please write:
+
+by email to <a href="webmaster@israelfl.com">webmaster@israelfl.com</a>
+</p>
+</div>
+</div>
+</body>
+
+{% endblock %}

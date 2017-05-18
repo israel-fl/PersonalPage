@@ -33,11 +33,11 @@ def landing():
 
 
 @blueprint.route("/blog", methods=["GET"])
-def show_resume():
+def blog():
     return render_template("main/blog.html")
 
 
 @blueprint.route("/dashboard", methods=["GET"])
-def show_resume():
+def dashboard():
     return render_template("main/dashboard.html")
 

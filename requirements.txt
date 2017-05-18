@@ -17,3 +17,4 @@ gunicorn==18.0
 Flask-UUID
 flask-login
 mysql-python
+cerberus

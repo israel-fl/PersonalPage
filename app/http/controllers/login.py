@@ -8,9 +8,8 @@ from database.db_adapter import db
 
 blueprint = Blueprint('login', __name__)
 
-login_manager = LoginManager(app)
 
-@blueprint.route("/", methods=["GET", "P"])
+@blueprint.route("/", methods=["GET", "POST"])
 def login():
 
 
@@ -24,6 +23,15 @@ def login():
     return render_template("login/login.html")
 
 
-@login_manager.user_loader
-def load_user(user_id):
-    return db.query(User.__id == user_id)
+# Reset password endpoint
+def send_recovery_email(username, email_addr, token):
+    mail = Mail(app)
+    email = Message(
+            subject="Reset your password at Israel FL",
+            sender="no-reply@israelfl.com",
+            recipients=[email_addr])
+    email.html = render_template("emails/reset_password_email.html",
+                                 usename=username,
+                                 token=token)
+
+    mail.send(email)

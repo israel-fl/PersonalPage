@@ -20,11 +20,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Israel Flores | {% block title %}{% endblock %}</title>
-    <link rel="shortcut icon" type="image/png" href="{{url_for('.static', filename='images/favicon.png')}}"/>
+    <title>Israel Flores | {% block title %}  {% endblock %}</title>
+    <link rel="shortcut icon" type="image/png" href="{{url_for('static', filename='images/favicon.png')}}"/>
 
     <!-- jQuery -->
-    <script src="{{url_for('.static', filename='bower_components/jquery/dist/jquery.min.js')}}"></script>
+    <script src="{{url_for('static', filename='bower_components/jquery/dist/jquery.min.js')}}"></script>
 
 </head>
 {% endblock %}
@@ -34,16 +34,16 @@
 
     {% block styles %}
         <!-- Bootstrap Core CSS -->
-        <link href="{{url_for('.static', filename='bower_components/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet">
+        <link href="{{url_for('static', filename='bower_components/bootstrap/dist/css/bootstrap.min.css')}}" rel="stylesheet">
         <!-- Custom Fonts -->
-        <link href="{{url_for('.static', filename='bower_components/fontawesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
+        <link href="{{url_for('static', filename='bower_components/fontawesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
         <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
 
 
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" media="screen" href="{{url_for('.static', filename='bower_components/mui/packages/cdn/css/mui.min.css')}}" />
+        <link rel="stylesheet" type="text/css" media="screen" href="{{url_for('static', filename='bower_components/mui/packages/cdn/css/mui.min.css')}}" />
     {% endblock %}
 
 
@@ -61,13 +61,13 @@
 
 {% block scripts %}
 <!-- Bootstrap Core JavaScript -->
-<script defer src="{{url_for('.static', filename='bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+<script defer src="{{url_for('static', filename='bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
 <!-- Plugin JavaScript -->
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
 <!-- Contact Form JavaScript -->
-<script defer src="{{url_for('.static', filename='js/jqBootstrapValidation.js')}}"></script>
+<script defer src="{{url_for('static', filename='js/jqBootstrapValidation.js')}}"></script>
 <!-- Other Scripts -->
-<script defer src="{{url_for('.static', filename='bower_components/mui/packages/cdn/js/mui.min.js')}}"></script>
+<script defer src="{{url_for('static', filename='bower_components/mui/packages/cdn/js/mui.min.js')}}"></script>
 <!-- Material UI -->
 <script defer  src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 {% endblock %}
