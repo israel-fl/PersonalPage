@@ -1,47 +1,79 @@
 $('#register').submit(function () {
 
-    name = $("#name").val();
-    email = $('#email').val();
-    pass = $('#pass').val();
-    retype = $('#retype').val();
-    var missing = false;
+    var name = $("#name");
+    var username = $("#username");
+    var email = $('#email');
+    var pass = $('#password');
+    var retype = $('#retype');
+
+    var nameVal = $("#name").val();
+    var usernameVal = $("#username").val();
+    var emailVal = $('#email').val();
+    var passVal = $('#password').val();
+    var retypeVal = $('#retype').val();
+
+    // Remove the class so that it can be readded in case of errors
+    name.removeClass("shake");
+    username.removeClass("shake");
+    email.removeClass("shake");
+    pass.removeClass("shake");
+    retype.removeClass("shake");
 
     var holder = document.getElementById("messages");
     var error = document.createElement("li");
 
-     // Empty all messages on button click
-    $("#messages").empty();
+    var missing = false;
+    var passwordError = false;
 
-    if (name == '') {
-        $("#name").css('border-color', 'red');
-        $("#name").effect('shake');
+    // Check the name is between 4 and 40 characters
+    if (nameVal.length < 4 || nameVal.length > 40) {
+        error.setAttribute("value", "Name can only be between 4 and 40 characters")
+        name.addClass('shake');
+        name.css('border-color', 'red');
         missing = true;
     }
-    if (email == '') {
-        $('#email').css('border-color', 'red');
-        $('#email').effect('shake');
+    // check username is between 4 and 25
+    if (usernameVal.length < 4 || usernameVal.length > 25) {
+        error.setAttribute("value", "Username can only be between 4 and 25 characters")
+        username.addClass('shake');
+        username.css('border-color', 'red');
         missing = true;
     }
-    if (pass == '') {
-        $('#pass').css('border-color', 'red');
-        $('#pass').effect('shake');
+    // check email contains @ and its betwen 6 and 50 characters
+    console.log(emailVal.includes("@"));
+    if (emailVal.length < 6 || emailVal.length > 50 || !emailVal.includes("@")) {
+        error.setAttribute("value", "Email address invalid")
+        email.addClass('shake');
+        email.css('border-color', 'red');
         missing = true;
     }
-    if (retype == '') {
-        $('#retype').css('border-color', 'red');
-        $('#retype').effect('shake');
+    // check password is between 6 and 100 characters
+    if (passVal.length < 6 || passVal.length > 100) {
+        error.setAttribute("value", "Password must be more than 6 characters, contain at least 1 uppercase letter and 1 number")
         missing = true;
+        passwordError = true
+    } else if (retypeVal != passVal){  // check passwords match
+        error.setAttribute("value", "Passwords don't match")
+        passwordError = true
     }
-    if (retype != pass) {
-        error.setAttribute("value", "Passwords do not much")
-        $('#pass').css('border-color', 'red');
-        $('#retype').css('border-color', 'red');
-        $('#pass').effect('shake');
-        $('#retype').effect('shake');
-        missing = true;
+    if (passwordError) {
+        pass.addClass('shake');
+        pass.css('border-color', 'red');
+        retype.addClass('shake');
+        retype.css('border-color', 'red');
+    }
+    // Add regex validation to password
+    var reg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
+    if (!reg.test(passVal)) {
+        console.log("regex failed");
+        pass.addClass('shake');
+        pass.css('border-color', 'red');
+        error.setAttribute("value", "Password must contain at least 1 uppercase letter and 1 number");
+        return false;
     }
 
     if (missing) {
+        messages.append(error);
         return false;
     } else {
         return true;

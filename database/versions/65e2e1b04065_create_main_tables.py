@@ -25,7 +25,9 @@ def upgrade():
         sa.Column('email', sa.String(255), nullable=False),
         sa.Column('password', sa.String(255), nullable=False),
         sa.Column('level', sa.Integer(), nullable=False),
-        sa.Column('verified', sa.String(10), nullable=False, default="false"),
+        sa.Column('verified', sa.String(15), nullable=False, default="false"),
+        sa.Column('created', sa.String(255), nullable=False),
+        sa.Column('modified', sa.String(255), nullable=True),
         sa.PrimaryKeyConstraint('id'),
     )
     op.create_table(
@@ -49,6 +51,6 @@ def upgrade():
 
 
 def downgrade():
-    op.drop_table('users')
     op.drop_table('password_reset_requests')
     op.drop_table('verify_email_requests')
+    op.drop_table('users')

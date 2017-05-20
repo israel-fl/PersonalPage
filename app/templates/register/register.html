@@ -12,7 +12,7 @@
         <!-- Theme CSS -->
         <link href="{{url_for('static', filename='bower_components/adminlte/dist/css/AdminLTE.min.css')}}" rel="stylesheet">
         <link href="{{url_for('static', filename='css/register.css')}}" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+        <link href="{{url_for('static', filename='css/shake.css')}}" rel="stylesheet">
     {% endblock %}
 
 <div class="register-box">
@@ -22,33 +22,6 @@
 
   <div class="register-box-body">
     <h3 class="login-box-msg">Create an account</h3>
-    <ul id="messages" class="error-category"></ul>
-    <form class="mui-form" method="post" action="/register" id="register">
-        <div class="mui-textfield">
-          <input type="text" placeholder="Name" name="name" id="name">
-        </div>
-        <div class="mui-textfield">
-          <input type="text" placeholder="Username" name="username" id="username">
-        </div>
-        <div class="mui-textfield">
-          <input type="email" placeholder="Email" name="email" id="email">
-        </div>
-        <div class="mui-textfield">
-          <input type="password" placeholder="Password" name="pass" id="pass">
-        </div>
-        <div class="mui-textfield">
-            <input type="password" placeholder="Re-type Password" name="retype" id="retype" >
-        </div>
-        <div class="row">
-          <button type="submit" class="btn-block btn-full-width mui-btn mui-btn--raised mui-btn--primary">Register</button>
-        </div>
-    </form>
-    <p>By creating an account you agree to Data Rhino's <a href="/register/terms">Conditions of Use</a> and <a href="/register/policy">Privacy Notice</a></p>
-    </form>
-    <hr></hr>
-    Already have an account? <a href="/login" class="text-center">Sign in</a>
-  </div>
-  <!-- /.form-box -->
     {% with messages = get_flashed_messages(with_categories=true) %}
       <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
       {% if messages %}
@@ -60,6 +33,34 @@
         {% endfor %}
       {% endif %}
     {% endwith %}
+    <ul id="messages" class="error-category"></ul>
+    <form class="mui-form" method="post" action="/register/" id="register">
+        <div class="mui-textfield">
+          <input type="text" placeholder="Name*" name="name" id="name" title="Please enter First and Last name">
+        </div>
+        <div class="mui-textfield">
+          <input type="text" placeholder="Username*" name="username" id="username">
+        </div>
+        <div class="mui-textfield">
+          <input type="email" placeholder="Email*" name="email" id="email">
+        </div>
+        <div class="mui-textfield">
+          <input type="password" placeholder="Password*" name="password" id="password" title="Password must be at least 6 characters and must contain at least 1 uppercase letter and 1 number">
+        </div>
+        <div class="mui-textfield">
+            <input type="password" placeholder="Confirm Password*" name="retype" id="retype">
+        </div>
+        <div class="row">
+          <button type="submit" class="btn-block btn-full-width mui-btn mui-btn--raised mui-btn--primary">Register</button>
+        </div>
+    </form>
+    <i>* indicates a required value</i>
+    <p>By creating an account you agree to Data Rhino's <a href="/register/terms">Conditions of Use</a> and <a href="/register/policy">Privacy Notice</a></p>
+    </form>
+    <hr></hr>
+    Already have an account? <a href="/login" class="text-center">Sign in</a>
+  </div>
+  <!-- /.form-box -->
 </div>
 <!-- /.register-box -->
 </body>
@@ -68,5 +69,5 @@
 {% block scripts %}
     {{ super() }}
     <!-- Theme JavaScript -->
-    <script defer src="{{url_for('static', filename='js/login.js')}}"></script>
+    <script defer src="{{url_for('static', filename='js/register.js')}}"></script>
 {% endblock %}

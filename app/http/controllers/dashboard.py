@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, flash, redirect, url_for,\
     jsonify, send_from_directory, Blueprint, current_app as app
 from flask_mail import Mail, Message
-from flask_login import LoginManager, logout_user
+from flask_login import LoginManager, logout_user, login_required
 from app.models.users import User, VerifyEmailRequest
 from database.db_adapter import db
 from app.http.middleware.decorators import validate_request, validate_access
@@ -12,19 +12,16 @@ blueprint = Blueprint('dashboard', __name__)
 
 
 @blueprint.route("/", methods=["GET"])
-@validate_access
+@login_required
 def dashboard():
-    return render_template("register/register.html")
-
+    return render_template("dashboard/dashboard.html")
 
 
 @blueprint.route("/profile", methods=["GET", "POST"])
-@validate_access
+@login_required
 def profile():
 
-
-    @validate_request()
-    def post(data):
+    def post():
         pass
 
     if request.method == 'POST':

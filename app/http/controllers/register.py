@@ -1,97 +1,103 @@
 from flask import Flask, render_template, request, flash, redirect, url_for,\
     jsonify, send_from_directory, Blueprint, current_app as app
 from flask_mail import Mail, Message
-from flask_login import LoginManager, logout_user
+from flask_login import LoginManager, logout_user, login_user, current_user, login_required
 from app.models.users import User, VerifyEmailRequest
 from database.db_adapter import db
 from app.http.middleware.decorators import validate_request
 from werkzeug.security import generate_password_hash
 from wtforms import Form, BooleanField, StringField, PasswordField, validators
-
+import hashlib
+from app.http.middleware.generators import generate_hash
 
 blueprint = Blueprint('register', __name__)
 
 
-class RegistrationForm(Form):
-    name = StringField('Name', [validators.Length(min=4, max=40)])
-    username = StringField('Username', [validators.Length(min=4, max=25)])
-    email = StringField('Email Address', [validators.Length(min=6, max=35)])
-    password = PasswordField('New Password', [validators.DataRequired()])
+# class RegistrationForm(Form):
+#     name = StringField('Name', [validators.Length(min=4, max=40)])
+#     username = StringField('Username', [validators.Length(min=4, max=25)])
+#     email = StringField('Email Address', [validators.Length(min=6, max=35)])
+#     password = PasswordField('Password', [validators.Length(min=6, max=100)])
 
 
 @blueprint.route('/', methods=["GET", "POST"])
-def users():
+def register():
 
 
-    def post(data):
+    def post():
         try:
-            form = RegistrationForm(request.form)
-            if (form.validate()):
-                data['password'] = generate_password_hash(data['password'])
-                data["verified"] = False
-                email = data.get("email")
-                # Check if an account with the given credentials already exists
-                if (db.query(User).filter(User.email == email).first() is not None):
-                    flash('Sorry, there is already an account associated with that email')
-                elif (db.query(User).filter(User.email == email).first() is not None):
-                    flash('Sorry, that username has already been taken')
-                else:
-                    user = new User(name=data.get("name"),
-                                    display_name=data.get("username"),
-                                    email=email,
-                                    password=data.get("pass"))
-                    # save the new user
-                    db.commit()
+            password = generate_password_hash(request.form.get('password'))
+            email = request.form.get("email")
+            name = request.form.get("name")
+            username = request.form.get("username")
+            # Check if an account with the given credentials already exists
+            if (db.query(User).filter(User.email == email).first()):
+                flash('Sorry, there is already an account associated with that email', "danger")
+            elif (db.query(User).filter(User.email == email).first()):
+                flash('Sorry, that username has already been taken', "danger")
+            else:
+                user = User(name=name,
+                            display_name=username,
+                            email=email,
+                            password=password)
+                # save the new user
+                db.add(user)
+                db.commit()
 
-                    # Create a new request to verify email
-                    email_token = generate_hash()  # email THIS to the user
-                    hashed_id = hashlib.sha256(email_token).hexdigest()
-                    verify_email = new VerifyEmailRequest(email=email,
-                                                          token=hashed_id)
-                    send_verify_email(email)
-                    db.commit()
-                    return render_template("register/verify.html")
+                # check if there is a user logged in, if so log them out
+                if (current_user):
+                    logout_user()
+                # login the current user so that we have a handle on the object
+                login_user(user)
+                from app.http.controllers.mail_senders import send_verify_email
+                send_verify_email()
+                return redirect(url_for("register.verify_user"))
         except Exception as e:
             print(e)
             db.rollback()
-            return json.dumps({"success": "false"}, 404, {'ContentType': 'application/json'})
+            flash("There was an error processing your request", "danger")
+        return render_template("register/register.html")
 
     if request.method == 'POST':
-        post()
+        # redirect to the url post returns
+        return post()
+    # else the request is GET
+    else:
+        return render_template("register/register.html")
 
-    return render_template("register/register.html")
+
+@blueprint.route('/verify', methods=["GET", "POST"])
+@login_required
+def verify_user():
+
+    def post():
+        from app.http.controllers.mail_senders import send_verify_email
+        send_verify_email()
+        return render_template("register/email_resent.html")
+
+    if request.method == 'POST':
+        return post()
+    else:
+        print("rendering verify")
+        return render_template("register/verify.html")
 
 
-@blueprint.route('/verify', methods=["post"])
-@validate_request(verify_email_schema)
-def verify_user(data, username): # not sure about order of parameters
+@blueprint.route('/activate', methods=["GET"])
+def activate_user():
     try:
+        token = request.args.get("token")
         # check if the token matches the database
-        verify_obj = db.query.find(VerifyEmailRequest.token == hashlib.sha256(token).hexdigest()).first()
-        if (verify_obj is not None):
+        verify_obj = db.query(User).filter(VerifyEmailRequest.token == hashlib.sha256(token).hexdigest()).first()
+        if (verify_obj):
             # get the related user
-            user = db.query.find(User.id == verify_obj.user_id).first()
+            user = db.query(User).filter(User.id == verify_obj.user_id).first()
             user.verfied = "true"
             return render_template("register/successfully_verified.html")
         # else the user is not authorized
         else:
             return render_template("unauth.html")
-    except Exception as e:
+    except Exception:
         return render_template("unauth.html")
-
-
-# Verify user account
-def send_verify_email(username, email_addr, token):
-    mail = Mail(app)
-    email = Message(
-            subject="Verify your email with Israel FL",
-            sender="no-reply@israelfl.com",
-            recipients=[email_addr])
-    email.html = render_template("emails/verify_email.html",
-                                 usename=username,
-                                 token=token)
-
-    mail.send(email)
 
 
 @blueprint.route("/terms", methods=["GET"])
@@ -102,3 +108,13 @@ def show_terms():
 @blueprint.route("/policy", methods=["GET"])
 def show_policy():
     return render_template("policies/policy.html")
+
+
+# Enable message flashing for errors in form validation
+def flash_errors(form):
+    for field, errors in form.errors.items():
+        for error in errors:
+            flash(u"Error in the %s field - %s" % (
+                getattr(form, field).label.text,
+                error
+            ), "danger")
