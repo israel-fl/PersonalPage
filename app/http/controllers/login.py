@@ -1,7 +1,7 @@
 from flask import render_template, request, flash, redirect, url_for,\
     jsonify, send_from_directory, Blueprint, current_app as app
 from flask_mail import Mail, Message
-from flask_login import LoginManager, logout_user, login_user
+from flask_login import LoginManager, logout_user, login_user, current_user
 from app.models.users import User, PasswordResetRequest
 from database.db_adapter import db
 from wtforms import Form, BooleanField, StringField, PasswordField, validators
@@ -33,7 +33,12 @@ def login():
                 # password matches
                 if (password_match):
                     login_user(user)
-                    return redirect(url_for("dashboard.dashboard"))
+                    if (current_user.is_active()):
+                        return redirect(url_for("dashboard.dashboard"))
+                    else:
+                        # if the user has not verified their account redirect
+                        # them to the verification portal
+                        return redirect(url_for("register.verify_user"))
                 else:
                     flash("Sorry, email or password incorrect", "danger")
             else:

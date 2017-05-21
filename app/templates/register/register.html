@@ -33,7 +33,10 @@
         {% endfor %}
       {% endif %}
     {% endwith %}
-    <ul id="messages" class="error-category"></ul>
+    <div class="alert alert-danger alert-dismissible" role="alert" id="show-errors" style="display:none">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong id="message"></strong>
+    </div>
     <form class="mui-form" method="post" action="/register/" id="register">
         <div class="mui-textfield">
           <input type="text" placeholder="Name*" name="name" id="name" title="Please enter First and Last name">

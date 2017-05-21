@@ -15,4 +15,4 @@ class Entry(Base):
     image = Column("image", String, nullable=False)
     content = Column("content", LONGTEXT, nullable=False)
     slug = Column("slug", String, nullable=False)
-    created = Column("created", String, nullable=False, default=datetime.datetime.now())
+    created = Column("created", DateTime, nullable=False, default=datetime.datetime.now())

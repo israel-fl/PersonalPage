@@ -26,7 +26,7 @@ def send_verify_email():
     url = "https://www.israelfl.com/register/activate?token={}".format(email_token)
     email = Message(
             subject="Verify your email with Israel FL",
-            sender="admin@israelfl.com",
+            sender="no-reply@israelfl.com",
             recipients=recipients)
     email.html = render_template("emails/verify_email.html",
                                  username=user.display_name,

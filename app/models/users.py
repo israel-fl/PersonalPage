@@ -16,11 +16,13 @@ class User(Base):
     password = Column("password", String, nullable=False)
     # New users are level 1 by default
     access_level = Column("level", Integer, nullable=False, default=1)
-    verified = Column("verified", String, nullable=False, default="false")
-    created = Column("created", String, nullable=False, default=str(datetime.datetime.now()))
-    modified = Column("modified", String, nullable=True)
+    verified = Column("verified", Boolean, nullable=False, default=False)
+    created = Column("created", DateTime, nullable=False,
+                     default=datetime.datetime.now())
+    modified = Column("modified", DateTime, nullable=True)
 
-    def __init__(self, name, display_name, email, password, access_level="1", verified="false"):
+    def __init__(self, name, display_name, email, password,
+                 access_level="1", verified=False):
         self.name = name
         self.display_name = display_name
         self.email = email
@@ -28,13 +30,12 @@ class User(Base):
         self.access_level = access_level
         self.verified = verified
         self.created = str(datetime.datetime.now())
-        self.modified = "never"
 
     def is_authenticated(self):
         return True
 
     def is_active(self):
-        if (self.verified == "true"):
+        if (self.verified):
             return True
         else:
             return False
@@ -52,7 +53,8 @@ class PasswordResetRequest(Base):
     __tablename__ = "password_reset_requests"
     user_id = Column("user_id", String, nullable=False, primary_key=True)
     token = Column("token", String, nullable=False)
-    created = Column("created", String, nullable=False, default=str(datetime.datetime.now()))
+    created = Column("created", DateTime, nullable=False,
+                     default=datetime.datetime.now())
 
 
 class VerifyEmailRequest(Base):
@@ -60,4 +62,6 @@ class VerifyEmailRequest(Base):
     __tablename__ = "verify_email_requests"
     user_id = Column("user_id", Integer, nullable=False)
     token = Column("token", String, nullable=False, primary_key=True)
-    created = Column("created", String, nullable=False, default=str(datetime.datetime.now()))
+    created = Column("created", DateTime, nullable=False,
+                     default=datetime.datetime.now())
+    completed = Column("completed", Boolean, nullable=False, default=False)

@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, flash, redirect, url_for,\
-    jsonify, send_from_directory, Blueprint, current_app as app
+    jsonify, send_from_directory, Blueprint, abort, current_app as app
 from flask_mail import Mail, Message
 from flask_login import LoginManager, logout_user, login_user, current_user, login_required
 from app.models.users import User, VerifyEmailRequest
@@ -78,7 +78,6 @@ def verify_user():
     if request.method == 'POST':
         return post()
     else:
-        print("rendering verify")
         return render_template("register/verify.html")
 
 
@@ -87,17 +86,22 @@ def activate_user():
     try:
         token = request.args.get("token")
         # check if the token matches the database
-        verify_obj = db.query(User).filter(VerifyEmailRequest.token == hashlib.sha256(token).hexdigest()).first()
-        if (verify_obj):
+        verify_obj = db.query(VerifyEmailRequest).filter(VerifyEmailRequest.token == hashlib.sha256(token).hexdigest()).first()
+        if (verify_obj is not None):
             # get the related user
             user = db.query(User).filter(User.id == verify_obj.user_id).first()
-            user.verfied = "true"
+            if (user.verified):
+                abort(404)
+            user.verified = True
+            verify_obj.completed = True
+            db.commit()
             return render_template("register/successfully_verified.html")
         # else the user is not authorized
         else:
-            return render_template("unauth.html")
+            db.rollback()
+            abort(404)
     except Exception:
-        return render_template("unauth.html")
+        abort(404)
 
 
 @blueprint.route("/terms", methods=["GET"])
