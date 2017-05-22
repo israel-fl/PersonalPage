@@ -28,12 +28,16 @@
                   {% endif %}
                 {% endwith %}
             </div>
-            <form class="mui-form" method="post" action="/login" id="login">
+            <div class="alert alert-danger alert-dismissible" role="alert" id="show-errors" style="display:none">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong id="message"></strong>
+            </div>
+            <form class="mui-form" method="post" action="/login/" id="login">
                 <div class="mui-textfield">
                     <input type="email" placeholder="Email" name="email" id="email">
                 </div>
                 <div class="mui-textfield">
-                    <input type="password" placeholder="Password" name="pass" id="pass">
+                    <input type="password" placeholder="Password" name="password" id="password">
                 </div>
                 <div class="row">
                     <button type="submit" class="btn-block btn-full-width mui-btn mui-btn--raised mui-btn--primary">Submit</button>

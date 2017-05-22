@@ -10,13 +10,14 @@
     {% block styles %}
         {{ super() }}
         <!-- Theme CSS -->
-        <link href="{{url_for('.static', filename='bower_components/adminlte/dist/css/AdminLTE.min.css')}}" rel="stylesheet">
+        <link href="{{url_for('static', filename='bower_components/adminlte/dist/css/AdminLTE.min.css')}}" rel="stylesheet">
+        <link href="{{url_for('static', filename='css/register.css')}}" rel="stylesheet">
     {% endblock %}
 
 <body class="hold-transition register-page">
 <div class="register-box">
   <div class="register-logo">
-    <a href="/"><b>Data</b>Rhino</a>
+    <a href="/"><b>Israel</b>Fl</a>
   </div>
 
   <div class="register-box-body">

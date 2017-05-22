@@ -1,20 +1,14 @@
 from flask import render_template, request, flash, redirect, url_for,\
-    jsonify, send_from_directory, Blueprint, current_app as app
+ Blueprint, current_app as app
 from flask_mail import Mail, Message
-from flask_login import LoginManager, logout_user, login_user, current_user
+from flask_login import logout_user, login_user, current_user
 from app.models.users import User, PasswordResetRequest
 from database.db_adapter import db
-from wtforms import Form, BooleanField, StringField, PasswordField, validators
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import check_password_hash
 from app.http.middleware.generators import generate_hash
 import hashlib
 
 blueprint = Blueprint('login', __name__)
-
-
-class LoginForm(Form):
-    email = StringField('Email', [validators.Length(min=4, max=35)])
-    password = PasswordField('Password', [validators.DataRequired()])
 
 
 @blueprint.route("/", methods=["GET", "POST"])
@@ -22,27 +16,28 @@ def login():
 
 
     def post():
-        form = LoginForm(request.form)
-        if (form.validate()):
-            email = request.form.get("email")
-            password = request.form.get("password")
-            user = db.query(User).filter(User.email == email).first()
-            # user found
-            if (user):
-                password_match = check_password_hash(user.password, password)
-                # password matches
-                if (password_match):
-                    login_user(user)
-                    if (current_user.is_active()):
-                        return redirect(url_for("dashboard.dashboard"))
-                    else:
-                        # if the user has not verified their account redirect
-                        # them to the verification portal
-                        return redirect(url_for("register.verify_user"))
+        email = request.form.get("email")
+        password = request.form.get("password")
+        user = db.query(User).filter(User.email == email).first()
+        print(user)
+        # user found
+        if (user):
+            password_match = check_password_hash(user.password, password)
+            print(password_match)
+            # password matches
+            if (password_match):
+                login_user(user)
+                if (current_user.is_active()):
+                    print("Entered active")
+                    return redirect(url_for("dashboard.dashboard"))
                 else:
-                    flash("Sorry, email or password incorrect", "danger")
+                    # if the user has not verified their account redirect
+                    # them to the verification portal
+                    return redirect(url_for("register.verify_user"))
             else:
-                flash("Sorry we could not find an account associated with that email", "info")
+                flash("Sorry, email or password incorrect", "danger")
+        else:
+            flash("Sorry we could not find an account associated with that email", "info")
         # if this was reached, there were errors
         return render_template("login/login.html")
 
@@ -50,6 +45,9 @@ def login():
     if (request.method == "POST"):
         return post()
     else:
+        # check if there is a user logged in, if so send him to the dashboard
+        if (current_user.is_authenticated):
+            return redirect(url_for("dashboard.dashboard"))
         return render_template("login/login.html")
 
 

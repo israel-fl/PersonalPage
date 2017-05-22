@@ -18,17 +18,21 @@ depends_on = None
 
 def upgrade():
     op.create_table(
-        'entry',
+        'articles',
         sa.Column('id', sa.Integer(), nullable=False),
         sa.Column('title', sa.String(255), nullable=False),
         sa.Column('author', sa.String(255), nullable=False),
         sa.Column('subtitle', sa.String(255), nullable=False),
-        sa.Column('image', sa.String(255), nullable=False),
         sa.Column('content', sa.Text(), nullable=False),
         sa.Column('slug', sa.String(255), nullable=False),
         sa.Column('created', sa.String(255), nullable=False),
+        sa.Column('image_url', sa.String(255), nullable=False),
+        sa.Column('image_alt', sa.String(255), nullable=False),
+        sa.Column('published', sa.Boolean(), nullable=False, default=False),
         sa.PrimaryKeyConstraint('id'),
     )
+    op.create_unique_constraint("uq_title", "articles", ["title", "slug"])
+
 
 
 def downgrade():

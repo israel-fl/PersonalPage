@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, flash, redirect, url_for,\
     jsonify, send_from_directory, Blueprint, abort, current_app as app
 from flask_mail import Mail, Message
-from flask_login import LoginManager, logout_user, login_user, current_user, login_required
+from flask_login import logout_user, login_user, current_user, login_required
 from app.models.users import User, VerifyEmailRequest
 from database.db_adapter import db
 from app.http.middleware.decorators import validate_request
@@ -11,13 +11,6 @@ import hashlib
 from app.http.middleware.generators import generate_hash
 
 blueprint = Blueprint('register', __name__)
-
-
-# class RegistrationForm(Form):
-#     name = StringField('Name', [validators.Length(min=4, max=40)])
-#     username = StringField('Username', [validators.Length(min=4, max=25)])
-#     email = StringField('Email Address', [validators.Length(min=6, max=35)])
-#     password = PasswordField('Password', [validators.Length(min=6, max=100)])
 
 
 @blueprint.route('/', methods=["GET", "POST"])
@@ -33,7 +26,7 @@ def register():
             # Check if an account with the given credentials already exists
             if (db.query(User).filter(User.email == email).first()):
                 flash('Sorry, there is already an account associated with that email', "danger")
-            elif (db.query(User).filter(User.email == email).first()):
+            elif (db.query(User).filter(User.display_name == username).first()):
                 flash('Sorry, that username has already been taken', "danger")
             else:
                 user = User(name=name,
@@ -114,11 +107,11 @@ def show_policy():
     return render_template("policies/policy.html")
 
 
-# Enable message flashing for errors in form validation
-def flash_errors(form):
-    for field, errors in form.errors.items():
-        for error in errors:
-            flash(u"Error in the %s field - %s" % (
-                getattr(form, field).label.text,
-                error
-            ), "danger")
+# # Enable message flashing for errors in form validation
+# def flash_errors(form):
+#     for field, errors in form.errors.items():
+#         for error in errors:
+#             flash(u"Error in the %s field - %s" % (
+#                 getattr(form, field).label.text,
+#                 error
+#             ), "danger")

@@ -1,118 +1,69 @@
-{% extends "base.html" %}
-{% block head %}
-    {{ super() }}
+{% extends "index.html" %}
+
+{% block head %} {{ super() }}
 {% endblock %}
+
 {% block title %} 404 {% endblock %}
 
-{% block body %}
+{% block content %}
+    {% block styles %} {{ super() }}
+    <style type="text/css">
+    * {
+        transition: all 0.6s;
+    }
 
-<body>
-    {% block styles %}
-        {{ super() }}
-        <link href="{{url_for('static', filename='css/freelancer.min.css')}}" rel="stylesheet">
-        <style type="text/css">
-      *{
-    transition: all 0.6s;
-}
+    html {
+        height: 100%;
+    }
 
-html {
-    height: 100%;
-}
+    body {
+        font-family: 'Lato', sans-serif;
+        color: #888;
+        margin: 0;
+        background:#f6f5f4;
+    }
 
-body{
-    font-family: 'Lato', sans-serif;
-    color: #888;
-    margin: 0;
-}
+    #main {
+        display: table;
+        width: 100%;
+        height: 100vh;
+        text-align: center;
+    }
 
-#main{
-    display: table;
-    width: 100%;
-    height: 100vh;
-    text-align: center;
-}
+    .fof {
+        display: table-cell;
+        vertical-align: middle;
+    }
 
-.fof{
-      display: table-cell;
-      vertical-align: middle;
-}
+    .fof h1 {
+        font-size: 50px;
+        display: inline-block;
+        padding-right: 12px;
+        animation: type .5s alternate infinite;
+    }
 
-.fof h1{
-      font-size: 50px;
-      display: inline-block;
-      padding-right: 12px;
-      animation: type .5s alternate infinite;
-}
-
-@keyframes type{
-      from{box-shadow: inset -3px 0px 0px #888;}
-      to{box-shadow: inset -3px 0px 0px transparent;}
-}
-        </style>
+    @keyframes type {
+        from {
+            box-shadow: inset -3px 0px 0px #888;
+        }
+        to {
+            box-shadow: inset -3px 0px 0px transparent;
+        }
+    }
+    </style>
     {% endblock %}
-    <!-- Navigation -->
-    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom affix">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header page-scroll">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
-                </button>
-                <a class="navbar-brand" href="#page-top">Israel Flores</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="hidden">
-                        <a href="#page-top"></a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="#portfolio">Portfolio</a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="#skills">Skills</a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="#sockets">Sockets</a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="#about">About Me</a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="#resume">Resume</a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="#contact">Contact</a>
-                    </li>
-                    <li>
-                        <a href="/login">Login</a>
-                    </li>
-                    <li>
-                        <a href="/register">Register</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container-fluid -->
-    </nav>
     <!-- ACTUAL ERROR PAGE -->
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Animation SVG</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.3.0/snap.svg-min.js"></script>
-</head>
-<body style="background:#f6f5f4;">
-<div id="main">
+
+    <div id="main">
         <div class="fof">
-                <h1>404 Page Not Found</h1>
+            <h1>404 Page Not Found</h1>
         </div>
-</div>
-</body>
-</html>
-</body>
+    </div>
+
+
 {% endblock %}
 
 
-</html>
+{% block scripts %}
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.3.0/snap.svg-min.js"></script>
+{% endblock %}

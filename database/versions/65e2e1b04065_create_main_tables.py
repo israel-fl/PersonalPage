@@ -35,6 +35,7 @@ def upgrade():
                     sa.Column("modified", sa.DateTime(), nullable=True),
                     sa.PrimaryKeyConstraint("id"),
                     )
+    op.create_unique_constraint("uq_user_name", "users", ["display_name", "email"])
     op.create_table(
         "password_reset_requests",
         sa.Column("user_id", sa.Integer(), nullable=False),

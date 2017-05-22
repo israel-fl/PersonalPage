@@ -6,14 +6,23 @@ from flask_mail import Message
 blueprint = Blueprint('home', __name__)
 
 
-@blueprint.route("/", methods=["GET", "POST"])
+@blueprint.route("/", methods=["GET"])
 def landing():
-    if (request.method == "POST"):
+    return render_template("home/home.html")
+
+
+@blueprint.route("/contact", methods=["GET", "POST"])
+def contact():
+
+    def post():
         from app.http.controllers.mail_senders import send_message_email
         name = request.form.get("name")
         email_addr = request.form.get("email")
         phone = request.form.get("phone")
         message = request.form.get("message")
         send_message_email(name, email_addr, phone, message)
+        flash("Message sent successfully, I typically reply to messages within 24 hours.", "success")
 
-    return render_template("main/index.html")
+    if (request.method == "POST"):
+        post()
+    return render_template("home/contact.html")
