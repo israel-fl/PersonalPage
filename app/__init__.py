@@ -3,24 +3,23 @@ from app.http.controllers import home, login, register, users, dashboard,\
     logout, blog
 from flask_socketio import SocketIO
 import json
-from flask_login import LoginManager, logout_user
-from app.models.users import User
-from database.db_adapter import get_uri
+from database.db_adapter import db, storage, init_db
 from flask_mail import Mail, Message
 from flask_blogging import BloggingEngine, SQLAStorage
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
+from app.models.user import User
+
 
 socketio = SocketIO()
 mail = Mail()
 blogging_engine = BloggingEngine()
-db = SQLAlchemy()
 
 
 def create_app():
     app = Flask(__name__)
     app.secret_key = "26OxAJGy4r#FhIkiluQQrel$@EJcBi9b"
     app.config.SERVICE_NAME = "IsraelFL"
-    app.config['SQLALCHEMY_DATABASE_URI'] = get_uri()
 
     # For Blogging #
     app.config["BLOGGING_URL_PREFIX"] = "/blog"
@@ -31,6 +30,9 @@ def create_app():
     app.config["FILEUPLOAD_PREFIX"] = "/fileupload"
     app.config["FILEUPLOAD_ALLOWED_EXTENSIONS"] = ["png", "jpg", "jpeg", "gif"]
     # For Blogging #
+
+    # Init database
+    init_db()
 
     with open("app/config.json") as config_file:
         keys = json.load(config_file)
@@ -63,10 +65,10 @@ def create_app():
     socketio.init_app(app)
 
     # BLOGGING
-    db.init_app(app)
-    storage = SQLAStorage(db=db)
     blogging_engine.init_app(app, storage)
+
     return app
+
 
 
 def setup_authentication(app):
@@ -77,3 +79,4 @@ def setup_authentication(app):
     login_manager = LoginManager(app)
     login_manager.user_loader(load_user)
     login_manager.login_view = 'login.login'
+

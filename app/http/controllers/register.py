@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, flash, redirect, url_for,\
     jsonify, send_from_directory, Blueprint, abort, current_app as app
 from flask_mail import Mail, Message
 from flask_login import logout_user, login_user, current_user, login_required
-from app.models.users import User, VerifyEmailRequest
+from app.models.user import User, VerifyEmailRequest
 from database.db_adapter import db
 from app.http.middleware.decorators import validate_request
 from werkzeug.security import generate_password_hash
@@ -24,9 +24,9 @@ def register():
             name = request.form.get("name")
             username = request.form.get("username")
             # Check if an account with the given credentials already exists
-            if (db.query(User).filter(User.email == email).first()):
+            if (User.query.filter(User.email == email).first()):
                 flash('Sorry, there is already an account associated with that email', "danger")
-            elif (db.query(User).filter(User.display_name == username).first()):
+            elif (User.query.filter(User.display_name == username).first()):
                 flash('Sorry, that username has already been taken', "danger")
             else:
                 user = User(name=name,
@@ -79,10 +79,10 @@ def activate_user():
     try:
         token = request.args.get("token")
         # check if the token matches the database
-        verify_obj = db.query(VerifyEmailRequest).filter(VerifyEmailRequest.token == hashlib.sha256(token).hexdigest()).first()
+        verify_obj = VerifyEmailRequest.query.filter(VerifyEmailRequest.token == hashlib.sha256(token).hexdigest()).first()
         if (verify_obj is not None):
             # get the related user
-            user = db.query(User).filter(User.id == verify_obj.user_id).first()
+            user = User.query.filter(User.id == verify_obj.user_id).first()
             if (user.verified):
                 abort(404)
             user.verified = True

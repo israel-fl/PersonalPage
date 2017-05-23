@@ -1,25 +1,25 @@
 from sqlalchemy import Column, Integer, String, ForeignKey,\
     DateTime, Boolean, select, func
-from app import db
+from database.db_adapter import Base
 from sqlalchemy.orm import relationship
 import datetime
 from werkzeug.security import generate_password_hash
 
 
-class User(db.Model):
+class User(Base):
 
     __tablename__ = "users"
-    id = Column("id", db.Integer, primary_key=True, autoincrement=True)
-    name = Column("name", db.String, nullable=False)
-    display_name = Column('display_name', db.String, nullable=False)
-    email = Column("email", db.String, nullable=False)
-    password = Column("password", db.String, nullable=False)
+    id = Column("id", Integer, primary_key=True, autoincrement=True)
+    name = Column("name", String, nullable=False)
+    display_name = Column('display_name', String, nullable=False)
+    email = Column("email", String, nullable=False)
+    password = Column("password", String, nullable=False)
     # New users are level 1 by default
-    access_level = Column("level", db.Integer, nullable=False, default=1)
-    verified = Column("verified", db.Boolean, nullable=False, default=False)
-    created = Column("created", db.DateTime, nullable=False,
+    access_level = Column("level", Integer, nullable=False, default=1)
+    verified = Column("verified", Boolean, nullable=False, default=False)
+    created = Column("created", DateTime, nullable=False,
                      default=datetime.datetime.now())
-    modified = Column("modified", db.DateTime, nullable=True)
+    modified = Column("modified", DateTime, nullable=True)
 
     def __init__(self, name, display_name, email, password,
                  access_level="1", verified=False):
@@ -48,20 +48,20 @@ class User(db.Model):
         return str(self.id).decode("utf-8")
 
 
-class PasswordResetRequest(db.Model):
+class PasswordResetRequest(Base):
 
     __tablename__ = "password_reset_requests"
-    user_id = Column("user_id", db.String, nullable=False, primary_key=True)
-    token = Column("token", db.String, nullable=False)
-    created = Column("created", db.DateTime, nullable=False,
+    user_id = Column("user_id", String, nullable=False, primary_key=True)
+    token = Column("token", String, nullable=False)
+    created = Column("created", DateTime, nullable=False,
                      default=datetime.datetime.now())
 
 
-class VerifyEmailRequest(db.Model):
+class VerifyEmailRequest(Base):
 
     __tablename__ = "verify_email_requests"
-    user_id = Column("user_id", db.Integer, nullable=False)
-    token = Column("token", db.String, nullable=False, primary_key=True)
-    created = Column("created", db.DateTime, nullable=False,
+    user_id = Column("user_id", Integer, nullable=False)
+    token = Column("token", String, nullable=False, primary_key=True)
+    created = Column("created", DateTime, nullable=False,
                      default=datetime.datetime.now())
-    completed = Column("completed", db.Boolean, nullable=False, default=False)
+    completed = Column("completed", Boolean, nullable=False, default=False)

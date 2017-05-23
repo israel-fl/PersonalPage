@@ -2,7 +2,7 @@ from flask import render_template, request, flash, redirect, url_for,\
  Blueprint, current_app as app
 from flask_mail import Mail, Message
 from flask_login import logout_user, login_user, current_user
-from app.models.users import User, PasswordResetRequest
+from app.models.user import User, PasswordResetRequest
 from database.db_adapter import db
 from werkzeug.security import check_password_hash
 from app.http.middleware.generators import generate_hash
@@ -18,7 +18,7 @@ def login():
     def post():
         email = request.form.get("email")
         password = request.form.get("password")
-        user = db.query(User).filter(User.email == email).first()
+        user = User.query.filter(User.email == email).first()
         print(user)
         # user found
         if (user):
@@ -55,7 +55,7 @@ def login():
 def forgot_password():
     def post():
         email = request.form.get("email")
-        user = db.query(User).filter(User.email == email).first()
+        user = User.query.filter(User.email == email).first()
         if (user):
             try:
                 # Create a new request to verify email
