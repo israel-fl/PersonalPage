@@ -1,9 +1,11 @@
-{% extends "dashboard/dashboard.html" %}
+{% extends "dashboard/index.html" %}
 {% block title %} Create Entry {% endblock %}
 {% block styles %}
 {{ super() }}
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/css/bootstrap-markdown.min.css" rel="stylesheet"/>
 {% endblock %}
+
+{% block section_title %} <h4>Editor</h4> {% endblock %}
 
 {% block content %}
 <div class="row">
@@ -25,59 +27,51 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header" data-background-color="purple">
-                        <h4 class="title">Create Entry</h4>
+                        <h4 class="title">Create Article</h4>
                         <p class="category">Write something amazing!</p>
                     </div>
                     <div class="card-content">
-                        <form class="form-horizontal" action="{{url_for('blogging.editor', post_id=post_id or None)}}" method="POST">
-                            {{ form.hidden_tag() }}
+                        <form class="form-horizontal" action="/create-article" method="POST">
                                 <!-- Text input-->
                                 <div class="form-group">
                                     <div class="input-group col-md-12">
-                                        {{form.title(placeholder="Title", id="title", class="form-control", required="")}}
+                                        <input type="title" name="text" id="title" class="form-control" placeholder="Title">
                                     </div>
                                 </div>
                                 <!-- Text input-->
                                 <div class="form-group">
                                     <div class="input-group col-md-12">
-                                        <input type="text" class="form-control" id="subtitle" placeholder="Subtitle">
+                                        <input type="text" class="form-control" id="subtitle" name="subtitle" placeholder="Subtitle">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <div class="input-group col-md-12">
-                                        {{form.text(placeholder="Blog text", required="", data_provide="markdown", rows="16")}}
+                                        <textarea name="content" placeholder="Blog text" data-provide="markdown" rows="16" id="editor"></textarea>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-5">
-                                            Learn more about <a href="http://en.wikipedia.org/wiki/Markdown" target="_blank">MarkDown</a><br>
-                                            <a target="_blank" href="{{ url_for('flask_fileupload.upload') }}">Upload new File</a>
-                                    </div>
-                                </div>
-                                <!-- Text input-->
-                                <div class="form-group">
-                                    <div class="input-group col-md-8 col-md-offset-2">
-                                        {{form.tags(id="tags", placeholder="Comma separated tags", class="form-control input-md", required="")}}
-                                    </div>
-                                </div>
-                                <!-- draft input-->
-                                <div class="form-group">
-                                    <div class="col-md-offset-2">
-                                        <label>
-                                            {{form.draft(id="draft")}} draft?
-                                        </label>
+                                    <div class="col-md-12">
+                                        <i>Note: It might be easier to write the article in the text editor of your choice and then simply copy and paste it here</i></br>
+                                        Learn more about <a href="http://en.wikipedia.org/wiki/Markdown" target="_blank">MarkDown</a><br>
+                                        Have your own images? <a target="_blank" href="{{ url_for('flask_fileupload.upload') }}">Upload them here</a> then insert the url into your post
                                     </div>
                                 </div>
                                 <!-- Featured Image -->
                                 <div class="form-group">
                                     <div class="input-group col-md-12">
-                                        <button type="submit" class="btn" data-toggle="modal" data-target="#featured-image">Set Featured Image</button>
+                                        <input name="featured-image" id="featured-image" type="text" placeholder="Featured image url" class="form-control input-md" title="This will be the header image for your post">
+                                    </div>
+                                </div>
+                                <!-- Text input-->
+                                <div class="form-group">
+                                    <div class="input-group col-md-12">
+                                        <input type="text" name="tags" id="tags" placeholder="Comma separated tags" class="form-control input-md">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-md-offset-2">
-                                        {{ form.submit(id="submit", class="btn btn-primary") }}
+                                    <div class="col-md-12">
+                                        <button class="mui-btn mui-btn--primary" id="submit" name="submit">Submit</button>
                                     </div>
                                 </div>
                         </form>
@@ -89,37 +83,45 @@
 </div>
 {% endblock %}
 
-{% block modals %}
-<!-- Modal -->
-<div id="featured-image" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-      <div class="modal-body">
-        <form action="/file-upload"
-          class="dropzone"
-          id="my-awesome-dropzone"></form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-
-  </div>
-</div>
-{% endblock %}
 
 {% block scripts %}
 {{ super() }}
-    <script defer src="{{url_for('static', filename='js/dropzone.js')}}"></script>
+    <!-- Set the current tab as active -->
+    <script type="text/javascript">document.getElementById("create").classList.add("active");</script>
     <script type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/js/bootstrap-markdown.js">
     </script>
     <script type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/js/bootstrap-markdown.min.js">
+    </script>
+    <script type="text/javascript">
+    window.onload = function() {
+        $('#editor').markdownEditor({
+            // Activate the preview:
+            preview: true,
+            // This callback is called when the user click on the preview button:
+            onPreview: function (content, callback) {
+                $.ajax({
+                    url: "{{url_for('dashboard.parse_markdown')}}",
+                    type: 'POST',
+                    dataType: 'html',
+                    data: {content: content},
+                })
+            .done(function(result) {
+              // Return the html:
+              callback(result);
+            });
+
+          }
+        });
+        var data = new FormData();
+        jQuery.each(jQuery('#file')[0].files, function(i, file) {
+            data.append('file-'+i, file);
+        });
+        $('#editor').markdownEditor({
+            imageUpload: true, // Activate the option
+            uploadPath: "{{url_for('upload.upload_file')}}" // Path of the server side script that receive the files
+        });
+    }
     </script>
 {% endblock %}

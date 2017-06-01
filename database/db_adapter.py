@@ -4,6 +4,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 import json
 from flask_blogging import SQLAStorage
 
+
 with open("database/config.json") as config_file:
     keys = json.load(config_file)
     driver = keys.get("db_driver")

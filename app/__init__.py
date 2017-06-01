@@ -1,12 +1,11 @@
 from flask import Flask
 from app.http.controllers import home, login, register, users, dashboard,\
-    logout, blog
+    logout, blog, upload
 from flask_socketio import SocketIO
 import json
-from database.db_adapter import db, storage, init_db
+from database.db_adapter import db, init_db, storage
 from flask_mail import Mail, Message
 from flask_blogging import BloggingEngine, SQLAStorage
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from app.models.user import User
 
@@ -14,7 +13,6 @@ from app.models.user import User
 socketio = SocketIO()
 mail = Mail()
 blogging_engine = BloggingEngine()
-
 
 def create_app():
     app = Flask(__name__)
@@ -26,10 +24,12 @@ def create_app():
     app.config["BLOGGING_DISQUS_SITENAME"] = "test"
     app.config["BLOGGING_SITEURL"] = "http://localhost:8080"
     app.config["BLOGGING_SITENAME"] = "Israel Fl"
+
+    # For File uploading #
     app.config["FILEUPLOAD_IMG_FOLDER"] = "images/blog"
     app.config["FILEUPLOAD_PREFIX"] = "/fileupload"
     app.config["FILEUPLOAD_ALLOWED_EXTENSIONS"] = ["png", "jpg", "jpeg", "gif"]
-    # For Blogging #
+    app.config['UPLOAD_FOLDER'] = "images/users"
 
     # Init database
     init_db()
@@ -54,6 +54,8 @@ def create_app():
     app.register_blueprint(dashboard.blueprint, url_prefix='/dashboard')
     app.register_blueprint(logout.blueprint, url_prefix='/logout')
     app.register_blueprint(blog.blueprint, url_prefix='/blog')
+    app.register_blueprint(upload.blueprint, url_prefix='/upload')
+
 
     # LOGIN SETUP
     setup_authentication(app)

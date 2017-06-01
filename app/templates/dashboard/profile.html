@@ -1,79 +1,61 @@
-{% extends "dashboard.html" %}
-{% block title %} Login {% endblock %}
+{% extends "dashboard/index.html" %}
+{% block title %} Create Entry {% endblock %}
+{% block styles %}
+{{ super() }}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/css/bootstrap-markdown.min.css" rel="stylesheet"/>
+<link href="{{url_for('static', filename='css/profile.css')}}" rel="stylesheet">
+{% endblock %}
+
+{% block section_title %} <h4>Editor</h4> {% endblock %}
 
 {% block content %}
+<div class="row">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <strong>{{ message }}</strong>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+</div>
 <div class="content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header" data-background-color="purple">
-                        <h4 class="title">Edit Profile</h4>
-                        <p class="category">Complete your profile</p>
+                        <button data-toggle="modal" data-target="#upload"><img src="{{ profile_image }}" class="img-user"></button>
+                        <h4 class="title">{{ name }}</h4>
                     </div>
                     <div class="card-content">
-                        <form>
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <div class="form-group label-floating">
-                                        <label class="control-label">Username</label>
-                                        <input type="text" class="form-control" >
+                        <form class="form-horizontal" action="/create-article" method="POST">
+                                <!-- Text input-->
+                                <div class="form-group">
+                                    <div class="input-group col-md-12">
+                                        <input type="text" name="name" id="name" class="form-control" placeholder="Name" value="{{ name }}">
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="form-group label-floating">
-                                        <label class="control-label">Email address</label>
-                                        <input type="email" class="form-control" >
+                                <!-- Text input-->
+                                <div class="form-group">
+                                    <div class="input-group col-md-12">
+                                        <input type="password" class="form-control" id="password" name="password" placeholder="Password">
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group label-floating">
-                                        <label class="control-label">Name</label>
-                                        <input type="text" class="form-control" >
+                                <!-- Featured Image -->
+                                <div class="form-group">
+                                    <div class="input-group col-md-12">
+                                        <input name="retype" id="retype" type="password" placeholder="Re-type Password" class="form-control input-md" title="Password must be at least 6 characters and must contain at least 1 uppercase letter and 1 number">
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group label-floating">
-                                        <label class="control-label">Adress</label>
-                                        <input type="text" class="form-control" >
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <button class="mui-btn mui-btn--primary" id="submit" name="submit">Submit</button>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group label-floating">
-                                        <label class="control-label">City</label>
-                                        <input type="text" class="form-control" >
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group label-floating">
-                                        <label class="control-label">Country</label>
-                                        <input type="text" class="form-control" >
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label>About Me</label>
-                                        <div class="form-group label-floating">
-                                            <label class="control-label"></label>
-                                            <textarea class="form-control" rows="5"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary pull-right">Update Profile</button>
-                            <div class="clearfix"></div>
                         </form>
                     </div>
                 </div>
@@ -81,4 +63,39 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+
+{% block modals %}
+<div id="upload" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+        <form action="/file-upload" class="dropzone" id="drop">
+            <div class="dz-message needsclick">
+                <i class="material-icons">cloud_upload</i></br>
+                Upload a picture</br>
+                <i>must be smaller than 2MB</i>
+            </div>
+        </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+{{ super() }}
+    <!-- Set the current tab as active -->
+    <script type="text/javascript">document.getElementById("profile").classList.add("active");</script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js"></script>
+    <script defer type="text/javascript">
+        window.onload = function() {
+            Dropzone.options.drop = {
+              maxFilesize: 2, // MB
+              acceptedFiles: "image/jpeg,image/png,image/gif"
+            };
+        };
+    </script>
 {% endblock %}

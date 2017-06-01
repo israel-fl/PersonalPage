@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block title %} Dashboard {% endblock %}
+
+{% block body %}
+<body>
+    {% block styles %}
+        {{ super() }}
+        <!-- Theme CSS -->
+        <link href="{{url_for('static', filename='bower_components/material-dashboard/assets/css/material-dashboard.css')}}" rel="stylesheet">
+    {% endblock %}
+
+    <div class="wrapper">
+
+        <div class="sidebar" data-color="purple">
+            <!--
+                Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
+
+                Tip 2: you can also add an image using data-image tag
+            -->
+
+            <div class="logo">
+                <a href="/dashboard" class="simple-text">
+                    IsraelFl | Blogging
+                </a>
+            </div>
+
+            <div class="sidebar-wrapper">
+                <ul class="nav">
+                    <li class="active" id="articles">
+                        <a href="/dashboard/articles">
+                            <i class="material-icons">list</i>
+                            <p>My Articles</p>
+                        </a>
+                    </li>
+                    <li id="create">
+                        <a href="/dashboard/create-article">
+                            <i class="material-icons">content_paste</i>
+                            <p>Create Article</p>
+                        </a>
+                    </li>
+                    <li id="profile">
+                        <a href="/dashboard/profile">
+                            <i class="material-icons">account_circle</i>
+                            <p>Profile</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/logout">
+                            <i class="material-icons text-gray">power_settings_new</i>
+                            <p>Logout</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="main-panel">
+            <nav class="navbar navbar-transparent navbar-absolute">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        {% block section_title %} {% endblock %}
+                    </div>
+                </div>
+            </nav>
+
+            {% block content %}
+            {% endblock %}
+
+        </div>
+    </div>
+
+{% block modals %}
+{% endblock %}
+</body>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <!-- Theme JavaScript -->
+    <script defer src="{{url_for('static', filename='bower_components/material-dashboard/assets/js/material.min.js')}}"></script>
+    <script defer src="{{url_for('static', filename='bower_components/material-dashboard/assets/js/chartist.min.js')}}"></script>
+    <script defer src="{{url_for('static', filename='bower_components/material-dashboard/assets/js/bootstrap-notify.js')}}"></script>
+    <script defer src="{{url_for('static', filename='bower_components/material-dashboard/assets/js/material-dashboard.js')}}"></script>
+{% endblock %}

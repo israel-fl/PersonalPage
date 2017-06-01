@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, flash, redirect, url_for,\
     jsonify, send_from_directory, Blueprint, abort, current_app as app
 from flask_mail import Mail, Message
 from flask_login import LoginManager, logout_user, login_required, current_user
-from app.models.blog import Post, UserPost
+from app.models.blog import Post
 from app.models.user import User
 from database.db_adapter import db
 from app.http.middleware.decorators import validate_request, validate_access
@@ -22,11 +22,11 @@ blueprint = Blueprint('blog', __name__)
 # }
 
 @blueprint.route("/", methods=["GET"])
-def blog():
+def index():
     # Get the latest 6 articles in the blog
     articles = Post.query.order_by(Post.id.desc()).limit(6)
     # reverse the list so the latest one starts at 0
-    articles = reversed(articles)
+    articles = reversed(list(articles))
     # the 0 index will always be the latest article, which makes it
     # the featured article
     featured_article = articles[0].title
@@ -44,11 +44,17 @@ def blog():
                                 "image_alt": article.image_alt
                             })
 
-    return render_template("blog/blog.html",
+    return render_template("blogging/index.html",
                            featured_article=featured_article,
                            featured_image=featured_image,
                            featured_image_alt=featured_image_alt,
                            articles=article_dict)
+
+
+# DO I really want this?
+@blueprint.route("/sitemap", methods=["GET"])
+def  sitemap():
+    return render_template('blogging/sitemap.html')
 
 
 @blueprint.route("/<slug>", methods=["GET"])
