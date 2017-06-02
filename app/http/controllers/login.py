@@ -27,8 +27,7 @@ def login():
             # password matches
             if (password_match):
                 login_user(user)
-                if (current_user.is_active()):
-                    print("Entered active")
+                if (current_user.is_active):
                     return redirect(url_for("dashboard.dashboard"))
                 else:
                     # if the user has not verified their account redirect

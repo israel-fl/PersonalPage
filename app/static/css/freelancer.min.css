@@ -54,7 +54,7 @@ header .intro-text .skills{font-size:1.75em}
 .navbar-custom.affix .navbar-brand{font-size:1.5em}
 }
 section{padding:100px 0}
-section h2{margin:0;font-size:3em}
+section h2{font-size:3em}
 section.success{background:#16191b;color:#fff}
 @media (max-width:767px){section{padding:75px 0}
 section.first{padding-top:75px}

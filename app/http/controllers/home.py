@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, flash, redirect, url_for,\
     jsonify, send_from_directory, Blueprint, current_app as app
 from flask_mail import Message
+from flask_login import logout_user, login_user, current_user
 
 
 blueprint = Blueprint('home', __name__)

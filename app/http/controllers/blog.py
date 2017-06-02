@@ -1,14 +1,7 @@
-from flask import Flask, render_template, request, flash, redirect, url_for,\
-    jsonify, send_from_directory, Blueprint, abort, current_app as app
-from flask_mail import Mail, Message
-from flask_login import LoginManager, logout_user, login_required, current_user
+from flask import render_template, request, url_for, \
+    Blueprint, abort
 from app.models.blog import Post
 from app.models.user import User
-from database.db_adapter import db
-from app.http.middleware.decorators import validate_request, validate_access
-from werkzeug.security import generate_password_hash
-from sqlalchemy import func
-
 
 blueprint = Blueprint('blog', __name__)
 
@@ -17,8 +10,8 @@ blueprint = Blueprint('blog', __name__)
 # {
 #     "title": "article_title",
 #     "url": "article url",
-#     "image_url": "url for image",
-#     "image_alt": "alt image title"
+#     "featured_image_url": "url for image",
+#     "author": "alt image title"
 # }
 
 @blueprint.route("/", methods=["GET"])
@@ -30,8 +23,9 @@ def index():
     # the 0 index will always be the latest article, which makes it
     # the featured article
     featured_article = articles[0].title
-    featured_image = articles[0].image_url
-    featured_image_alt = articles[0].image_alt
+    featured_image = articles[0].featured_image_url
+    featured_url = url_for("blog.show_entry", slug=articles[0].slug)
+    featured_author = articles[0].author
     # remove the featured from the article list
     del articles[0]
     # create a dictionary that contains the rest of the articles
@@ -40,14 +34,15 @@ def index():
         article_dict.update({
                                 "title": article.title,
                                 "url": url_for("blog.show_entry", slug=article.slug),
-                                "image_url": article.image_url,
-                                "image_alt": article.image_alt
+                                "featured_image_url": article.featured_image_url,
+                                "author": article.author
                             })
 
     return render_template("blogging/index.html",
                            featured_article=featured_article,
                            featured_image=featured_image,
-                           featured_image_alt=featured_image_alt,
+                           featured_url=featured_url,
+                           featured_author=featured_author,
                            articles=article_dict)
 
 
@@ -68,18 +63,17 @@ def show_entry(slug):
         post()
 
     article = Post.query.filter(Post.slug == slug).first()
-    if (article):
-        # modify time crated to me in a readable format
+    if article:
+        # modify time crated to be in a readable format
         created = article.post_date
-        author_post = UserPost.query.filter(article.id == UserPost.post_id).first()
-        author = User.query.filter(User.id == author_post.user_id).first()
-        return render_template("blog/post.html",
+        time_string = created.strftime('%b %d, %Y')
+        return render_template("blogging/article.html",
                                title=article.title,
-                               author=author.name,
+                               author=article.author,
                                subtitle=article.subtitle,
-                               iamge_url=article.featured_image_url,
+                               image_url=article.featured_image_url,
                                content=article.content,
-                               created=created,
+                               created=time_string,
                                )
     else:
         abort(404)

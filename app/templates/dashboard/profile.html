@@ -2,37 +2,45 @@
 {% block title %} Create Entry {% endblock %}
 {% block styles %}
 {{ super() }}
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-markdown/2.10.0/css/bootstrap-markdown.min.css" rel="stylesheet"/>
 <link href="{{url_for('static', filename='css/profile.css')}}" rel="stylesheet">
 {% endblock %}
 
-{% block section_title %} <h4>Editor</h4> {% endblock %}
+{% block section_title %} <h4>Profile</h4> {% endblock %}
 
 {% block content %}
-<div class="row">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class="alert alert-{{ category }} alert-dismissible" role="alert">
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <strong>{{ message }}</strong>
-          </div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
-</div>
 <div class="content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header" data-background-color="purple">
-                        <button data-toggle="modal" data-target="#upload"><img src="{{ profile_image }}" class="img-user"></button>
-                        <h4 class="title">{{ name }}</h4>
+                    <div class="card-header card-chart" data-background-color="purple">
+                        <div class="profile-container" style="width: 50%;">
+                            <img src="{{ profile_image_url }}" id="profile-image" class="img-user">
+                            <div class="overlay" id="overlay">
+                                <div class="overlay-text">Change Image</div>
+                            </div>
+                        </div>
+                        <h4 class="title profile-header">{{ username }}</h4>
                     </div>
                     <div class="card-content">
-                        <form class="form-horizontal" action="/create-article" method="POST">
+                        <div class="row">
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                              <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
+                              {% if messages %}
+                                {% for category, message in messages %}
+                                  <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                  <strong>{{ message }}</strong>
+                                  </div>
+                                {% endfor %}
+                              {% endif %}
+                            {% endwith %}
+                        </div>
+                        <div class="alert alert-danger alert-dismissible" role="alert" id="show-errors" style="display:none">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong id="message"></strong>
+                        </div>
+                        <form class="form-horizontal" action="/dashboard/profile" method="POST" id="profile-form">
                                 <!-- Text input-->
                                 <div class="form-group">
                                     <div class="input-group col-md-12">
@@ -72,7 +80,7 @@
 
     <!-- Modal content-->
     <div class="modal-content">
-        <form action="/file-upload" class="dropzone" id="drop">
+        <form action="/upload/" class="dropzone" id="drop">
             <div class="dz-message needsclick">
                 <i class="material-icons">cloud_upload</i></br>
                 Upload a picture</br>
@@ -90,12 +98,11 @@
     <!-- Set the current tab as active -->
     <script type="text/javascript">document.getElementById("profile").classList.add("active");</script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js"></script>
-    <script defer type="text/javascript">
-        window.onload = function() {
-            Dropzone.options.drop = {
-              maxFilesize: 2, // MB
-              acceptedFiles: "image/jpeg,image/png,image/gif"
-            };
-        };
+    <script defer src="{{url_for('static', filename='js/profile.js')}}"></script>
+    <script type="text/javascript">
+    // If image not found use default
+    $('#profile-image').on("error", function () {
+        this.src = "{{url_for('static', filename='images/default_logo.png')}}";
+    });
     </script>
 {% endblock %}

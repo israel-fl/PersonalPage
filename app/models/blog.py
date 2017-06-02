@@ -7,7 +7,7 @@ import datetime
 
 class Post(Base):
 
-    __tablename__ = "post"
+    __tablename__ = "posts"
     id = Column("id", Integer, primary_key=True, autoincrement=True)
     author = Column("author", String, nullable=False)
     title = Column("title", String, nullable=False)

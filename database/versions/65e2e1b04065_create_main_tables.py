@@ -33,6 +33,7 @@ def upgrade():
                               nullable=False, default=False),
                     sa.Column("created", sa.DateTime(), nullable=False),
                     sa.Column("modified", sa.DateTime(), nullable=True),
+                    sa.Column("profile_image_url", sa.String(255), nullable=True),
                     sa.PrimaryKeyConstraint("id"),
                     )
     op.create_unique_constraint("uq_user_name", "users", ["display_name", "email"])

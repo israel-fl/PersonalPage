@@ -20,7 +20,7 @@
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" href="#page-top">Israel Flores</a>
+                <a class="navbar-brand" href="/">Israel Flores</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -35,8 +35,17 @@
                         <a href="/blog">Blog</a>
                     </li>
                     <li>
+                        <a href="/account">Account</a>
+                    </li>
+                    {% if current_user.is_active %}
+                    <li>
+                        <a href="/logout">Logout</a>
+                    </li>
+                    {% else %}
+                    <li>
                         <a href="/login">Login</a>
                     </li>
+                    {% endif %}
                     <li>
                         <a href="/register">Register</a>
                     </li>
@@ -92,6 +101,8 @@
     </div>
 </footer>
 
+{% block modals %}
+{% endblock %}
 <!-- /.body -->
 </body>
 {% endblock %}

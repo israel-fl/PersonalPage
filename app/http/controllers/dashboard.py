@@ -1,14 +1,12 @@
-from flask import Flask, render_template, request, flash, redirect, url_for,\
-    jsonify, send_from_directory, Blueprint, current_app as app
-from flask_mail import Mail, Message
-from flask_login import LoginManager, logout_user, login_required, current_user
+from flask import Markup
+from flask import render_template, request, flash, Blueprint
+from flask_login import login_required, current_user
+from markdown import markdown
+from werkzeug.security import generate_password_hash
+
 from app.models.blog import Post
 from app.models.user import User
 from database.db_adapter import db
-from app.http.middleware.decorators import validate_request, validate_access
-from werkzeug.security import generate_password_hash
-from flask import Markup
-from markdown import markdown
 
 blueprint = Blueprint('dashboard', __name__)
 
@@ -30,7 +28,7 @@ def profile():
         user.name = name
         user.password = password
         try:
-            # save changes to user profile
+            # save changes to the user
             db.commit()
             flash("Changes saved successfully", "success")
         except Exception:
@@ -40,7 +38,11 @@ def profile():
     if request.method == 'POST':
         post()
 
-    return render_template("dashboard/profile.html")
+    return render_template("dashboard/profile.html",
+                           username=current_user.display_name,
+                           name=current_user.name,
+                           profile_image_url=current_user.profile_image_url,
+                           )
 
 
 @blueprint.route("/create-article", methods=["GET", "POST"])
