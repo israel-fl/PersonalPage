@@ -1,20 +1,55 @@
 from flask import Markup
-from flask import render_template, request, flash, Blueprint
+from flask import render_template, request, flash, Blueprint, url_for, redirect
 from flask_login import login_required, current_user
 from markdown import markdown
 from werkzeug.security import generate_password_hash
-
 from app.models.blog import Post
 from app.models.user import User
 from database.db_adapter import db
+import json
+
 
 blueprint = Blueprint('dashboard', __name__)
 
 
-@blueprint.route("/", methods=["GET"])
+'''
+ Schema for article list
+
+    {
+        "created": "date",
+        "title": "My first awesome Blog",
+        "comments": 50,
+        "url": "article url",
+        "slug": "article slug
+    }
+'''
+
+
+@blueprint.route("/", methods=["GET", "POST"])
 @login_required
 def dashboard():
-    return render_template("dashboard/dashboard.html")
+
+    def post():
+        pass
+
+    if request.method == 'POST':
+        post()
+
+    article_list = list()
+    articles = Post.query.filter(Post.author == current_user.name).all()
+    print(articles)
+    if articles:
+        for article in articles:
+            article_list.append({
+                                    "created": article.created.strftime('%b %d, %Y'),
+                                    "title": article.title,
+                                    "comments": len(article.comments),
+                                    "url": url_for("blog.show_entry", slug=article.slug),
+                                    "slug": article.slug
+                                })
+
+    return render_template("dashboard/dashboard.html",
+                           articles=json.dumps(article_list))
 
 
 @blueprint.route("/profile", methods=["GET", "POST"])
@@ -59,7 +94,7 @@ def create_article():
         content = request.form.get("content")
         tags = request.form.get("tags")
 
-        if (Post.query.filter(Post.title == title).first()):
+        if Post.query.filter(Post.title == title).first():
             flash("Sorry there is already an article with that title", "danger")
         else:
             try:
@@ -82,10 +117,57 @@ def create_article():
 
     if request.method == 'POST':
         post()
-    return render_template("blogging/editor.html")
+    return render_template("dashboard/editor.html")
+
+
+@blueprint.route("/edit/<slug>", methods=["GET", "POST"])
+@login_required
+def edit_entry(slug):
+
+    def post():
+        article = Post.query.filter(Post.slug == slug).first()
+        title = request.form.get("title")
+        # if the title changed, check if there is already an article with the
+        # new title
+        if article.title != title:
+            new_slug = title.replace(' ', '-').lower()
+            existing_article = Post.query.filter(Post.slug == new_slug)
+            if existing_article:
+                flash("Sorry there is already an article with that title, try a different one", "danger")
+                return
+
+        article.subtitle = request.form.get("subtitle")
+        article.slug = title.replace(' ', '-').lower()
+        # turn the title into a slug
+        article.featured_image_url = request.form.get("featured-image")  # get image url
+        article.content = request.form.get("content")
+        article.tags = request.form.get("tags")
+
+        try:
+            # Save changes
+            db.commit()
+
+            flash("Edits successfully saved", "success")
+        except Exception:
+            db.rollback()
+            flash("There was an error processing your request", "danger")
+
+    if request.method == 'POST':
+        post()
+
+    slug = Post.query.filter(Post.slug == slug).first()
+    return render_template("dashboard/edit_post.html",
+                           title=slug.title,
+                           subtitle=slug.subtitle,
+                           content=slug.content,
+                           featured_image_url=slug.featured_image_url,
+                           slug=slug.slug,
+                           tags=slug.tags
+                           )
 
 
 @blueprint.route("/parse", methods=["POST"])
+@login_required
 def parse_markdown():
     content = request.form.get("content")
     content = Markup(markdown(content))

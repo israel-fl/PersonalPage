@@ -1,34 +1,22 @@
 from flask import Flask
-from app.http.controllers import home, login, register, users, dashboard,\
+from app.http.controllers import home, login, register, dashboard,\
     logout, blog, upload, account
 from flask_socketio import SocketIO
 import json
-from database.db_adapter import db, init_db, storage
-from flask_mail import Mail, Message
-from flask_blogging import BloggingEngine, SQLAStorage
+from database.db_adapter import db, init_db
+from flask_mail import Mail
 from flask_login import LoginManager
 from app.models.user import User
 
 
 socketio = SocketIO()
 mail = Mail()
-blogging_engine = BloggingEngine()
+
 
 def create_app():
     app = Flask(__name__)
     app.secret_key = "26OxAJGy4r#FhIkiluQQrel$@EJcBi9b"
     app.config.SERVICE_NAME = "IsraelFL"
-
-    # For Blogging #
-    app.config["BLOGGING_URL_PREFIX"] = "/blog"
-    app.config["BLOGGING_DISQUS_SITENAME"] = "test"
-    app.config["BLOGGING_SITEURL"] = "http://localhost:8080"
-    app.config["BLOGGING_SITENAME"] = "Israel Fl"
-
-    # For File uploading #
-    app.config["FILEUPLOAD_IMG_FOLDER"] = "images/blog"
-    app.config["FILEUPLOAD_PREFIX"] = "/fileupload"
-    app.config["FILEUPLOAD_ALLOWED_EXTENSIONS"] = ["png", "jpg", "jpeg", "gif"]
 
     # Init database
     init_db()
@@ -42,6 +30,7 @@ def create_app():
         app.config['MAIL_SERVER'] = keys.get("MAIL_SERVER")
         app.config['MAIL_USE_TLS'] = keys.get("MAIL_USE_TLS")
         app.config['MAIL_USE_SSL'] = keys.get("MAIL_USE_SSL")
+        # For File uploading #
         app.config['UPLOAD_FOLDER'] = keys.get("UPLOAD_FOLDER")
         if (keys.get("SERVICE_MODE") == "DEVELOPMENT"):
             app.config['DEBUG'] = True
@@ -57,7 +46,6 @@ def create_app():
     app.register_blueprint(upload.blueprint, url_prefix='/upload')
     app.register_blueprint(account.blueprint, url_prefix='/account')
 
-
     # LOGIN SETUP
     setup_authentication(app)
 
@@ -67,11 +55,7 @@ def create_app():
     # SocketIO
     socketio.init_app(app)
 
-    # BLOGGING
-    blogging_engine.init_app(app, storage)
-
     return app
-
 
 
 def setup_authentication(app):

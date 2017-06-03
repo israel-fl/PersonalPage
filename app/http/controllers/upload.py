@@ -44,13 +44,17 @@ def upload_file():
     if request.method == 'POST':
         post()
 
-    image_dict = dict()
+    images = list()
     image_list = [f for f in listdir(upload_folder) if isfile(join(upload_folder, f))]
     for image in image_list:
-        image_dict.update({
+        images.append({
                             "name": image,
-                            "path": url_for("static",
-                                           filename="images/blog/".format(image))
+                            "path": "http://localhost:8080/static/images/blog/{}".format(image)
                           })
+    return render_template("blogging/fileupload.html", images=json.dumps(images))
 
-    return render_template("blogging/fileupload.html", images=json.dumps(image_dict))
+
+@blueprint.route('/delete/<file>', methods=['GET'])
+def delete_file(file):
+    print(file)
+    return redirect(url_for("upload.upload_file"))

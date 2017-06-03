@@ -16,5 +16,4 @@ Flask-UUID
 flask-login
 mysql-python
 cerberus
-flask-blogging
 markdown

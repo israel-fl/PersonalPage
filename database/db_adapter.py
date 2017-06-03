@@ -2,7 +2,6 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker, scoped_session
 import json
-from flask_blogging import SQLAStorage
 
 
 with open("database/config.json") as config_file:
@@ -42,5 +41,3 @@ def init_db():
     # you will have to import them first before calling init_db()
     import app.models
     meta.create_all(bind=engine)
-
-storage = SQLAStorage(engine, metadata=meta)

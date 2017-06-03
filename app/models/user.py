@@ -1,5 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey,\
-    DateTime, Boolean, select, func
+from sqlalchemy import Column, Integer, String, DateTime, Boolean
 from database.db_adapter import Base
 from sqlalchemy.orm import relationship
 import datetime
@@ -21,7 +20,8 @@ class User(Base):
                      default=datetime.datetime.now())
     modified = Column("modified", DateTime, nullable=True)
     profile_image_url = Column("profile_image_url", String, nullable=True)
-
+    description = Column("description", String, nullable=True)
+    comments = relationship("Comment")
 
     def __init__(self, name, display_name, email, password,
                  access_level="1", verified=False):

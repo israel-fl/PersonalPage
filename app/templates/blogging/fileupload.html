@@ -38,13 +38,16 @@
     <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    Do you really want to delete this image? It can't be undone.
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-danger btn-ok">Delete</a>
-                </div>
+                <form>
+                    <div class="modal-header">
+                        Do you really want to delete this image? It can't be undone.
+                    </div>
+                     <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-danger btn-ok" id="image-url">Delete</a>
+                    </div>
+
+                </form>
             </div>
         </div>
     </div>
@@ -65,12 +68,15 @@
     </div>
     <hr>
     <div class="row">
-        <table id="imges" class="table table-striped table-condensed">
+        <table id="image_list" class="table table-striped table-condensed">
             <thead>
-                <tr><th>Name</th><th>Path</th><th>Preview</th><th>Del</th></tr>
+                <tr>
+                    <th>Name</th>
+                    <th>Path</th>
+                    <th>Preview</th>
+                    <th>Del</th>
+                </tr>
             </thead>
-            <tbody>
-            </tbody>
         </table>
     </div>
 
@@ -82,7 +88,7 @@
 {% block scripts %}
 {{ super() }}
 
-    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
     <script defer type="text/x-mathjax-config">
           MathJax.Hub.Config({
           "HTML-CSS": {
@@ -94,12 +100,13 @@
     </script>
 
 
-    <script defer src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
-    <script defer src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
+    <script async src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script async src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
+    <script async src="https://cdn.datatables.net/select/1.2.1/js/dataTables.select.min.js"></script>
     <script defer>
         $(document).ready(function() {
             // Build datatable
-            $('#imges').DataTable( {
+            $('#image_list').DataTable( {
                 "processing": true,
                 data: {{ images|safe }},
                 "iDisplayLength": 10,
@@ -107,8 +114,26 @@
                     {"orderable": false, "targets": [1, 2, 3]}
                 ],
                 "columns": [
-                    { "data": "name", sDefaultContent: "N/A"},
-                    { "data": "path", sDefaultContent: "N/A" },
+                    { "data": "name", sDefaultContent: "N/A", "sClass": "col-md-6",
+                      "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                          $(nTd).html("<a href='tel:"+oData.path+"'>"+oData.name+"</a>");
+                      }
+                    },
+                    { "data": "path", sDefaultContent: "N/A", "sClass": "col-md-4",
+                      "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                          $(nTd).html("<input class='path-input' onClick='this.select(); 'title='path' value="+oData.path+"style='width: 100%;' type='text' readonly>");
+                      }
+                    },
+                    { "data": null, "sClass": "col-md-1",
+                      "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                          $(nTd).html("<img class='thumbnail zoom' style='height: 30px; width: auto; max-width:30px;' src="+oData.path+">");
+                      }
+                    },
+                    { "data": null, "sClass": "col-md-1",
+                      "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                          $(nTd).html("<a id='open-modal' href='#confirm-delete' data-href='"+oData.name+"' data-toggle='modal' data-target='#confirm-delete'><span role='button' class='glyphicon glyphicon-trash'></span></a>");
+                      }
+                    }
                 ]
             });
 
@@ -130,7 +155,10 @@
 
     <script defer>
         $('#confirm-delete').on('show.bs.modal', function(e) {
-            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+            var imageName = $(e.relatedTarget).data('href');
+            var imageUrl = "http://localhost:8080/upload/delete/" + imageName;
+            console.log(imageUrl);
+            $(this).find('.btn-ok').attr('href', imageUrl);
         });
     </script>
 {% endblock %}

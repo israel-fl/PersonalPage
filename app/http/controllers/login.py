@@ -1,7 +1,6 @@
 from flask import render_template, request, flash, redirect, url_for,\
- Blueprint, current_app as app
-from flask_mail import Mail, Message
-from flask_login import logout_user, login_user, current_user
+ Blueprint
+from flask_login import login_user, current_user
 from app.models.user import User, PasswordResetRequest
 from database.db_adapter import db
 from werkzeug.security import check_password_hash
@@ -28,7 +27,10 @@ def login():
             if (password_match):
                 login_user(user)
                 if (current_user.is_active):
-                    return redirect(url_for("dashboard.dashboard"))
+                    if current_user.access_level == 2:
+                        return redirect(url_for("dashboard.dashboard"))
+                    else:
+                        return redirect(url_for("account"))
                 else:
                     # if the user has not verified their account redirect
                     # them to the verification portal

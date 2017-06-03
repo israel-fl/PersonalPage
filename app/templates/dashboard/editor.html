@@ -8,19 +8,6 @@
 {% block section_title %} <h4>Editor</h4> {% endblock %}
 
 {% block content %}
-<div class="row">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class="alert alert-{{ category }} alert-dismissible" role="alert">
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <strong>{{ message }}</strong>
-          </div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
-</div>
 <div class="content">
     <div class="container-fluid">
         <div class="row">
@@ -30,12 +17,25 @@
                         <h4 class="title">Create Article</h4>
                         <p class="category">Write something amazing!</p>
                     </div>
+                    <div class="row">
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                          <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
+                          {% if messages %}
+                            {% for category, message in messages %}
+                              <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+                              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                              <strong>{{ message }}</strong>
+                              </div>
+                            {% endfor %}
+                          {% endif %}
+                        {% endwith %}
+                    </div>
                     <div class="card-content">
-                        <form class="form-horizontal" action="/create-article" method="POST">
+                        <form class="form-horizontal" action="/dashboard/create-article" method="POST">
                                 <!-- Text input-->
                                 <div class="form-group">
                                     <div class="input-group col-md-12">
-                                        <input type="title" name="text" id="title" class="form-control" placeholder="Title">
+                                        <input type="title" name="title" id="title" class="form-control" placeholder="Title">
                                     </div>
                                 </div>
                                 <!-- Text input-->
@@ -54,7 +54,7 @@
                                     <div class="col-md-12">
                                         <i>Note: It might be easier to write the article in the text editor of your choice and then simply copy and paste it here</i></br>
                                         Learn more about <a href="http://en.wikipedia.org/wiki/Markdown" target="_blank">MarkDown</a>, alternatively, use HTML<br>
-                                        Have your own images? <a target="_blank" href="{{ url_for('flask_fileupload.upload') }}">Upload them here</a> then insert the url into your post
+                                        Have your own images? <a target="_blank" href="{{ url_for('upload.upload_file') }}">Upload them here</a> then insert the url into your post
                                     </div>
                                 </div>
                                 <!-- Featured Image -->

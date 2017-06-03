@@ -32,6 +32,7 @@ def upgrade():
         sa.Column('modified', sa.DateTime(), nullable=True),
         sa.PrimaryKeyConstraint('id'),
     )
+    op.create_unique_constraint("uq_slug", "posts", ["slug"])
 
 
 def downgrade():

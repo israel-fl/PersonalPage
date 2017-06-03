@@ -34,9 +34,15 @@
                     <li>
                         <a href="/blog">Blog</a>
                     </li>
+                    {% if current_user.access_level == 2 %}
+                    <li>
+                        <a href="/dashboard">Account</a>
+                    </li>
+                    {% else %}
                     <li>
                         <a href="/account">Account</a>
                     </li>
+                    {% endif %}
                     {% if current_user.is_active %}
                     <li>
                         <a href="/logout">Logout</a>
