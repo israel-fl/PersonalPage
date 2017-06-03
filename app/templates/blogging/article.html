@@ -2,33 +2,45 @@
 {% block title %} Post {% endblock %}
 {% block styles %} {{ super() }}
     <link href="{{url_for('static', filename='css/blog.css')}}" rel="stylesheet">
-    <!-- Theme CSS -->
-    <link href="{{url_for('static', filename='css/post.min.css')}}" rel="stylesheet">
-
-    <!-- Custom Fonts -->
-    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <style type="text/css">
+    .featured-image {
+        background-repeat: no-repeat;
+        background: no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+    </style>
 {% endblock %}
 
 {% block content %}
-<!-- content -->
+<!-- Header -->
 <section>
-    <!-- Set your background image for this header on the line below. -->
-    <header class="intro-header" style="background-image: url('{{ image_url }}')">
+    <header id="main-header" class="featured-image" style="background-image: url('{{ image_url }}')">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="post-heading">
                         <h1>{{ title }}</h1>
-                        <h2 class="subheading">{{ subtitle }}</h2>
-                        <span class="meta">Posted by <a href="#">{{ author }}</a> on {{ created }}</span>
+                        <h3>{{ subtitle }}</h3>
+                        <span class="meta">Written by <a href="#">{{ author }}</a> on {{ created }}</span>
                     </div>
                 </div>
             </div>
         </div>
     </header>
+    <script type="text/javascript">
+            var windowHeight = $(window).innerHeight();
+            console.log("setting height");
+            console.log(windowHeight);
+            $("#main-header").css('min-height', windowHeight);
+            $("#main-header").css('height', windowHeight);
+    </script>
+</section>
 
-    <!-- Post Content -->
+<!-- Post Content -->
+<section>
     <article>
         <div class="container">
             <div class="row">
@@ -38,6 +50,67 @@
             </div>
         </div>
     </article>
+</section>
+
+<!-- Author description and links -->
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h3>About the author</h3>
+            </div>
+        </div>
+        <div class="row text-center">
+            {{ author }} is a {{ author_description }}
+        </div>
+    </div>
+</section>
+
+<!-- Comments -->
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h3>Discussion</h3>
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-lg-8 col-lg-offset-2">
+                <div class="row text-center">
+                    {% if comments %}
+                        {% for comment in comments %}
+                            <div class="row">
+                            <!-- Comment section -->
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="row text-center">
+                            <h5>No comments yet, leave a reply</h5>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <!-- Editor section -->
+        <div class="row text-center">
+            <div class="col-lg-8 col-lg-offset-2">
+                {% if current_user.is_active %}
+                <form action="/account" method="POST" id="profile-form">
+                    <div class="mui-textfield">
+                        <textarea placeholder="Write a comment.."></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-xs-12">
+                            <button class="mui-btn mui-btn--primary">Submit</button>
+                        </div>
+                    </div>
+                </form>
+                {% else %}
+                    <a href="/login" class="mui-btn mui-btn--primary">Login to comment</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 </section>
 {% endblock %}
 

@@ -9,7 +9,7 @@ class Post(Base):
 
     __tablename__ = "posts"
     id = Column("id", Integer, primary_key=True, autoincrement=True)
-    author = Column("author", String, nullable=False)
+    user_id = Column(Integer, ForeignKey('users.id'))
     title = Column("title", String, nullable=False)
     subtitle = Column("subtitle", String, nullable=False)
     content = Column("content", UnicodeText, nullable=False)
@@ -20,6 +20,7 @@ class Post(Base):
     created = Column("created", DateTime, nullable=False, default=datetime.datetime.now())
     modified = Column("modified", DateTime, nullable=True, default=datetime.datetime.now())
     comments = relationship("Comment")
+    author = relationship("User", back_populates="articles")
 
 class Comment(Base):
 

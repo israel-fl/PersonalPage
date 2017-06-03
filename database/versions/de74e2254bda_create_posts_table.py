@@ -21,7 +21,7 @@ def upgrade():
         'posts',
         sa.Column('id', sa.Integer(), nullable=False),
         sa.Column('title', sa.String(255), nullable=False),
-        sa.Column('author', sa.String(255), nullable=False),
+        sa.Column('user_id', sa.Integer(), nullable=False),
         sa.Column('subtitle', sa.String(255), nullable=False),
         sa.Column('featured_image_url', sa.String(255), nullable=False),
         sa.Column('content', sa.Text(), nullable=False),
@@ -31,6 +31,8 @@ def upgrade():
         sa.Column('created', sa.DateTime(), nullable=False),
         sa.Column('modified', sa.DateTime(), nullable=True),
         sa.PrimaryKeyConstraint('id'),
+        sa.ForeignKeyConstraint(["user_id"],
+                                ["users.id"])
     )
     op.create_unique_constraint("uq_slug", "posts", ["slug"])
 

@@ -30,7 +30,7 @@ header .intro-text .skills{font-size:1.25em;font-weight:300}
 header .intro-text .name{font-size:4.75em}
 header .intro-text .skills{font-size:1.75em}
 }
-.navbar-custom{background:#2C3E50;font-family:Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif;text-transform:uppercase;font-weight:700;border:none}
+.navbar-custom{background:#2C3E50 !important;font-family:Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif;text-transform:uppercase;font-weight:700;border:none}
 .navbar-custom .navbar-brand,
 .navbar-custom .navbar-brand.active,
 .navbar-custom .navbar-brand:active,

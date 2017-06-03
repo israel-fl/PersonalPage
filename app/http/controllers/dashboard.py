@@ -7,7 +7,7 @@ from app.models.blog import Post
 from app.models.user import User
 from database.db_adapter import db
 import json
-
+import re
 
 blueprint = Blueprint('dashboard', __name__)
 
@@ -36,7 +36,7 @@ def dashboard():
         post()
 
     article_list = list()
-    articles = Post.query.filter(Post.author == current_user.name).all()
+    articles = Post.query.filter(Post.user_id == current_user.id).all()
     print(articles)
     if articles:
         for article in articles:
@@ -85,11 +85,13 @@ def profile():
 def create_article():
 
     def post():
-        author = current_user.name
         title = request.form.get("title")
         subtitle = request.form.get("subtitle")
-        # turn the title into a slug
-        slug = title.replace(' ', '-').lower()
+        # turn the title into a slug by removing all non alphanumeric or numeric
+        # characters
+        slug = re.sub(r'[^a-zA-Z0-9]', '-', title)
+        # make it all lowercase
+        slug = slug.lower()
         featured_image_url = request.form.get("featured-image")  # get image url
         content = request.form.get("content")
         tags = request.form.get("tags")
@@ -99,7 +101,7 @@ def create_article():
         else:
             try:
                 post = Post(
-                            author=author,
+                            user_id=current_user.id,
                             title=title,
                             subtitle=subtitle,
                             content=content,

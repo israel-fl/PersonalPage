@@ -17,20 +17,20 @@
                         <h4 class="title">Create Article</h4>
                         <p class="category">Write something amazing!</p>
                     </div>
-                    <div class="row">
-                        {% with messages = get_flashed_messages(with_categories=true) %}
-                          <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
-                          {% if messages %}
-                            {% for category, message in messages %}
-                              <div class="alert alert-{{ category }} alert-dismissible" role="alert">
-                              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                              <strong>{{ message }}</strong>
-                              </div>
-                            {% endfor %}
-                          {% endif %}
-                        {% endwith %}
-                    </div>
                     <div class="card-content">
+                        <div class="row">
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                              <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
+                              {% if messages %}
+                                {% for category, message in messages %}
+                                  <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                  <strong>{{ message }}</strong>
+                                  </div>
+                                {% endfor %}
+                              {% endif %}
+                            {% endwith %}
+                        </div>
                         <form class="form-horizontal" action="/dashboard/create-article" method="POST">
                                 <!-- Text input-->
                                 <div class="form-group">
@@ -61,6 +61,7 @@
                                 <div class="form-group">
                                     <div class="input-group col-md-12">
                                         <input name="featured-image" id="featured-image" type="text" placeholder="Featured image url" class="form-control input-md" title="This will be the header image for your post">
+                                        <i>Try larger images (1920x1080) or your background will stretch</i>
                                     </div>
                                 </div>
                                 <!-- Text input-->

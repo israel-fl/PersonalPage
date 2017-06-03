@@ -22,6 +22,7 @@ class User(Base):
     profile_image_url = Column("profile_image_url", String, nullable=True)
     description = Column("description", String, nullable=True)
     comments = relationship("Comment")
+    articles = relationship("Post", back_populates="author")
 
     def __init__(self, name, display_name, email, password,
                  access_level="1", verified=False):
