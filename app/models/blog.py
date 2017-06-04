@@ -32,3 +32,4 @@ class Comment(Base):
     comment = Column("comment", UnicodeText, nullable=False)
     created = Column("created", DateTime, nullable=False, default=datetime.datetime.now())
     modified = Column("modified", DateTime, nullable=True, default=datetime.datetime.now())
+    user = relationship("User", back_populates="comments")

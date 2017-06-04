@@ -11,6 +11,18 @@
         -o-background-size: cover;
         background-size: cover;
     }
+    .img-user {
+        display: block !important;
+        width: 100px !important;
+        height: 100px !important;
+        border-radius: 50% !important;
+        background-repeat: no-repeat !important;
+        background-position: center center !important;
+        background-size: cover !important;
+    }
+    .author-description {
+        font-size: 1.1em;
+    }
     </style>
 {% endblock %}
 
@@ -56,12 +68,17 @@
 <section>
     <div class="container">
         <div class="row">
-            <div class="col-lg-12 text-center">
+            <div class="col-lg-12">
                 <h3>About the author</h3>
             </div>
         </div>
-        <div class="row text-center">
-            {{ author }} is a {{ author_description }}
+        <div class="row">
+            <div class="col-sm-2">
+                <img src="{{ profile_image_url }}" id="profile-image" class="img-user">
+            </div>
+            <div class="col-md-6">
+                <p class="author-description"><strong>{{ author }}</strong> is a {{ author_description }}</p>
+            </div>
         </div>
     </div>
 </section>
@@ -70,21 +87,36 @@
 <section>
     <div class="container">
         <div class="row">
-            <div class="col-lg-12 text-center">
+            <div class="col-lg-12">
                 <h3>Discussion</h3>
             </div>
         </div>
-        <div class="row text-center">
+        <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
                 <div class="row text-center">
                     {% if comments %}
                         {% for comment in comments %}
                             <div class="row">
-                            <!-- Comment section -->
+                                <div class="col-sm-2">
+                                    <img src="{{ comment.user.profile_image_url }}" id="profile-image" class="img-user">
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="author-description"><strong>{{ comment.user.name }}</strong> </p>
+                                </div>
                             </div>
+                            <div class="row">
+                                <i>{{ comment.created.strftime('%d %m, %Y at %H:%M:%S') }}</i>
+                            </div>
+                            <div class="row">
+                                <h4>{{ comment.title }}</h4>
+                            </div>
+                            <div class="row">
+                                <p>{{ comment.comment }}</p>
+                            </div>
+                            <hr></hr>
                         {% endfor %}
                     {% else %}
-                        <div class="row text-center">
+                        <div class="row">
                             <h5>No comments yet, leave a reply</h5>
                         </div>
                     {% endif %}
@@ -94,10 +126,30 @@
         <!-- Editor section -->
         <div class="row text-center">
             <div class="col-lg-8 col-lg-offset-2">
+                <div class="row">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                      <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
+                      {% if messages %}
+                        {% for category, message in messages %}
+                          <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                          <strong>{{ message }}</strong>
+                          </div>
+                        {% endfor %}
+                      {% endif %}
+                    {% endwith %}
+                </div>
+                <div class="alert alert-danger alert-dismissible" role="alert" id="show-errors" style="display:none">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong id="message"></strong>
+                </div>
                 {% if current_user.is_active %}
-                <form action="/account" method="POST" id="profile-form">
+                <form action="/{{ slug }}" method="POST" id="comment-form">
                     <div class="mui-textfield">
-                        <textarea placeholder="Write a comment.."></textarea>
+                        <input type="text" placeholder="Title" id="title" name="title">
+                    </div>
+                    <div class="mui-textfield">
+                        <textarea placeholder="Write a comment.." id="comment" name="comment"></textarea>
                     </div>
                     <div class="row">
                         <div class="form-group col-xs-12">
@@ -117,5 +169,50 @@
 {% block scripts %}
 {{ super() }}
     <!-- Theme JavaScript -->
-    <script src="{{url_for('static', filename='js/post.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/post.min.js')}}" async defer></script>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script type="text/javascript">
+        $('#comment-form').submit(function( event ) {
+            event.preventDefault();
+            var title = $('#title');
+            var comment = $('#comment');
+
+            var titleVal = $('#title').val();
+            var commentVal = $('#comment').val();
+
+            var error = $("#message");
+            var missing = false;
+
+            // Remove the class so that it can be re-added in case of errors
+            title.removeClass("shake");
+            comment.removeClass("shake");
+
+            if (titleVal == '') {
+                error.html("Title cannot be empty");
+                title.addClass('shake');
+                title.css('border-color', 'red');
+                missing = true;
+            }
+            if (commentVal == '') {
+                error.html("Comment cannot be empty");
+                comment.addClass('shake');
+                comment.css('border-color', 'red');
+                missing = true;
+            }
+
+            if (missing) {
+                $("#show-errors").show();
+                return false;
+            } else {
+                return true;
+            }
+        });
+    </script>
+    <script type="text/javascript">
+        // If image not found use default
+        $('#profile-image').on("error", function() {
+            this.src = "{{url_for('static', filename='images/default_logo.png')}}";
+        });
+    </script>
 {% endblock %}

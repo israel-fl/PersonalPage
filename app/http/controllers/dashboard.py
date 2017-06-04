@@ -57,11 +57,14 @@ def dashboard():
 def profile():
 
     def post():
-        name = request.form.get("name")
-        password = generate_password_hash(request.form.get('password'))
         user = User.query.filter(User.id == current_user.id).first()
-        user.name = name
-        user.password = password
+
+        if (request.form.get("form-type") == 1):
+            password = generate_password_hash(request.form.get('password'))
+            user.password = password
+        else:
+            user.name = request.form.get("name")
+            user.description = request.form.get("description")
         try:
             # save changes to the user
             db.commit()
@@ -77,6 +80,7 @@ def profile():
                            username=current_user.display_name,
                            name=current_user.name,
                            profile_image_url=current_user.profile_image_url,
+                           description=current_user.description
                            )
 
 
@@ -92,6 +96,7 @@ def create_article():
         slug = re.sub(r'[^a-zA-Z0-9]', '-', title)
         # make it all lowercase
         slug = slug.lower()
+        print(slug)
         featured_image_url = request.form.get("featured-image")  # get image url
         content = request.form.get("content")
         tags = request.form.get("tags")

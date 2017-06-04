@@ -61,4 +61,49 @@
     <script defer src="{{url_for('static', filename='js/jqBootstrapValidation.js')}}"></script>
         <!-- RECaptcha -->
     <script defer src='https://www.google.com/recaptcha/api.js'></script>
+        <script type="text/javascript">
+        $('#contactForm').submit(function( event ) {
+            event.preventDefault();
+            var name = $('#name');
+            var email = $('#email');
+            var message = $('#message');
+
+            var nameVal = $('#name').val();
+            var emailVal = $('#email').val();
+            var messageVal = $('#message').val();
+
+            var error = $("#message");
+            var missing = false;
+
+            // Remove the class so that it can be readded in case of errors
+            title.removeClass("shake");
+            comment.removeClass("shake");
+
+            if (nameVal == '') {
+                error.html("You must enter your name");
+                title.addClass('shake');
+                title.css('border-color', 'red');
+                missing = true;
+            }
+            if (emailVal == '') {
+                error.html("Please enter an email address");
+                comment.addClass('shake');
+                comment.css('border-color', 'red');
+                missing = true;
+            }
+            if (messageVal == '') {
+                error.html("Message cannot be empty");
+                comment.addClass('shake');
+                comment.css('border-color', 'red');
+                missing = true;
+            }
+
+            if (missing) {
+                $("#show-errors").show();
+                return false;
+            } else {
+                return true;
+            }
+        });
+    </script>
 {% endblock %}

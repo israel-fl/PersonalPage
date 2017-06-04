@@ -9,14 +9,11 @@ window.onload = function() {
 
 // When image is clicked open modal
 $("#overlay").click(function() {
-    console.log("clicked")
     $('#upload').modal('show');
 });
 
-$('#profile-form').submit(function( event ) {
+$('#password-form').submit(function( event ) {
     event.preventDefault();
-    console.log("Entered")
-    var name = $('#name');
     var password = $('#password');
     var retype = $('#retype');
 
@@ -32,16 +29,9 @@ $('#profile-form').submit(function( event ) {
     var reg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
 
     // Remove the class so that it can be readded in case of errors
-    name.removeClass("shake");
     password.removeClass("shake");
     retype.removeClass("shake");
 
-    if (nameVal == '') {
-        error.html("Name cannot be empty");
-        name.addClass('shake');
-        name.css('border-color', 'red');
-        missing = true;
-    }
     if (passwordVal == '') {
         error.html("Password field cannot be empty");
         password.addClass('shake');
@@ -67,6 +57,44 @@ $('#profile-form').submit(function( event ) {
         password.css('border-color', 'red');
         retype.addClass('shake');
         retype.css('border-color', 'red');
+    }
+
+    if (missing) {
+        $("#show-errors").show();
+        return false;
+    } else {
+        return true;
+    }
+
+
+
+$('#profile-form').submit(function( event ) {
+
+    event.preventDefault();
+    var name = $('#name');
+    var description = $('#description');
+
+    var nameVal = $('#name').val();
+    var desVal = $('#description').val();
+
+    var error = $("#message");
+    var missing = false;
+    var passwordError = false;
+
+    name.removeClass("shake");
+    description.removeClass("shake");
+
+    if (nameVal == '') {
+        error.html("Name cannot be empty");
+        name.addClass('shake');
+        name.css('border-color', 'red');
+        missing = true;
+    }
+    if (nameVal == '') {
+        error.html("Name cannot be empty");
+        description.addClass('shake');
+        description.css('border-color', 'red');
+        missing = true;
     }
 
     if (missing) {

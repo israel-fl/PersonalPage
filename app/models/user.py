@@ -23,6 +23,7 @@ class User(Base):
     description = Column("description", String, nullable=True)
     comments = relationship("Comment")
     articles = relationship("Post", back_populates="author")
+    comments = relationship("Comment", back_populates="user")
 
     def __init__(self, name, display_name, email, password,
                  access_level="1", verified=False):
