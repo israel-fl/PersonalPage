@@ -21,7 +21,6 @@ class User(Base):
     modified = Column("modified", DateTime, nullable=True)
     profile_image_url = Column("profile_image_url", String, nullable=True)
     description = Column("description", String, nullable=True)
-    comments = relationship("Comment")
     articles = relationship("Post", back_populates="author")
     comments = relationship("Comment", back_populates="user")
 

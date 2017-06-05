@@ -11,8 +11,24 @@
         </div>
     </div>
     <div class="row">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
+        {% if messages %} {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>{{ message }}</strong>
+        </div>
+        {% endfor %} {% endif %} {% endwith %}
+    </div>
+    <div class="row">
+        <div class="alert alert-danger alert-dismissible" role="alert" id="show-errors" style="display:none">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong id="message"></strong>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-lg-8 col-lg-offset-2">
-            <form name="sentMessage" id="contactForm" action="/" novalidate method="post" onsubmit="return verifyCaptcha();">
+            <form name="sentMessage" id="contactForm" action="/contact" novalidate method="post" onsubmit="return verifyCaptcha();">
                 <div class="row control-group">
                     <div class="mui-textfield mui-textfield--float-label">
                         <input type="text" id="name" name="name" required data-validation-required-message="Please enter your name.">
@@ -36,7 +52,7 @@
                 </div>
                 <div class="row control-group">
                     <div class="mui-textfield mui-textfield--float-label">
-                        <textarea rows="5" id="message" name="message" required data-validation-required-message="Please enter a message."></textarea>
+                        <textarea rows="5" id="content" name="content" required data-validation-required-message="Please enter a message."></textarea>
                         <p class="help-block text-danger"></p>
                         <label>Message</label>
                     </div>
@@ -58,52 +74,8 @@
 
 {% block scripts %}
     <!-- Contact Form JavaScript -->
-    <script defer src="{{url_for('static', filename='js/jqBootstrapValidation.js')}}"></script>
-        <!-- RECaptcha -->
-    <script defer src='https://www.google.com/recaptcha/api.js'></script>
-        <script type="text/javascript">
-        $('#contactForm').submit(function( event ) {
-            event.preventDefault();
-            var name = $('#name');
-            var email = $('#email');
-            var message = $('#message');
-
-            var nameVal = $('#name').val();
-            var emailVal = $('#email').val();
-            var messageVal = $('#message').val();
-
-            var error = $("#message");
-            var missing = false;
-
-            // Remove the class so that it can be readded in case of errors
-            title.removeClass("shake");
-            comment.removeClass("shake");
-
-            if (nameVal == '') {
-                error.html("You must enter your name");
-                title.addClass('shake');
-                title.css('border-color', 'red');
-                missing = true;
-            }
-            if (emailVal == '') {
-                error.html("Please enter an email address");
-                comment.addClass('shake');
-                comment.css('border-color', 'red');
-                missing = true;
-            }
-            if (messageVal == '') {
-                error.html("Message cannot be empty");
-                comment.addClass('shake');
-                comment.css('border-color', 'red');
-                missing = true;
-            }
-
-            if (missing) {
-                $("#show-errors").show();
-                return false;
-            } else {
-                return true;
-            }
-        });
-    </script>
+    <script async defer src="{{url_for('static', filename='js/jqBootstrapValidation.js')}}"></script>
+    <script defer src="{{url_for('static', filename='js/contact.js')}}"></script>
+    <!-- RECaptcha -->
+    <script async defer src='https://www.google.com/recaptcha/api.js'></script>
 {% endblock %}

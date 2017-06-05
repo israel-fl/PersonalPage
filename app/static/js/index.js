@@ -27,12 +27,45 @@ $(document).ready(function() {
     });
 });
 
-function verifyCaptcha() {
-    var grecaptcha = $("#g-recaptcha-response").val();
-    if (grecaptcha.length == 0){
-        alert("Please fill the captcha first!");
-        return false;
-    } else {
-        return true;
-    }
-}
+$('#contactForm').submit(function( event ) {
+            var name = $('#name');
+            var email = $('#email');
+            var message = $('#message');
+
+            var nameVal = $('#name').val();
+            var emailVal = $('#email').val();
+            var messageVal = $('#message').val();
+
+            var error = $("#message");
+            var missing = false;
+
+            // Remove the class so that it can be readded in case of errors
+            title.removeClass("shake");
+            comment.removeClass("shake");
+
+            if (nameVal == '') {
+                error.html("You must enter your name");
+                title.addClass('shake');
+                title.css('border-color', 'red');
+                missing = true;
+            }
+            if (emailVal == '') {
+                error.html("Please enter an email address");
+                comment.addClass('shake');
+                comment.css('border-color', 'red');
+                missing = true;
+            }
+            if (messageVal == '') {
+                error.html("Message cannot be empty");
+                comment.addClass('shake');
+                comment.css('border-color', 'red');
+                missing = true;
+            }
+
+            if (missing) {
+                $("#show-errors").show();
+                return false;
+            } else {
+                return true;
+            }
+        });

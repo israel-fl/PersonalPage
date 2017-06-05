@@ -1,6 +1,6 @@
 from flask import Flask, request, url_for
 from app.http.controllers import home, login, register, dashboard,\
-    logout, blog, upload, account
+    logout, blog, upload
 from flask_socketio import SocketIO
 import json
 from database.db_adapter import db, init_db
@@ -44,7 +44,6 @@ def create_app():
     app.register_blueprint(logout.blueprint, url_prefix='/logout')
     app.register_blueprint(blog.blueprint, url_prefix='/blog')
     app.register_blueprint(upload.blueprint, url_prefix='/upload')
-    app.register_blueprint(account.blueprint, url_prefix='/account')
 
     # LOGIN SETUP
     setup_authentication(app)
