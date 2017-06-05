@@ -1,4 +1,28 @@
-.comment-section {
-    text-align: center;
-    vertical-align:middle;
+.featured-image {
+    background-repeat: no-repeat;
+    background: no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+.img-user {
+    display: block !important;
+    width: 100px !important;
+    height: 100px !important;
+    border-radius: 50% !important;
+    background-repeat: no-repeat !important;
+    background-position: center center !important;
+    background-size: cover !important;
+}
+.author-description {
+    font-size: 1.1em;
+}
+.comment-content {
+    font-size: 0.9em !important;
+    text-align: left;
+}
+.comment-header {
+    font-size: 0.75em !important;
+    text-align: left;
 }

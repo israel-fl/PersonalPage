@@ -1,6 +1,7 @@
 from app import mail
 from flask_mail import Message
-from flask_login import LoginManager, logout_user, login_user, current_user, login_required
+from flask_login import LoginManager, logout_user, login_user, current_user,\
+    login_required
 import hashlib
 from app.models.users import VerifyEmailRequest
 from database.db_adapter import db
@@ -9,9 +10,7 @@ from app.http.middleware.generators import generate_hash
 
 
 # Verify user account
-def send_verify_email():
-    # user must be logged in order to access this, so let's get the session
-    user = current_user
+def send_verify_email(user=current_user):
     # Create a new request to verify email
     email_token = generate_hash()  # email THIS to the user
     hashed_id = hashlib.sha256(email_token).hexdigest()

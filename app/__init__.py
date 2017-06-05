@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request, url_for
 from app.http.controllers import home, login, register, dashboard,\
     logout, blog, upload, account
 from flask_socketio import SocketIO
@@ -55,6 +55,9 @@ def create_app():
     # SocketIO
     socketio.init_app(app)
 
+    # Url generator
+    app.jinja_env.globals['url_for_other_page'] = url_for_other_page
+
     return app
 
 
@@ -67,3 +70,9 @@ def setup_authentication(app):
     login_manager.user_loader(load_user)
     login_manager.login_view = 'login.login'
 
+
+# Url generator
+def url_for_other_page(page):
+    args = request.view_args.copy()
+    args['page'] = page
+    return url_for(request.endpoint, **args)

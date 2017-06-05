@@ -94,7 +94,7 @@ def seed_user_table():
                                "display_name": "admin",
                                "email": email,
                                "password": password,
-                               "level": 2,
+                               "level": 3,
                                "verified": True,
                                "created": datetime.now(),
                                "modified": datetime.now()

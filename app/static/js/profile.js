@@ -13,11 +13,9 @@ $("#overlay").click(function() {
 });
 
 $('#password-form').submit(function( event ) {
-    event.preventDefault();
     var password = $('#password');
     var retype = $('#retype');
 
-    var nameVal = $('#name').val();
     var passwordVal = $('#password').val();
     var retypeVal = $('#retype').val();
 
@@ -65,17 +63,13 @@ $('#password-form').submit(function( event ) {
     } else {
         return true;
     }
-
+});
 
 
 $('#profile-form').submit(function( event ) {
-
-    event.preventDefault();
     var name = $('#name');
-    var description = $('#description');
 
     var nameVal = $('#name').val();
-    var desVal = $('#description').val();
 
     var error = $("#message");
     var missing = false;
@@ -88,12 +82,6 @@ $('#profile-form').submit(function( event ) {
         error.html("Name cannot be empty");
         name.addClass('shake');
         name.css('border-color', 'red');
-        missing = true;
-    }
-    if (nameVal == '') {
-        error.html("Name cannot be empty");
-        description.addClass('shake');
-        description.css('border-color', 'red');
         missing = true;
     }
 

@@ -48,6 +48,20 @@
                             <p>Profile</p>
                         </a>
                     </li>
+                    {% if current_user.access_level == 3 %}
+                    <li>
+                        <a href="/dashboard/approvals">
+                            <i class="material-icons text-gray">done_all</i>
+                            <p>Approvals</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/dashboard/create">
+                            <i class="material-icons text-gray">group_add</i>
+                            <p>Create User</p>
+                        </a>
+                    </li>
+                    {% endif %}
                     <li>
                         <a href="/logout">
                             <i class="material-icons text-gray">power_settings_new</i>

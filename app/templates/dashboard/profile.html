@@ -3,18 +3,26 @@
 {% block styles %}
 {{ super() }}
 <link href="{{url_for('static', filename='css/profile.css')}}" rel="stylesheet">
+<style type="text/css">
+    .profile-container {
+        margin-top: 8px;
+        position: relative;
+        width: 50% !important;
+        margin: 0 auto;
+    }
+</style>
 {% endblock %}
 
-{% block section_title %} <h4>Profile</h4> {% endblock %}
+{% block section_title %} <h4>Edit Profile</h4> {% endblock %}
 
 {% block content %}
 <div class="content">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header card-chart" data-background-color="purple">
-                        <div class="profile-container" style="width: 50%;">
+                        <div class="profile-container">
                             <img src="{{ profile_image_url }}" id="profile-image" class="img-user">
                             <div class="overlay" id="overlay">
                                 <div class="overlay-text">Change Image</div>
@@ -42,17 +50,23 @@
                         </div>
                         <form class="form-horizontal" action="/dashboard/profile" method="POST" id="profile-form">
                                 <!-- Text input-->
-                                <div class="form-group">
-                                    <div class="input-group col-md-12">
-                                        <input type="text" name="name" id="name" class="form-control" placeholder="Name" value="{{ name }}">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group label-floating">
+                                            <label class="control-label">Name</label>
+                                            <input type="text" class="form-control" name="name" id="name" class="form-control" value="{{ name }}">
+                                        </div>
                                     </div>
                                 </div>
-                                <!-- Text input-->
                                 <div class="form-group">
-                                    <div class="input-group col-md-12">
-                                        <input type="text" class="form-control" id="description" name="description" placeholder="Description" value="{{ description }}">
+                                    <div class="col-md-12">
+                                        <div class="form-group label-floating">
+                                            <label class="control-label">Description</label>
+                                            <textarea rows="5" class="form-control" id="description" name="description" >{{ description }}</textarea>
+                                        </div>
                                     </div>
                                 </div>
+                                <i>Note it will appear as: <strong>{{ name }}</strong> is a <strong>[description]</strong></i>
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <button class="mui-btn mui-btn--primary" id="submit" name="submit">Submit</button>
@@ -61,16 +75,23 @@
                                 <input type="hidden" name="form-type" value="1">
                         </form>
                         <hr></hr>
+                        <h4 class="title">Change Password</h4>
                         <form class="form-horizontal" action="/dashboard/profile" method="POST" id="password-form">                                <!-- Text input-->
-                                <div class="form-group">
-                                    <div class="input-group col-md-12">
-                                        <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group label-floating">
+                                            <label class="control-label">Password</label>
+                                            <input type="password" class="form-control" id="password" name="password">
+                                        </div>
                                     </div>
                                 </div>
                                 <!-- Featured Image -->
-                                <div class="form-group">
-                                    <div class="input-group col-md-12">
-                                        <input name="retype" id="retype" type="password" placeholder="Re-type Password" class="form-control input-md" title="Password must be at least 6 characters and must contain at least 1 uppercase letter and 1 number">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group label-floating">
+                                            <label class="control-label">Re-type Password</label>
+                                            <input name="retype" id="retype" type="password" class="form-control input-md" title="Password must be at least 6 characters and must contain at least 1 uppercase letter and 1 number">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -114,10 +135,4 @@
     <script type="text/javascript">document.getElementById("profile").classList.add("active");</script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js"></script>
     <script defer src="{{url_for('static', filename='js/profile.js')}}"></script>
-    <script type="text/javascript">
-    // If image not found use default
-    $('#profile-image').on("error", function () {
-        this.src = "{{url_for('static', filename='images/default_logo.png')}}";
-    });
-    </script>
 {% endblock %}

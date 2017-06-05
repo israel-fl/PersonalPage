@@ -12,7 +12,7 @@ def validate_access(level=1):
             if current_user.access_level >= level:
                 return f(*args, **kwargs)
             else:
-                return url_for('login.login')
+                return redirect(url_for('login.login'))
         return authorize
     return decorator
 

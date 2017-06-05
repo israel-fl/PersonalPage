@@ -13,7 +13,8 @@
     "material-dashboard": "https://github.com/creativetimofficial/material-dashboard.git",
     "jQuery-Picture-Cut": "https://github.com/tuyoshivinicius/jQuery-Picture-Cut.git#^1.1.2",
     "bootstrap-markdown-editor": "^2.0.2",
-    "datatables.net": "^1.10.15"
+    "datatables.net": "^1.10.15",
+    "materialize": "^0.98.2"
   },
   "private": true
 }

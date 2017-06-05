@@ -1,5 +1,6 @@
-$('#register').submit(function () {
-
+$('#register').submit(function (e) {
+    e.preventDefault();
+    console.log("form submitted");
     var name = $("#name");
     var username = $("#username");
     var email = $('#email');
@@ -9,7 +10,7 @@ $('#register').submit(function () {
     var nameVal = $("#name").val();
     var usernameVal = $("#username").val();
     var emailVal = $('#email').val();
-    var passVal = $('#password').val();
+    var passwordVal = $('#password').val();
     var retypeVal = $('#retype').val();
 
     // Remove the class so that it can be readded in case of errors
@@ -46,11 +47,11 @@ $('#register').submit(function () {
         missing = true;
     }
     // check password is between 6 and 100 characters
-    if (passVal.length < 6 || passVal.length > 100) {
+    if (passwordVal.length < 6 || passwordVal.length > 100) {
         error.html("Password must be more than 6 characters, contain at least 1 uppercase letter and 1 number");
         missing = true;
         passwordError = true;
-    } else if (retypeVal != passVal){  // check passwords match
+    } else if (retypeVal != passwordVal){  // check passwords match
         error.html("Passwords don't match");
         passwordError = true;
     }
@@ -62,7 +63,7 @@ $('#register').submit(function () {
     }
     // Add regex validation to password
     var reg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
-    if (!reg.test(passVal)) {
+    if (!reg.test(passwordVal)) {
         pass.addClass('shake');
         pass.css('border-color', 'red');
         error.html("Password must contain at least 1 uppercase letter and 1 number");

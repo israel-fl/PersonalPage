@@ -32,7 +32,8 @@ def register():
                 user = User(name=name,
                             display_name=username,
                             email=email,
-                            password=password)
+                            password=password,
+                            profile_image_url=url_for('static', filename='images/default_logo.png'))
                 # save the new user
                 db.add(user)
                 db.commit()
@@ -43,7 +44,7 @@ def register():
                 # login the current user so that we have a handle on the object
                 login_user(user)
                 from app.http.controllers.mail_senders import send_verify_email
-                send_verify_email()
+                send_verify_email(user)
                 return redirect(url_for("register.verify_user"))
         except Exception as e:
             print(e)

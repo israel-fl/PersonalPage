@@ -89,10 +89,4 @@
 {% block scripts %} {{ super() }}
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js"></script>
 <script defer src="{{url_for('static', filename='js/profile.js')}}"></script>
-<script type="text/javascript">
-// If image not found use default
-$('#profile-image').on("error", function() {
-    this.src = "{{url_for('static', filename='images/default_logo.png')}}";
-});
-</script>
 {% endblock %}
