@@ -27,10 +27,10 @@ def login():
             if (password_match):
                 login_user(user)
                 if (current_user.is_active):
-                    if current_user.access_level == 2:
+                    if current_user.access_level >= 2:
                         return redirect(url_for("dashboard.dashboard"))
                     else:
-                        return redirect(url_for("account"))
+                        return redirect(url_for("home.account"))
                 else:
                     # if the user has not verified their account redirect
                     # them to the verification portal
