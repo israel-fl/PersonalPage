@@ -36,3 +36,20 @@ $('#login').submit(function () {
         return true;
     }
 });
+
+function onSignIn(googleUser) {
+  var profile = googleUser.getBasicProfile();
+  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+  console.log('Name: ' + profile.getName());
+  console.log('Image URL: ' + profile.getImageUrl());
+  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+}
+
+// This function is called when someone finishes with the Login
+// Button.  See the onlogin handler attached to it in the sample
+// code below.
+function checkLoginState() {
+    FB.getLoginStatus(function(response) {
+      statusChangeCallback(response);
+    });
+}

@@ -22,21 +22,22 @@ depends_on = None
 
 
 def upgrade():
-    op.create_table("users",
-                    sa.Column("id", sa.Integer(), nullable=False),
-                    sa.Column("name", sa.String(255), nullable=False),
-                    sa.Column("display_name", sa.String(255), nullable=False),
-                    sa.Column("email", sa.String(255), nullable=False),
-                    sa.Column("password", sa.String(255), nullable=False),
-                    sa.Column("level", sa.Integer(), nullable=False),
-                    sa.Column("verified", sa.Boolean(),
-                              nullable=False, default=False),
-                    sa.Column("created", sa.DateTime(), nullable=False),
-                    sa.Column("modified", sa.DateTime(), nullable=True),
-                    sa.Column("profile_image_url", sa.String(255), nullable=True),
-                    sa.Column("description", sa.String(255), nullable=True),
-                    sa.PrimaryKeyConstraint("id"),
-                    )
+    op.create_table(
+        "users",
+        sa.Column("id", sa.Integer(), nullable=False),
+        sa.Column("name", sa.String(255), nullable=False),
+        sa.Column("display_name", sa.String(255), nullable=False),
+        sa.Column("email", sa.String(255), nullable=False),
+        sa.Column("password", sa.String(255), nullable=False),
+        sa.Column("level", sa.Integer(), nullable=False),
+        sa.Column("verified", sa.Boolean(),
+                  nullable=False, default=False),
+        sa.Column("created", sa.DateTime(), nullable=False),
+        sa.Column("modified", sa.DateTime(), nullable=True),
+        sa.Column("profile_image_url", sa.String(255), nullable=True),
+        sa.Column("description", sa.String(255), nullable=True),
+        sa.PrimaryKeyConstraint("id"),
+    )
     op.create_unique_constraint("uq_user_name", "users", ["display_name", "email"])
     op.create_table(
         "password_reset_requests",

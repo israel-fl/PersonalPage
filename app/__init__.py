@@ -21,7 +21,7 @@ def create_app():
     # Init database
     init_db()
 
-    with open("app/config.json") as config_file:
+    with open("app/app_config.json") as config_file:
         keys = json.load(config_file)
         app.secret_key = keys.get("SECRET_KEY")
         app.config['MAIL_PASSWORD'] = keys.get("MAIL_PASSWORD")

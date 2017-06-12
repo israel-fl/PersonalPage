@@ -15,6 +15,11 @@
     </script>
     <!-- GOOGLE ANALYTICS -->
 
+    <!-- FACEBOOK Login -->
+    <script async defer src="{{url_for('static', filename='js/base.js')}}"></script>
+
+    <!-- Google Client ID -->
+    <meta name="google-signin-client_id" content="352888396080-mcvh515uocehs0l517bh2qfrrutq04ul.apps.googleusercontent.com">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,6 +31,14 @@
     <!-- jQuery -->
     <script src="{{url_for('static', filename='bower_components/jquery/dist/jquery.min.js')}}"></script>
 
+    <!-- Adsense -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-9897928155733689",
+        enable_page_level_ads: true
+      });
+    </script>
 </head>
 {% endblock %}
 
@@ -55,19 +68,44 @@
 
 {% block scripts %}
 <!-- Bootstrap Core JavaScript -->
-<script defer src="{{url_for('static', filename='bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+<script async defer src="{{url_for('static', filename='bower_components/bootstrap/dist/js/bootstrap.min.js')}}"></script>
 <!-- Plugin JavaScript -->
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+<script async defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
 <!-- Contact Form JavaScript -->
-<script defer src="{{url_for('static', filename='js/jqBootstrapValidation.js')}}"></script>
+<script async defer src="{{url_for('static', filename='js/jqBootstrapValidation.js')}}"></script>
 <!-- Other Scripts -->
-<script defer src="{{url_for('static', filename='bower_components/mui/packages/cdn/js/mui.min.js')}}"></script>
+<script async defer src="{{url_for('static', filename='bower_components/mui/packages/cdn/js/mui.min.js')}}"></script>
 <!-- Material UI -->
-<script defer  src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+<script async defer  src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+<!-- Jquery UI -->
 <script
   src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
   integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="
   crossorigin="anonymous"></script>
+
+<!-- Google Platform Library -->
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+
+<script type="text/javascript">
+  function statusChangeCallback(response) {
+    console.log('statusChangeCallback');
+    console.log(response);
+    // The response object is returned with a status field that lets the
+    // app know the current login status of the person.
+    // Full docs on the response object can be found in the documentation
+    // for FB.getLoginStatus().
+    if (response.status === 'connected') {
+        // Logged into your app and Facebook.
+        console.log("connected");
+
+    } else {
+      // The person is not logged into your app or we are unable to tell.
+        console.log(response.status);
+    }
+  }
+
+
+</script>
 {% endblock %}
 
 </html>
