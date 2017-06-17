@@ -38,11 +38,27 @@ $('#login').submit(function () {
 });
 
 function onSignIn(googleUser) {
-  var profile = googleUser.getBasicProfile();
-  console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-  console.log('Name: ' + profile.getName());
-  console.log('Image URL: ' + profile.getImageUrl());
-  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+    var profile = googleUser.getBasicProfile();
+    console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+    console.log('Name: ' + profile.getName());
+    console.log('Image URL: ' + profile.getImageUrl());
+    console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+    data = {"user_id": profile.getId(),
+            "email": profile.getEmail(),
+            "name": profile.getName(),
+            "image_url": profile.getImageUrl()
+        }
+    $.ajax({
+        url : "AJAX_POST_URL",
+        type: "POST",
+        data : data,
+        success: function(data, textStatus, jqXHR) {
+            //data - response from server
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+
+        }
+    }
 }
 
 // This function is called when someone finishes with the Login

@@ -1,14 +1,10 @@
 $('#register').submit(function (e) {
-    e.preventDefault();
-    console.log("form submitted");
     var name = $("#name");
-    var username = $("#username");
     var email = $('#email');
     var pass = $('#password');
     var retype = $('#retype');
 
     var nameVal = $("#name").val();
-    var usernameVal = $("#username").val();
     var emailVal = $('#email').val();
     var passwordVal = $('#password').val();
     var retypeVal = $('#retype').val();
@@ -30,13 +26,6 @@ $('#register').submit(function (e) {
         error.html("Name can only be between 4 and 40 characters");
         name.addClass('shake');
         name.css('border-color', 'red');
-        missing = true;
-    }
-    // check username is between 4 and 25
-    if (usernameVal.length < 4 || usernameVal.length > 25) {
-        error.html("Username can only be between 4 and 25 characters");
-        username.addClass('shake');
-        username.css('border-color', 'red');
         missing = true;
     }
     // check email contains @ and its betwen 6 and 50 characters

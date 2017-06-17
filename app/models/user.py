@@ -10,7 +10,6 @@ class User(Base):
     __tablename__ = "users"
     id = Column("id", Integer, primary_key=True, autoincrement=True)
     name = Column("name", String, nullable=False)
-    display_name = Column('display_name', String, nullable=False)
     email = Column("email", String, nullable=False)
     password = Column("password", String, nullable=False)
     # New users are level 1 by default

@@ -30,4 +30,4 @@ def upgrade():
 
 
 def downgrade():
-    op.drop_table('posts')
+    op.drop_table('remote_source_users')

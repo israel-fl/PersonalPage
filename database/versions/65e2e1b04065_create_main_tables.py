@@ -26,7 +26,6 @@ def upgrade():
         "users",
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("name", sa.String(255), nullable=False),
-        sa.Column("display_name", sa.String(255), nullable=False),
         sa.Column("email", sa.String(255), nullable=False),
         sa.Column("password", sa.String(255), nullable=False),
         sa.Column("level", sa.Integer(), nullable=False),

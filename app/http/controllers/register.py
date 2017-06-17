@@ -22,30 +22,11 @@ def register():
             password = generate_password_hash(request.form.get('password'))
             email = request.form.get("email")
             name = request.form.get("name")
-            username = request.form.get("username")
             # Check if an account with the given credentials already exists
             if (User.query.filter(User.email == email).first()):
-                flash('Sorry, there is already an account associated with that email', "danger")
-            elif (User.query.filter(User.display_name == username).first()):
-                flash('Sorry, that username has already been taken', "danger")
+                flash('Sorry, that email is already in use', "danger")
             else:
-                user = User(name=name,
-                            display_name=username,
-                            email=email,
-                            password=password,
-                            profile_image_url=url_for('static', filename='images/default_logo.png'))
-                # save the new user
-                db.add(user)
-                db.commit()
-
-                # check if there is a user logged in, if so log them out
-                if (current_user):
-                    logout_user()
-                # login the current user so that we have a handle on the object
-                login_user(user)
-                from app.http.controllers.mail_senders import send_verify_email
-                send_verify_email(user)
-                return redirect(url_for("register.verify_user"))
+                return create_user(name, email, password)
         except Exception as e:
             print(e)
             db.rollback()
@@ -107,6 +88,50 @@ def show_terms():
 def show_policy():
     return render_template("policies/policy.html")
 
+
+@blueprint.route('/social', methods=["GET", "POST"])
+def register_social_account():
+
+
+    def post():
+        data = request.get_json()
+        user_id = data.get("user_id")
+        email = data.get("email")
+        name = data.get("name")
+        image_url = data.get("image_url")
+        if email is None:
+            render_template("register/register.html",
+                            user_id=user_id,
+                            name=name,
+                            image_url=image_url)
+        elif image_url is None:
+            return create_user(name, email, image_url)
+        else:
+            return create_user(name, email)
+
+    if request.method == 'POST':
+        return post()
+
+
+def create_user(name, email, password="",
+    profile_image_url=url_for('static', filename='images/default_logo.png')):
+
+    user = User(name=name,
+                email=email,
+                password=password,
+                profile_image_url=profile_image_url)
+    # save the new user
+    db.add(user)
+    db.commit()
+
+    # check if there is a user logged in, if so log them out
+    if (current_user):
+        logout_user()
+    # login the current user so that we have a handle on the object
+    login_user(user)
+    from app.http.controllers.mail_senders import send_verify_email
+    send_verify_email(user)
+    return redirect(url_for("register.verify_user"))
 
 # # Enable message flashing for errors in form validation
 # def flash_errors(form):
