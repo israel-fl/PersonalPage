@@ -37,35 +37,32 @@ $('#login').submit(function () {
     }
 });
 
-function onSignIn(googleUser) {
+function onGoogleSignin(googleUser) {
     var profile = googleUser.getBasicProfile();
     console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
     console.log('Name: ' + profile.getName());
     console.log('Image URL: ' + profile.getImageUrl());
     console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-    data = {"user_id": profile.getId(),
-            "email": profile.getEmail(),
-            "name": profile.getName(),
-            "image_url": profile.getImageUrl()
-        }
-    $.ajax({
-        url : "AJAX_POST_URL",
-        type: "POST",
-        data : data,
-        success: function(data, textStatus, jqXHR) {
-            //data - response from server
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-
-        }
-    }
+    $("#social-user-id").val(profile.getId());
+    $("#social-email").val(profile.getEmail());
+    $("#social-name").val(profile.getName());
+    $("#social-image").val(profile.getImageUrl());
 }
 
 // This function is called when someone finishes with the Login
 // Button.  See the onlogin handler attached to it in the sample
 // code below.
-function checkLoginState() {
+function onFBSignin() {
     FB.getLoginStatus(function(response) {
       statusChangeCallback(response);
     });
+
+    console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+    console.log('Name: ' + profile.getName());
+    console.log('Image URL: ' + profile.getImageUrl());
+    console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+    $("#social-user-id").val(profile.getId());
+    $("#social-email").val(profile.getEmail());
+    $("#social-name").val(profile.getName());
+    $("#social-image").val(profile.getImageUrl());
 }

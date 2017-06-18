@@ -42,8 +42,16 @@
                 <button type="submit" class="btn-block btn-full-width mui-btn mui-btn--raised mui-btn--primary">Login</button>
             </form>
             <p class="divider">or</p>
-            <div class="fb-login-button btn-block btn-full-width " data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false" data-width="100%" data-scope="public_profile,email"></div>
-            <div class="g-signin2" data-width="100%" style="margin-top: 8px;" data-longtitle="true" data-theme="dark" data-scope="profile email" data-onsuccess="onSignIn"></div>
+            <div>
+                <form action="/register/social" method="POST">
+                    <div class="fb-login-button btn-block btn-full-width " data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false" data-width="100%" data-scope="public_profile,email"></div>
+                    <div class="g-signin2" data-width="100%" style="margin-top: 8px;" data-longtitle="true" data-theme="dark" data-scope="profile email" data-onsuccess="onSignIn"></div>
+                    <input type="hidden" name="user_id" id="social-user-id">
+                    <input type="hidden" name="email" id="social-email">
+                    <input type="hidden" name="name" id="social-name">
+                    <input type="hidden" name="image_url" id="social-image">
+                </form>
+            </div>
             <hr></hr>
             <div class="row text-center">
                 <a href="/reset">I forgot my password</a>
