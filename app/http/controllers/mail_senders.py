@@ -3,7 +3,7 @@ from flask_mail import Message
 from flask_login import LoginManager, logout_user, login_user, current_user,\
     login_required
 import hashlib
-from app.models.users import VerifyEmailRequest
+from app.models.user import VerifyEmailRequest
 from database.db_adapter import db
 from flask import render_template
 from app.http.middleware.generators import generate_hash
@@ -28,7 +28,7 @@ def send_verify_email(user=current_user):
             sender="no-reply@israelfl.com",
             recipients=recipients)
     email.html = render_template("emails/verify_email.html",
-                                 username=user.display_name,
+                                 name=user.name,
                                  url=url)
     print(recipients)
     mail.send(email)
@@ -36,7 +36,7 @@ def send_verify_email(user=current_user):
 
 
 # Reset password endpoint
-def send_recovery_email(username, email_addr, token):
+def send_recovery_email(name, email_addr, token):
     url = "https://www.israelfl.com/register/activate?token={}".format(token)
     print(url) ## for testing only
     recipients = list()
@@ -46,9 +46,10 @@ def send_recovery_email(username, email_addr, token):
             sender="no-reply@israelfl.com",
             recipients=recipients)
     email.html = render_template("emails/verify_email.html",
-                                 usename=username,
+                                 name=name,
                                  url=url)
     mail.send(email)
+    print("email sent")
 
 
 def send_message_email(name, email_addr, phone, message):
@@ -62,3 +63,4 @@ def send_message_email(name, email_addr, phone, message):
                                  phone=phone,
                                  message=message)
     mail.send(email)
+    print("email sent")

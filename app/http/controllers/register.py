@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, flash, redirect, url_for,\
     jsonify, send_from_directory, Blueprint, abort, current_app as app
 from flask_mail import Mail, Message
 from flask_login import logout_user, login_user, current_user, login_required
-from app.models.user import User, VerifyEmailRequest
+from app.models.user import User, VerifyEmailRequest, RemoteSourceUser
 from database.db_adapter import db
 from app.http.middleware.decorators import validate_request
 from werkzeug.security import generate_password_hash
@@ -26,7 +26,9 @@ def register():
             if (User.query.filter(User.email == email).first()):
                 flash('Sorry, that email is already in use', "danger")
             else:
-                return create_user(name, email, password)
+                next = create_user(name, email,
+                                   profile_image_url=None, password=password)
+                return redirect(next)
         except Exception as e:
             print(e)
             db.rollback()
@@ -94,28 +96,74 @@ def register_social_account():
 
 
     def post():
-        data = request.get_json()
-        user_id = data.get("user_id")
-        email = data.get("email")
-        name = data.get("name")
-        image_url = data.get("image_url")
+        google_id = request.form.get("google-id")
+        facebook_id = request.form.get("fb-id")
+        email = request.form.get("social-email")
+        name = request.form.get("social-name")
+        image_url = request.form.get("social-image")
         if email is None:
-            render_template("register/register.html",
-                            user_id=user_id,
-                            name=name,
-                            image_url=image_url)
-        elif image_url is None:
-            return create_user(name, email, image_url)
+            return render_template("register/register_email_only.html",
+                                   google_id=google_id,
+                                   facebook_id=facebook_id,
+                                   name=name,
+                                   image_url=image_url)
         else:
-            return create_user(name, email)
+            # user is logged in with this function
+            next = create_user(name, email, image_url)
+            print(next)
+            print("Next finished")
+            # hence current_user can be accessed afterwards
+            if google_id:
+                remote_user = RemoteSourceUser(user_id=current_user.id,
+                                               google_id=google_id)
+            else:
+                remote_user = RemoteSourceUser(user_id=current_user.id,
+                                               facebook_id=facebook_id)
+            try:
+                db.add(remote_user)
+                db.commit()
+            except Exception:
+                db.rollback()
+            return redirect(next)
 
     if request.method == 'POST':
         return post()
 
 
-def create_user(name, email, password="",
-    profile_image_url=url_for('static', filename='images/default_logo.png')):
 
+@blueprint.route('/social/email', methods=["GET", "POST"])
+def missing_email():
+
+    def post():
+        name = request.form.get("name")
+        email = request.form.get("email")
+        image_url = request.form.get("social-image")
+        google_id = request.form.get("google-id")
+        facebook_id = request.form.get("fb-id")
+        # user is logged in with this function
+        next = create_user(name, email, image_url)
+        # hence current_user can be accessed afterwards
+        if google_id:
+            remote_user = RemoteSourceUser(user_id=current_user.id,
+                                           google_id=google_id)
+        else:
+            remote_user = RemoteSourceUser(user_id=current_user.id,
+                                           facebook_id=facebook_id)
+        try:
+            db.add(remote_user)
+            db.commit()
+        except Exception:
+            db.rollback()
+        return redirect(next)
+
+    if request.method == 'POST':
+        return post()
+
+
+def create_user(name, email, profile_image_url=None, password=""):
+
+    if profile_image_url is None:
+        profile_image_url = url_for('static', filename='images/default_logo.png')
     user = User(name=name,
                 email=email,
                 password=password,
@@ -129,15 +177,8 @@ def create_user(name, email, password="",
         logout_user()
     # login the current user so that we have a handle on the object
     login_user(user)
+    print("Attempting to send email")
     from app.http.controllers.mail_senders import send_verify_email
     send_verify_email(user)
-    return redirect(url_for("register.verify_user"))
-
-# # Enable message flashing for errors in form validation
-# def flash_errors(form):
-#     for field, errors in form.errors.items():
-#         for error in errors:
-#             flash(u"Error in the %s field - %s" % (
-#                 getattr(form, field).label.text,
-#                 error
-#             ), "danger")
+    print("returning")
+    return url_for("register.verify_user")

@@ -27,7 +27,7 @@ def upgrade():
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("name", sa.String(255), nullable=False),
         sa.Column("email", sa.String(255), nullable=False),
-        sa.Column("password", sa.String(255), nullable=False),
+        sa.Column("password", sa.String(255), nullable=True),
         sa.Column("level", sa.Integer(), nullable=False),
         sa.Column("verified", sa.Boolean(),
                   nullable=False, default=False),
@@ -37,7 +37,7 @@ def upgrade():
         sa.Column("description", sa.String(255), nullable=True),
         sa.PrimaryKeyConstraint("id"),
     )
-    op.create_unique_constraint("uq_user_name", "users", ["display_name", "email"])
+    op.create_unique_constraint("uq_email", "users", ["email"])
     op.create_table(
         "password_reset_requests",
         sa.Column("user_id", sa.Integer(), nullable=False),
@@ -73,7 +73,6 @@ def seed_user_table():
     users_table = table("users",
                         column("id", Integer),
                         column("name", String),
-                        column("display_name", String),
                         column("email", String),
                         column("password", String),
                         column("level", Integer),
@@ -82,7 +81,7 @@ def seed_user_table():
                         column("modified", String)
                         )
 
-    with open("config.json") as config_file:
+    with open("db_config.json") as config_file:
         keys = json.load(config_file)
         email = keys.get("ADMIN_EMAIL")
         password = generate_password_hash(keys.get("ADMIN_PASSWORD"))
@@ -91,7 +90,6 @@ def seed_user_table():
                            {
                                "id": 1,
                                "name": "Administrator",
-                               "display_name": "admin",
                                "email": email,
                                "password": password,
                                "level": 3,

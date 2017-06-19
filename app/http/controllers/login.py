@@ -67,7 +67,7 @@ def forgot_password():
                 db.add(password_reset_request)
                 db.commit()
                 from app.http.controllers.mail_senders import send_recovery_email
-                send_recovery_email(user.display_name, user.email, email_token)
+                send_recovery_email(user.name, user.email, email_token)
                 return render_template("login/reset_password.html")
             except Exception:
                 flash("There was an error processing your request", "danger")

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, Boolean
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey
 from database.db_adapter import Base
 from sqlalchemy.orm import relationship
 import datetime
@@ -22,13 +22,14 @@ class User(Base):
     description = Column("description", String, nullable=True)
     articles = relationship("Post", back_populates="author")
     comments = relationship("Comment", back_populates="user")
+    remote_user = relationship("RemoteSourceUser", back_populates="user")
 
-    def __init__(self, name, display_name, email, password,
+    def __init__(self, name, email, password, profile_image_url,
                  access_level="1", verified=False):
         self.name = name
-        self.display_name = display_name
         self.email = email
         self.password = generate_password_hash(password)
+        self.profile_image_url = profile_image_url
         self.access_level = access_level
         self.verified = verified
         self.created = str(datetime.datetime.now())
@@ -67,3 +68,14 @@ class VerifyEmailRequest(Base):
     created = Column("created", DateTime, nullable=False,
                      default=datetime.datetime.now())
     completed = Column("completed", Boolean, nullable=False, default=False)
+
+
+class RemoteSourceUser(Base):
+
+    __tablename__ = "remote_source_users"
+    id = Column("id", Integer, primary_key=True, autoincrement=True)
+    user_id = Column(Integer, ForeignKey('users.id'))
+    google_id = Column("google_user_id", String, nullable=True)
+    fb_id = Column("fb_user_id", String, nullable=True)
+    user = relationship("User", back_populates="remote_user")
+

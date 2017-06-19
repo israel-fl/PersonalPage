@@ -43,10 +43,14 @@ function onGoogleSignin(googleUser) {
     console.log('Name: ' + profile.getName());
     console.log('Image URL: ' + profile.getImageUrl());
     console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-    $("#social-user-id").val(profile.getId());
+    $("#google-id").val(profile.getId());
     $("#social-email").val(profile.getEmail());
     $("#social-name").val(profile.getName());
     $("#social-image").val(profile.getImageUrl());
+    // Submit the form now that the values are set
+    $( "#social-form" ).submit(function( event ) {
+        event.preventDefault();
+    });
 }
 
 // This function is called when someone finishes with the Login
@@ -54,15 +58,27 @@ function onGoogleSignin(googleUser) {
 // code below.
 function onFBSignin() {
     FB.getLoginStatus(function(response) {
-      statusChangeCallback(response);
-    });
+        if (response.status === 'connected') {
+            // Logged into your app and Facebook.
+            console.log("connected");
+            FB.api('/me', { fields: 'name, email' }, function(response) {
+                console.log(response.email);
+                console.log(response.name);
+                console.log(response.id);
+                $("#fb-id").val(response.id);
+                $("#social-email").val(response.email);
+                $("#social-name").val(response.name);
+                // Make the next api call when the previous one has finished
+                FB.api('/me/?fields=picture', function(response) {
+                    $("#social-image").val(response.picture.data.url);
+                    // Submit the form when all calls have finished
+                    $( "#social-form" ).submit();
+                });
+            });
 
-    console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-    console.log('Name: ' + profile.getName());
-    console.log('Image URL: ' + profile.getImageUrl());
-    console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-    $("#social-user-id").val(profile.getId());
-    $("#social-email").val(profile.getEmail());
-    $("#social-name").val(profile.getName());
-    $("#social-image").val(profile.getImageUrl());
+        } else {
+          // The person is not logged into your app or we are unable to tell.
+            console.log(response.status);
+        }
+    });
 }
