@@ -8,3 +8,5 @@ error.log
 access.log
 pid
 bower_components
+app_config.json
+db_config.json

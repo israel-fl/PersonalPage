@@ -47,10 +47,9 @@ function onGoogleSignin(googleUser) {
     $("#social-email").val(profile.getEmail());
     $("#social-name").val(profile.getName());
     $("#social-image").val(profile.getImageUrl());
+    console.log("submitting");
     // Submit the form now that the values are set
-    $( "#social-form" ).submit(function( event ) {
-        event.preventDefault();
-    });
+    $( "#social-form" ).submit();
 }
 
 // This function is called when someone finishes with the Login

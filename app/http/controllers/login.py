@@ -47,7 +47,8 @@ def login():
         return post()
     else:
         # check if there is a user logged in, if so send him to the dashboard
-        if (current_user.is_authenticated):
+        print(current_user.is_active())
+        if (current_user.is_active()):
             return redirect(url_for("dashboard.dashboard"))
         return render_template("login/login.html")
 
