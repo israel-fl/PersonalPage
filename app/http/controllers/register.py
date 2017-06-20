@@ -149,7 +149,7 @@ def create_remote_user(google_id, facebook_id):
                                        google_id=google_id)
     else:
         remote_user = RemoteSourceUser(user_id=current_user.id,
-                                       facebook_id=facebook_id)
+                                       fb_id=facebook_id)
     try:
         db.add(remote_user)
         db.commit()
@@ -174,7 +174,7 @@ def missing_email():
                                            google_id=google_id)
         else:
             remote_user = RemoteSourceUser(user_id=current_user.id,
-                                           facebook_id=facebook_id)
+                                           fb_id=facebook_id)
         try:
             db.add(remote_user)
             db.commit()

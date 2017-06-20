@@ -6,6 +6,17 @@
 <body id="page-top" class="index">
     {% block styles %}
         {{ super() }}
+        <style type="text/css">
+            .img-row {
+                position: relative;
+                float: left;
+                width:  400px;
+                height: 250px;
+                background-position: 50% 50%;
+                background-repeat:   no-repeat;
+                background-size:     cover;
+            }
+        </style>
     {% endblock %}
 
     <div id="skipnav"><a href="#maincontent">Skip to main content</a></div>
@@ -67,25 +78,27 @@
                         <img src="{{url_for('static', filename='images/portfolio/soul_voyage/sv_logo.png')}}" class="img-responsive img-portfolio" alt="Circus tent">
                     </a>
                 </div>
-                <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal4" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
+                <div class="row">
+                    <div class="col-sm-6 portfolio-item">
+                        <a href="#portfolioModal4" class="portfolio-link" data-toggle="modal">
+                            <div class="caption">
+                                <div class="caption-content">
+                                    <i class="fa fa-search-plus fa-3x"></i>
+                                </div>
                             </div>
-                        </div>
-                        <img src="{{url_for('static', filename='images/portfolio/data_rhino/logo.png')}}" class="img-responsive img-portfolio" alt="Circus tent">
-                    </a>
-                </div>
-                <div class="col-sm-4 portfolio-item">
-                    <a href="#portfolioModal5" class="portfolio-link" data-toggle="modal">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <i class="fa fa-search-plus fa-3x"></i>
+                            <img src="{{url_for('static', filename='images/portfolio/data_rhino/logo.png')}}" class="img-responsive img-portfolio" alt="Circus tent">
+                        </a>
+                    </div>
+                    <div class="col-sm-4 portfolio-item">
+                        <a href="#portfolioModal5" class="portfolio-link" data-toggle="modal">
+                            <div class="caption">
+                                <div class="caption-content">
+                                    <i class="fa fa-search-plus fa-3x"></i>
+                                </div>
                             </div>
-                        </div>
-                        <img src="{{url_for('static', filename='images/portfolio/pokemon/pk1.png')}}" class="img-responsive img-portfolio" alt="Circus tent">
-                    </a>
+                            <img src="{{url_for('static', filename='images/portfolio/pokemon/pk1.png')}}" class="img-responsive img-portfolio" alt="Circus tent">
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -108,7 +121,7 @@
                                 <i class="fa fa-search-plus fa-3x"></i>
                             </div>
                         </div> -->
-                        <img src="{{url_for('static', filename='images/skills/architecture.png')}}" class="img-responsive" alt="web">
+                        <img src="{{url_for('static', filename='images/skills/architecture.png')}}" class="img-responsive img-row" alt="web">
                     </a>
                     <h3>Web Architecture</h3>
                 </div>
@@ -119,7 +132,7 @@
                                 <i class="fa fa-search-plus fa-3x"></i>
                             </div>
                         </div> -->
-                        <img src="{{url_for('static', filename='images/skills/android.png')}}" class="img-responsive img-portfolio" alt="Safe">
+                        <img src="{{url_for('static', filename='images/skills/android_main.jpg')}}" class="img-responsive img-row" alt="Safe">
                     </a>
                     <h3>Android</h3>
                 </div>
@@ -130,7 +143,7 @@
                                 <i class="fa fa-search-plus fa-3x"></i>
                             </div>
                         </div> -->
-                        <img src="{{url_for('static', filename='images/portfolio/languages.png')}}" class="img-responsive" alt="Submarine">
+                        <img src="{{url_for('static', filename='images/portfolio/languages.png')}}" class="img-responsive img-row" alt="Submarine">
                     </a>
                     <h3>Programming Languages</h3>
                 </div>
@@ -195,6 +208,8 @@
     </div>
     <div id="log"></div>
     </section>
+
+    <!-- ABOUT Section -->
 
     <section id="about" class="success">
         <div class="row">
