@@ -26,6 +26,7 @@ def login():
             # password matches
             if (password_match):
                 login_user(user)
+                print(current_user.is_active)
                 if (current_user.is_active):
                     if current_user.access_level >= 2:
                         return redirect(url_for("dashboard.dashboard"))
@@ -46,9 +47,9 @@ def login():
     if (request.method == "POST"):
         return post()
     else:
+        print(current_user.is_active)
         # check if there is a user logged in, if so send him to the dashboard
-        print(current_user.is_active())
-        if (current_user.is_active()):
+        if (current_user.is_active):
             return redirect(url_for("dashboard.dashboard"))
         return render_template("login/login.html")
 

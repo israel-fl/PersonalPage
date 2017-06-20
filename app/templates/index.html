@@ -45,7 +45,7 @@
                     {% endif %}
                     {% if current_user.is_active %}
                     <li>
-                        <a href="/logout">Logout</a>
+                        <a onclick="signOut();" href="/logout">Logout</a>
                     </li>
                     {% else %}
                     <li>
@@ -117,4 +117,5 @@
 {{ super() }}
     <!-- Theme JavaScript -->
     <script defer src="{{url_for('static', filename='js/freelancer.min.js')}}"></script>
+    <script defer src="{{url_for('static', filename='js/index.js')}}"></script>
 {% endblock %}

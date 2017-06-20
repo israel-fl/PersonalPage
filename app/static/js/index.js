@@ -28,44 +28,62 @@ $(document).ready(function() {
 });
 
 $('#contactForm').submit(function( event ) {
-            var name = $('#name');
-            var email = $('#email');
-            var message = $('#message');
+    var name = $('#name');
+    var email = $('#email');
+    var message = $('#message');
 
-            var nameVal = $('#name').val();
-            var emailVal = $('#email').val();
-            var messageVal = $('#message').val();
+    var nameVal = $('#name').val();
+    var emailVal = $('#email').val();
+    var messageVal = $('#message').val();
 
-            var error = $("#message");
-            var missing = false;
+    var error = $("#message");
+    var missing = false;
 
-            // Remove the class so that it can be readded in case of errors
-            title.removeClass("shake");
-            comment.removeClass("shake");
+    // Remove the class so that it can be readded in case of errors
+    title.removeClass("shake");
+    comment.removeClass("shake");
 
-            if (nameVal == '') {
-                error.html("You must enter your name");
-                title.addClass('shake');
-                title.css('border-color', 'red');
-                missing = true;
-            }
-            if (emailVal == '') {
-                error.html("Please enter an email address");
-                comment.addClass('shake');
-                comment.css('border-color', 'red');
-                missing = true;
-            }
-            if (messageVal == '') {
-                error.html("Message cannot be empty");
-                comment.addClass('shake');
-                comment.css('border-color', 'red');
-                missing = true;
-            }
+    if (nameVal == '') {
+        error.html("You must enter your name");
+        title.addClass('shake');
+        title.css('border-color', 'red');
+        missing = true;
+    }
+    if (emailVal == '') {
+        error.html("Please enter an email address");
+        comment.addClass('shake');
+        comment.css('border-color', 'red');
+        missing = true;
+    }
+    if (messageVal == '') {
+        error.html("Message cannot be empty");
+        comment.addClass('shake');
+        comment.css('border-color', 'red');
+        missing = true;
+    }
 
-            if (missing) {
-                $("#show-errors").show();
-                return false;
-            } else {
-                return true;
-            }
-        });
+    if (missing) {
+        $("#show-errors").show();
+        return false;
+    } else {
+        return true;
+    }
+});
+
+function signOut() {
+    console.log("Signing out...");
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+    });
+
+    FB.logout(function(response) {
+        console.log('FB User signed out.');
+    })
+}
+
+function onLoad() {
+    gapi.load('auth2', function() {
+      gapi.auth2.init();
+    });
+}

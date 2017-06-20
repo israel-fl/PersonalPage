@@ -108,6 +108,20 @@ def register_social_account():
                                    name=name,
                                    image_url=image_url)
         else:
+            # check if the email is already taken
+            user = User.query.filter(User.email == email).first()
+            # if it does log them in
+            if user:
+                login_user(user)
+                if (current_user.is_active):
+                    if current_user.access_level >= 2:
+                        return redirect(url_for("dashboard.dashboard"))
+                    else:
+                        return redirect(url_for("home.account"))
+                else:
+                    # if the user has not verified their account redirect
+                    # them to the verification portal
+                    return redirect(url_for("register.verify_user"))
             # user is logged in with this function
             next = create_user(name, email, image_url)
             print(next)
