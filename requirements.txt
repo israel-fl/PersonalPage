@@ -17,3 +17,4 @@ flask-login
 mysql-python
 cerberus
 markdown
+google-api-python-client

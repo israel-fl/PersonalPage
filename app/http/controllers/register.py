@@ -114,23 +114,20 @@ def register_social_account():
             if user:
                 # check if this user has used a social login before,
                 # try to merge accounts
-                if user.remote_user.fb_id:
+                # check which id was supplied
+                if user.remote_user.google_id == google_id:
+                    return check_current_user_level()
+                elif user.remote_user.fb_id == facebook_id:
+                    return check_current_user_level()
+                elif google_id:
                     user.remote_user.google_id = google_id
                     db.commit()
-                elif user.remote_user.google_id:
+                else:
                     user.remote_user.fb_id = facebook_id
                     db.commit()
-                else:
-                    create_remote_user(google_id, facebook_id)
-                if (current_user.is_active):
-                    if current_user.access_level >= 2:
-                        return redirect(url_for("dashboard.dashboard"))
-                    else:
-                        return redirect(url_for("home.account"))
-                else:
-                    # if the user has not verified their account redirect
-                    # them to the verification portal
-                    return redirect(url_for("register.verify_user"))
+                # if the user has not verified their account redirect
+                # them to the verification portal
+                return redirect(url_for("register.verify_user"))
             # user is logged in with this function
             next = create_user(name, email, image_url)
             print(next)
@@ -140,6 +137,14 @@ def register_social_account():
 
     if request.method == 'POST':
         return post()
+
+
+def check_current_user_level():
+    if (current_user.is_active):
+        if current_user.access_level >= 2:
+            return redirect(url_for("dashboard.dashboard"))
+        else:
+            return redirect(url_for("home.account"))
 
 
 def create_remote_user(google_id, facebook_id):
