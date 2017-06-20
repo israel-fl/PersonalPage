@@ -112,7 +112,16 @@ def register_social_account():
             user = User.query.filter(User.email == email).first()
             # if it does log them in
             if user:
-                login_user(user)
+                # check if this user has used a social login before,
+                # try to merge accounts
+                if user.remote_user.fb_id:
+                    user.remote_user.google_id = google_id
+                    db.commit()
+                elif user.remote_user.google_id:
+                    user.remote_user.fb_id = facebook_id
+                    db.commit()
+                else:
+                    create_remote_user(google_id, facebook_id)
                 if (current_user.is_active):
                     if current_user.access_level >= 2:
                         return redirect(url_for("dashboard.dashboard"))
@@ -126,23 +135,26 @@ def register_social_account():
             next = create_user(name, email, image_url)
             print(next)
             print("Next finished")
-            # hence current_user can be accessed afterwards
-            if google_id:
-                remote_user = RemoteSourceUser(user_id=current_user.id,
-                                               google_id=google_id)
-            else:
-                remote_user = RemoteSourceUser(user_id=current_user.id,
-                                               facebook_id=facebook_id)
-            try:
-                db.add(remote_user)
-                db.commit()
-            except Exception:
-                db.rollback()
+            create_remote_user(google_id, facebook_id)
             return redirect(next)
 
     if request.method == 'POST':
         return post()
 
+
+def create_remote_user(google_id, facebook_id):
+    # hence current_user can be accessed afterwards
+    if google_id:
+        remote_user = RemoteSourceUser(user_id=current_user.id,
+                                       google_id=google_id)
+    else:
+        remote_user = RemoteSourceUser(user_id=current_user.id,
+                                       facebook_id=facebook_id)
+    try:
+        db.add(remote_user)
+        db.commit()
+    except Exception:
+        db.rollback()
 
 
 @blueprint.route('/social/email', methods=["GET", "POST"])
