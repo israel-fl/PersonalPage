@@ -1,0 +1,92 @@
+{% extends "index.html" %} {% block title %} Contact Me {% endblock %}
+{% block styles %}
+{{ super() }}
+<link href="{{url_for('static', filename='css/profile.css')}}" rel="stylesheet">
+{% endblock %} {% block content %}
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2>Account</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2">
+                <div class="profile-container">
+                    <img src="{{ profile_image_url }}" id="profile-image" class="img-user">
+                    <div class="overlay" id="overlay">
+                        <div class="overlay-text">Change Image</div>
+                    </div>
+                </div>
+                <h4 class="title profile-header">{{ username }}</h4>
+                <div class="row">
+                    <div class="row">
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                        <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
+                        {% if messages %} {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>{{ message }}</strong>
+                        </div>
+                        {% endfor %} {% endif %} {% endwith %}
+                    </div>
+                    <div class="row">
+                        <div class="alert alert-danger alert-dismissible" role="alert" id="show-errors" style="display:none">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong id="message"></strong>
+                        </div>
+                    </div>
+                    <form action="/account" method="POST" id="profile-form">
+                        <!-- Name input-->
+                        <div class="row control-group">
+                            <div class="mui-textfield mui-textfield--float-label">
+                                <input type="text" id="name" name="name" value="{{ name }}">
+                                <label>Name</label>
+                            </div>
+                        </div>
+                        <!-- Password input-->
+                        <div class="row control-group">
+                            <div class="mui-textfield mui-textfield--float-label">
+                                <input type="password" id="password" name="password">
+                                <label>New Password</label>
+                            </div>
+                        </div>
+                        <div class="row control-group">
+                            <div class="mui-textfield mui-textfield--float-label">
+                                <input type="password" id="retype" name="retype">
+                                <label>Re-type Password</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-xs-12">
+                                <button class="mui-btn mui-btn--primary">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block modals %}
+<div id="upload" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <form action="/upload/" class="dropzone" id="drop">
+                <div class="dz-message needsclick">
+                    <i class="material-icons">cloud_upload</i></br>
+                    Upload a picture</br>
+                    <i>must be smaller than 2MB</i>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %} {{ super() }}
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js"></script>
+<script defer src="{{url_for('static', filename='js/profile.js')}}"></script>
+{% endblock %}

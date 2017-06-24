@@ -1,0 +1,167 @@
+{% extends "index.html" %}
+{% block title %} Post {% endblock %}
+{% block styles %} {{ super() }}
+    <link href="{{url_for('static', filename='css/article.css')}}" rel="stylesheet">
+    <link href="{{url_for('static', filename='css/article_index.css')}}" rel="stylesheet">
+    <link rel="canonical" href="https://www.israelfl.com/blog/{{ slug }}">
+{% endblock %}
+
+{% block content %}
+<div id="fb-root"></div>
+
+<!-- Header -->
+<section>
+    <header id="main-header" class="featured-image" style="background-image: url('{{ image_url }}')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>{{ title }}</h1>
+                        <h3>{{ subtitle }}</h3>
+                        <span class="meta">Written by <a href="#">{{ author }}</a> on {{ created }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <script type="text/javascript">
+            var windowHeight = $(window).innerHeight();
+            $("#main-header").css('min-height', windowHeight);
+            $("#main-header").css('height', windowHeight);
+    </script>
+</section>
+
+<!-- Post Content -->
+<section>
+    <article>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    {{ content }}
+                </div>
+            </div>
+        </div>
+    </article>
+</section>
+
+<!-- Author description and links -->
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>About the author</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                <img src="{{ profile_image_url }}" id="profile-image" class="img-user">
+            </div>
+            <div class="col-md-6">
+                <p class="author-description"><strong>{{ author }}</strong> is a {{ author_description }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Comments -->
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <h3>Discussion</h3>
+            </div>
+            <div class="col-lg-4">
+                <g:plusone size="tall" href="https://www.israelfl.com/blog/{{ slug }}"></g:plusone>
+                <a class="twitter-share-button" href="https://twitter.com/intent/tweet">Tweet</a>
+                <script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: en_US</script>
+                <script type="IN/Share" data-url="https://www.israelfl.com/blog/{{ slug }}" data-counter="right"></script>
+                <iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3A%2F%2Fwww.israelfl.com%2Fblog%2F&layout=button_count&size=small&mobile_iframe=false&width=69&height=20&appId" width="69" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+            </div>
+        </div>
+
+        <!-- Editor section -->
+        <div class="row text-center">
+            <div class="col-lg-8 col-lg-offset-2">
+                <div class="row">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                      <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
+                      {% if messages %}
+                        {% for category, message in messages %}
+                          <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                          <strong>{{ message }}</strong>
+                          </div>
+                        {% endfor %}
+                      {% endif %}
+                    {% endwith %}
+                </div>
+                <div class="alert alert-danger alert-dismissible" role="alert" id="show-errors" style="display:none">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong id="message"></strong>
+                </div>
+                {% if current_user.is_active %}
+                <form action="/blog/{{ slug }}" method="POST" id="comment-form">
+                    <div class="mui-textfield">
+                        <input type="text" placeholder="Title" id="title" name="title">
+                    </div>
+                    <div class="mui-textfield">
+                        <textarea placeholder="Write a comment.." id="comment" name="comment"></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-xs-12">
+                            <button class="mui-btn mui-btn--primary">Submit</button>
+                        </div>
+                    </div>
+                </form>
+                {% else %}
+                    <a href="/login" class="mui-btn mui-btn--primary">Login to comment</a>
+                {% endif %}
+            </div>
+        </div>
+        <!-- Comment section -->
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2">
+                <div class="row text-center">
+                    {% if comments %}
+                        {% for comment in comments %}
+                            <div>
+                                <div class="col s12 m7">
+                                    <h5 class="header comment-content">{{ comment.title }}</h5>
+                                    <div class="card horizontal">
+                                      <div class="card-image img-user">
+                                        <img src="{{ comment.user.profile_image_url }}" class="img-user">
+                                      </div>
+                                      <div class="card-stacked">
+                                        <div class="card-content">
+                                        <p class="comment-header">
+                                            <strong>{{ comment.user.name }}</strong> on <i>{{ comment.created.strftime('%d %m, %Y at %H:%M:%S') }}</i><br></br>
+                                        </p>
+                                        <p class="comment-content">
+                                            {{ comment.comment }}
+                                        </p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr></hr>
+                        {% endfor %}
+                    {% else %}
+                        <div class="row">
+                            <h5>No comments yet, leave a reply</h5>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+    <!-- Theme JavaScript -->
+    <script src="{{url_for('static', filename='js/article.js')}}" async defer></script>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+{% endblock %}

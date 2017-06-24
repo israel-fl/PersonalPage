@@ -8,7 +8,13 @@
     "jquery-ui": "1.12.1",
     "mui": "0.9.13",
     "ekko-lightbox": "https://github.com/ashleydw/lightbox.git#^5.1.1",
-    "socket.io-client": "^1.7.4"
+    "socket.io-client": "^1.7.4",
+    "adminlte": "2.4.0-alpha",
+    "material-dashboard": "https://github.com/creativetimofficial/material-dashboard.git",
+    "jQuery-Picture-Cut": "https://github.com/tuyoshivinicius/jQuery-Picture-Cut.git#^1.1.2",
+    "bootstrap-markdown-editor": "^2.0.2",
+    "datatables.net": "^1.10.15",
+    "materialize": "^0.98.2"
   },
   "private": true
 }

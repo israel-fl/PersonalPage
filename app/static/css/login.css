@@ -1,0 +1,26 @@
+.error-category {
+    color: red;
+}
+
+.body-background {
+    background: #ff00cc;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #333399, #ff00cc);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #333399, #ff00cc);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.login-title {
+    color: #fff !important;
+}
+
+.divider {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.abcRioButton.abcRioButtonBlue {
+    margin: 0 auto !important;
+    width: 100% !important;
+}

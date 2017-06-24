@@ -1,0 +1,71 @@
+{% extends "base.html" %} {% block head %} {{ super() }} {% endblock %} {% block title %} Login {% endblock %} {% block body %}
+
+<body class="hold-transition login-page body-background">
+    {% block styles %} {{ super() }}
+    <!-- Theme CSS -->
+    <link href="{{url_for('static', filename='bower_components/adminlte/dist/css/AdminLTE.min.css')}}" rel="stylesheet">
+    <link href="{{url_for('static', filename='css/login.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    {% endblock %}
+    <div class="login-box">
+        <div class="login-logo">
+            <a class="login-title" href="/"><b>Israel</b>Fl</a>
+        </div>
+        <!-- /.login-logo -->
+        <div class="login-box-body">
+            <h3 class="login-box-msg">Login</h3>
+            <ul id="messages" class="error-category"></ul>
+            <div class="row">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                  <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
+                  {% if messages %}
+                    {% for category, message in messages %}
+                      <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      <strong>{{ message }}</strong>
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                {% endwith %}
+            </div>
+            <div class="alert alert-danger alert-dismissible" role="alert" id="show-errors" style="display:none">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong id="message"></strong>
+            </div>
+            <form class="mui-form" method="post" action="/login/" id="login">
+                <div class="mui-textfield">
+                    <input type="email" placeholder="Email" name="email" id="email">
+                </div>
+                <div class="mui-textfield">
+                    <input type="password" placeholder="Password" name="password" id="password">
+                </div>
+                <button type="submit" class="btn-block btn-full-width mui-btn mui-btn--raised mui-btn--primary">Login</button>
+            </form>
+            <p class="divider">or</p>
+            <div>
+                <form action="/register/social" method="POST" id="social-form">
+                    <div onlogin="onFBSignin()" class="fb-login-button btn-block btn-full-width " data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false" data-width="100%" data-scope="public_profile,email"></div>
+                    <div class="g-signin2" data-width="100%" style="margin-top: 8px;" data-longtitle="true" data-theme="dark" data-scope="profile email" data-onsuccess="onGoogleSignin"></div>
+                    <input type="hidden" name="google-id" id="google-id">
+                    <input type="hidden" name="fb-id" id="fb-id">
+                    <input type="hidden" name="social-email" id="social-email">
+                    <input type="hidden" name="social-name" id="social-name">
+                    <input type="hidden" name="social-image" id="social-image">
+                </form>
+            </div>
+            <hr></hr>
+            <div class="row text-center">
+                <a href="/reset">I forgot my password</a>
+                <br>
+            </div>
+            <hr></hr>
+            Don't have an account? <a href="/register" class="text-center">Register</a>
+        </div>
+    <!-- /.login-box-body -->
+    </div>
+    <!-- /.login-box -->
+</body>
+{% endblock %}
+{% block scripts %} {{ super() }}
+<script async defer src="{{url_for('static', filename='js/login.js')}}"></script>
+{% endblock %}

@@ -30,7 +30,7 @@ header .intro-text .skills{font-size:1.25em;font-weight:300}
 header .intro-text .name{font-size:4.75em}
 header .intro-text .skills{font-size:1.75em}
 }
-.navbar-custom{background:#2C3E50;font-family:Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif;text-transform:uppercase;font-weight:700;border:none}
+.navbar-custom{background:#2C3E50 !important;font-family:Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif;text-transform:uppercase;font-weight:700;border:none}
 .navbar-custom .navbar-brand,
 .navbar-custom .navbar-brand.active,
 .navbar-custom .navbar-brand:active,
@@ -54,7 +54,7 @@ header .intro-text .skills{font-size:1.75em}
 .navbar-custom.affix .navbar-brand{font-size:1.5em}
 }
 section{padding:100px 0}
-section h2{margin:0;font-size:3em}
+section h2{font-size:3em}
 section.success{background:#16191b;color:#fff}
 @media (max-width:767px){section{padding:75px 0}
 section.first{padding-top:75px}
