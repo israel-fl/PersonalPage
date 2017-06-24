@@ -1,0 +1,136 @@
+{% extends "dashboard/index.html" %}
+{% block title %} Create Entry {% endblock %}
+{% block styles %}
+{{ super() }}
+<link href="{{url_for('static', filename='css/profile.css')}}" rel="stylesheet">
+<style type="text/css">
+    .profile-container {
+        margin-top: 8px;
+        position: relative;
+        width: 50% !important;
+        margin: 0 auto;
+    }
+</style>
+{% endblock %}
+
+{% block section_title %} <h4>Edit Profile</h4> {% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-chart" data-background-color="purple">
+                        <div class="profile-container">
+                            <img src="{{ profile_image_url }}" id="profile-image" class="img-user">
+                            <div class="overlay" id="overlay">
+                                <div class="overlay-text">Change Image</div>
+                            </div>
+                        </div>
+                        <h4 class="title profile-header">{{ username }}</h4>
+                    </div>
+                    <div class="card-content">
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                          <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
+                          {% if messages %}
+                            {% for category, message in messages %}
+                              <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+                              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                              <strong>{{ message }}</strong>
+                              </div>
+                            {% endfor %}
+                          {% endif %}
+                        {% endwith %}
+                        <div class="alert alert-danger alert-dismissible" role="alert" id="show-errors" style="display:none">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong id="message"></strong>
+                        </div>
+                        <form action="/dashboard/profile" method="POST" id="profile-form">
+                                <!-- Text input-->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group label-floating">
+                                            <label class="control-label">Name</label>
+                                            <input type="text" class="form-control" name="name" id="name" class="form-control" value="{{ name }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-group label-floating">
+                                            <label class="control-label">Description</label>
+                                            <textarea rows="5" class="form-control description" id="description" name="description" >{{ description }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <i>Note it will appear as: <strong>{{ name }}</strong> is a <strong>[description]</strong></i>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <button class="mui-btn mui-btn--primary" id="submit" name="submit">Submit</button>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="form-type" value="1">
+                        </form>
+                        <hr style="width: 100%;">
+                        <h4 class="title">Change Password</h4>
+                        <form action="/dashboard/profile" method="POST" id="password-form">                                <!-- Text input-->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group label-floating">
+                                            <label class="control-label">Password</label>
+                                            <input type="password" class="form-control" id="password" name="password">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Featured Image -->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group label-floating">
+                                            <label class="control-label">Re-type Password</label>
+                                            <input name="retype" id="retype" type="password" class="form-control input-md" title="Password must be at least 6 characters and must contain at least 1 uppercase letter and 1 number">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <button class="mui-btn mui-btn--primary" id="submit" name="submit">Submit</button>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="form-type" value="2">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block modals %}
+<div id="upload" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+        <form action="/upload/" class="dropzone" id="drop">
+            <div class="dz-message needsclick">
+                <i class="material-icons">cloud_upload</i></br>
+                Upload a picture</br>
+                <i>must be smaller than 2MB</i>
+            </div>
+        </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+{{ super() }}
+    <!-- Set the current tab as active -->
+    <script type="text/javascript">document.getElementById("profile").classList.add("active");</script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js"></script>
+    <script defer src="{{url_for('static', filename='js/profile.js')}}"></script>
+{% endblock %}

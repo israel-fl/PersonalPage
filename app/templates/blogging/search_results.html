@@ -1,0 +1,63 @@
+{% extends "index.html" %}
+{% block title %} Results {% endblock %}
+{% block styles %} {{ super() }}
+    <link href="{{url_for('static', filename='css/blog.css')}}" rel="stylesheet">
+    <link href="{{url_for('static', filename='css/article_index.css')}}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<!-- content -->
+<section>
+    <div class="container">
+        <div class="col-md-3 sidebar">
+            <div class="row">
+                <form action="/blog/" method="POST" class="mui-form--inline">
+                    <div class="mui-textfield mui-textfield--float-label">
+                        <input type="text" name="search">
+                        <label>Search...</label>
+                    </div>
+                    <button class="mui-btn"><i class="material-icons">search</i></button>
+                </form>
+            </div>
+            <div class="row">
+                <h5>Recent Posts</h5>
+                <ul>
+                    {% for article in articles %}
+                    <li>
+                        <a href="{{ article['url'] }}">{{ article['title'] }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+                <div class="col-lg-12 text-center blog-header">
+                    <h3>Your search for '{{ search }}' returned...</h3>
+                </div>
+            </div>
+            <hr></hr>
+            {% for article in articles %}
+            <div>
+                <div class="col s12 m7">
+                    <h2 class="header">{{ article['title'] }}</h2>
+                    <div class="card horizontal">
+                      <div class="card-image">
+                        <img src="{{ article['featured_image_url'] }}">
+                      </div>
+                      <div class="card-stacked">
+                        <div class="card-content">
+                          <p class="article-preview">{{ article['content'] }}</p>
+                        </div>
+                        <div class="card-action">
+                          <a href="{{ article['url'] }}">Read More</a>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

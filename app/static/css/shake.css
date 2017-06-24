@@ -1,0 +1,15 @@
+input.shake {
+   border-bottom: 1px #d02424 solid;
+   -webkit-animation: shake .15s linear 2s 4;
+   animation: shake .15s linear 2s 4;
+   animation-delay: 0s;
+}
+
+@-webkit-keyframes shake {
+   0% { transform: translateX(-5px); }
+   50% { transform: translateX(5px); }
+}
+@keyframes shake {
+   0% { transform: translateX(-5px); }
+   50% { transform: translateX(5px); }
+}

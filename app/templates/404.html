@@ -1,40 +1,69 @@
-<html>
-<style type="text/css">
-    html {
-        background: #909090;
-    }
-</style>
-<div class="container">
-    <style type="text/css">
+{% extends "index.html" %}
 
-    .error-template {
-        padding: 40px 15px;
+{% block head %} {{ super() }}
+{% endblock %}
+
+{% block title %} 404 {% endblock %}
+
+{% block content %}
+    {% block styles %} {{ super() }}
+    <style type="text/css">
+    * {
+        transition: all 0.6s;
+    }
+
+    html {
+        height: 100%;
+    }
+
+    body {
+        font-family: 'Lato', sans-serif;
+        color: #888;
+        margin: 0;
+        background:#f6f5f4;
+    }
+
+    #main {
+        display: table;
+        width: 100%;
+        height: 100vh;
         text-align: center;
     }
 
-    .error-actions {
-        margin-top: 15px;
-        margin-bottom: 15px;
+    .fof {
+        display: table-cell;
+        vertical-align: middle;
     }
 
-    .error-actions .btn {
-        margin-right: 10px;
+    .fof h1 {
+        font-size: 50px;
+        display: inline-block;
+        padding-right: 12px;
+        animation: type .5s alternate infinite;
+    }
+
+    @keyframes type {
+        from {
+            box-shadow: inset -3px 0px 0px #888;
+        }
+        to {
+            box-shadow: inset -3px 0px 0px transparent;
+        }
     }
     </style>
-    <div class="row">
-        <div class="error-template">
-            <img src="{{url_for('.static', filename='images/venn.png')}}">
-            <h1>Oops!</h1>
-            <h2>404 Not Found</h2>
-            <div class="error-details">
-                Sorry, an error occured, Requested page not found!
-                <br>
-            </div>
-            <div class="error-actions">
-                <a href="http://localhost:5000/offsite" class="btn btn-primary">
-                    <i class="icon-home icon-white"></i> Take Me Home </a>
-            </div>
+    {% endblock %}
+    <!-- ACTUAL ERROR PAGE -->
+
+    <div id="main">
+        <div class="fof">
+            <h1>404 Page Not Found</h1>
         </div>
     </div>
-</div>
-</html>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.3.0/snap.svg-min.js"></script>
+{% endblock %}

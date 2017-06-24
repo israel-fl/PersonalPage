@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+{% block head %} {{ super() }} {% endblock %}
+{% block title %} Fileupload {% endblock %}
+
+
+{% block body %}
+<body>
+
+    {% block styles %}
+        {{ super() }}
+        <!-- Theme CSS -->
+        <link href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css" rel="stylesheet"/>
+        <style>
+            body { padding-top: 80px;}
+        </style>
+        <link href="{{url_for('static', filename='css/zoom.css')}}" rel="stylesheet">
+    {% endblock %}
+    <!-- navbar header -->
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a href="/" class="navbar-brand">
+                    Israel Fl
+                </a>
+                <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- main content -->
+     <div class="container">
+
+
+    <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form>
+                    <div class="modal-header">
+                        Do you really want to delete this image? It can't be undone.
+                    </div>
+                     <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-danger btn-ok" id="image-url">Delete</a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Upload Images</h1>
+        </div>
+    </div>
+    <div class="row">
+        <form method="post" enctype=multipart/form-data action="/upload/">
+            <div class="form-group">
+                <input class="form-control" id="upload_name" name="upload_name" placeholder="png, jpg, jpeg, gif" required type="text" value="">
+                <input id="upload_img" name="file" type="file">
+                <input class="btn btn-primary pull-right" type="submit" value="Submit">
+            </div>
+        </form>
+        <div class="col-md-12" style="height:30px;"></div>
+    </div>
+    <hr>
+    <div class="row">
+        <table id="image_list" class="table table-striped table-condensed">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Path</th>
+                    <th>Preview</th>
+                    <th>Del</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+     </div>
+
+</body>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+
+    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <script defer type="text/x-mathjax-config">
+          MathJax.Hub.Config({
+          "HTML-CSS": {
+          styles: {
+          ".MathJax .mo, .MathJax .mi": {color: "black ! important"}}
+          },
+          tex2jax: {inlineMath: [['$','$'], ['\\\\(','\\\\)']],processEscapes: true}
+          });
+    </script>
+
+
+    <script async src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script async src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
+    <script async src="https://cdn.datatables.net/select/1.2.1/js/dataTables.select.min.js"></script>
+    <script defer>
+        $(document).ready(function() {
+            // Build datatable
+            $('#image_list').DataTable( {
+                "processing": true,
+                data: {{ images|safe }},
+                "iDisplayLength": 10,
+                "columnDefs": [
+                    {"orderable": false, "targets": [1, 2, 3]}
+                ],
+                "columns": [
+                    { "data": "name", sDefaultContent: "N/A", "sClass": "col-md-6",
+                      "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                          $(nTd).html("<a href='tel:"+oData.path+"'>"+oData.name+"</a>");
+                      }
+                    },
+                    { "data": "path", sDefaultContent: "N/A", "sClass": "col-md-4",
+                      "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                          $(nTd).html("<input class='path-input' onClick='this.select(); 'title='path' value="+oData.path+"style='width: 100%;' type='text' readonly>");
+                      }
+                    },
+                    { "data": null, "sClass": "col-md-1",
+                      "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                          $(nTd).html("<img class='thumbnail zoom' style='height: 30px; width: auto; max-width:30px;' src="+oData.path+">");
+                      }
+                    },
+                    { "data": null, "sClass": "col-md-1",
+                      "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                          $(nTd).html("<a id='open-modal' href='#confirm-delete' data-href='"+oData.name+"' data-toggle='modal' data-target='#confirm-delete'><span role='button' class='glyphicon glyphicon-trash'></span></a>");
+                      }
+                    }
+                ]
+            });
+
+            // Register autofill on new selected image upload
+            document.getElementById("upload_img").addEventListener("change", function(){
+                var file = document.getElementById("upload_img").files[0].name;
+
+                document.getElementById("upload_name").value = file
+            });
+
+            // Select all on click
+            [].forEach.call(document.getElementsByClassName("path-input"), function(input){
+                input.addEventListener("click", function(){
+                    input.select()
+                });
+            })
+        } );
+    </script>
+
+    <script async defer>
+        $('#confirm-delete').on('show.bs.modal', function(e) {
+            var imageName = $(e.relatedTarget).data('href');
+            var imageUrl = "http://localhost:8080/upload/delete/" + imageName;
+            console.log(imageUrl);
+            $(this).find('.btn-ok').attr('href', imageUrl);
+        });
+    </script>
+{% endblock %}

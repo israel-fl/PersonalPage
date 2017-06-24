@@ -1,0 +1,118 @@
+{% extends "dashboard/index.html" %}
+{% block title %} Create Entry {% endblock %}
+{% block styles %}
+{{ super() }}
+<link href="{{url_for('static', filename='bower_components/bootstrap-markdown-editor/dist/css/bootstrap-markdown-editor.css')}}" rel="stylesheet"/>
+{% endblock %}
+
+{% block section_title %} <h4>Editor</h4> {% endblock %}
+
+{% block content %}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header" data-background-color="purple">
+                        <h4 class="title">Create Article</h4>
+                        <p class="category">Write something amazing!</p>
+                    </div>
+                    <div class="card-content">
+                        <div class="row">
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                              <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
+                              {% if messages %}
+                                {% for category, message in messages %}
+                                  <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                  <strong>{{ message }}</strong>
+                                  </div>
+                                {% endfor %}
+                              {% endif %}
+                            {% endwith %}
+                        </div>
+                        <form class="form-horizontal" action="/dashboard/create-article" method="POST">
+                                <!-- Text input-->
+                                <div class="form-group">
+                                    <div class="input-group col-md-12">
+                                        <input type="title" name="title" id="title" class="form-control" placeholder="Title" value="{{ title }}">
+                                    </div>
+                                </div>
+                                <!-- Text input-->
+                                <div class="form-group">
+                                    <div class="input-group col-md-12">
+                                        <input type="text" class="form-control" id="subtitle" name="subtitle" placeholder="Subtitle" value="{{ subtitle }}">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="input-group col-md-12">
+                                        <textarea name="content" placeholder="Blog text" data-provide="markdown" rows="16" id="editor" value="{{ content }}"></textarea>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <i>Note: It might be easier to write the article in the text editor of your choice and then simply copy and paste it here</i></br>
+                                        Learn more about <a href="http://en.wikipedia.org/wiki/Markdown" target="_blank">MarkDown</a>, alternatively, use HTML<br>
+                                        Have your own images? <a target="_blank" href="{{ url_for('upload.upload_file') }}">Upload them here</a> then insert the url into your post
+                                    </div>
+                                </div>
+                                <!-- Featured Image -->
+                                <div class="form-group">
+                                    <div class="input-group col-md-12">
+                                        <input name="featured-image" id="featured-image" type="text" placeholder="Featured image url" class="form-control input-md" title="This will be the header image for your post" value="{{ featured_image_url }}">
+                                        <i>Try larger images (1920x1080) or your background will stretch</i>
+                                    </div>
+                                </div>
+                                <!-- Text input-->
+                                <div class="form-group">
+                                    <div class="input-group col-md-12">
+                                        <input type="text" name="tags" id="tags" placeholder="Comma separated tags" class="form-control input-md" value="{{ tags }}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <button class="mui-btn mui-btn--primary" id="submit" name="submit">Submit</button>
+                                    </div>
+                                </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+{{ super() }}
+    <!-- Set the current tab as active -->
+    <script type="text/javascript">document.getElementById("create").classList.add("active");</script>
+    <script src="{{url_for('static', filename='bower_components/ace-builds/src-min/ace.js')}}"></script>
+    <script src="{{url_for('static', filename='bower_components/bootstrap-markdown-editor/dist/js/bootstrap-markdown-editor.js')}}"></script>
+    <script defer type="text/javascript">
+    window.onload = function() {
+        var url = "{{url_for('dashboard.parse_markdown')}}";
+        console.log(url);
+        $('#editor').markdownEditor({
+            // Activate the preview:
+            preview: true,
+            // This callback is called when the user click on the preview button:
+            onPreview: function (content, callback) {
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    dataType: 'html',
+                    data: {content: content},
+                })
+            .done(function(result) {
+              // Return the html:
+              callback(result);
+            });
+
+          }
+        });
+    }
+    </script>
+{% endblock %}

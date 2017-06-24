@@ -1,6 +1,5 @@
 env/
 __pycache__
-config.json
 *.pyc
 alembic.ini
 .idea
@@ -8,3 +7,4 @@ error.log
 access.log
 pid
 bower_components
+env.json
