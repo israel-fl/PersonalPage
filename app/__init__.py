@@ -15,13 +15,12 @@ mail = Mail()
 
 def create_app():
     app = Flask(__name__)
-    app.secret_key = "26OxAJGy4r#FhIkiluQQrel$@EJcBi9b"
     app.config.SERVICE_NAME = "IsraelFL"
 
     # Init database
     init_db()
 
-    with open("/home/israel/Documents/PersonalPage/env.json") as config_file:
+    with open("/home/israel/website/env.json") as config_file:
         keys = json.load(config_file)
         app.secret_key = keys.get("SECRET_KEY")
         app.config['MAIL_PASSWORD'] = keys.get("MAIL_PASSWORD")
