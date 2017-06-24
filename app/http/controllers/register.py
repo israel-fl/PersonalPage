@@ -11,6 +11,7 @@ import hashlib
 from app.http.middleware.generators import generate_hash
 
 blueprint = Blueprint('register', __name__)
+CLIENT_ID = "352888396080-mcvh515uocehs0l517bh2qfrrutq04ul.apps.googleusercontent.com"
 
 
 @blueprint.route('/', methods=["GET", "POST"])
@@ -97,6 +98,11 @@ def register_social_account():
 
     def post():
         google_id = request.form.get("google-id")
+        if google_id:
+            google_id = check_id_integrity(google_id)
+            if not google_id:
+                flash("Invalid token, has someone been tampering?", "danger")
+                return redirect(url_for("login.login"))
         facebook_id = request.form.get("fb-id")
         email = request.form.get("social-email")
         name = request.form.get("social-name")
@@ -112,13 +118,15 @@ def register_social_account():
             user = User.query.filter(User.email == email).first()
             # if it does log them in
             if user:
+                login_user(user)
+                print("User exists {}".format(user.remote_user))
                 # check if this user has used a social login before,
                 # try to merge accounts
                 # check which id was supplied
                 if user.remote_user.google_id == google_id:
-                    return check_current_user_level()
+                    return redirect(check_current_user_level())
                 elif user.remote_user.fb_id == facebook_id:
-                    return check_current_user_level()
+                    return redirect(check_current_user_level())
                 elif google_id:
                     user.remote_user.google_id = google_id
                     db.commit()
@@ -139,12 +147,31 @@ def register_social_account():
         return post()
 
 
+# Check google id integrity with google api
+def check_id_integrity(token):
+    from oauth2client import client, crypt
+    try:
+        idinfo = client.verify_id_token(token, CLIENT_ID)
+        if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
+            raise crypt.AppIdentityError("Wrong issuer.")
+    except crypt.AppIdentityError:
+        return False
+        # Invalid token
+    userid = idinfo['sub']
+    return userid
+
+
 def check_current_user_level():
     if (current_user.is_active):
         if current_user.access_level >= 2:
-            return redirect(url_for("dashboard.dashboard"))
+            return url_for("dashboard.dashboard")
         else:
-            return redirect(url_for("home.account"))
+            return url_for("home.account")
+    else:
+        print("Attempting to send email")
+        from app.http.controllers.mail_senders import send_verify_email
+        send_verify_email(current_user)
+        return url_for("register.verify_user")
 
 
 def create_remote_user(google_id, facebook_id):
@@ -211,5 +238,4 @@ def create_user(name, email, profile_image_url=None, password=""):
     print("Attempting to send email")
     from app.http.controllers.mail_senders import send_verify_email
     send_verify_email(user)
-    print("returning")
     return url_for("register.verify_user")

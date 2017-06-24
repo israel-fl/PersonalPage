@@ -153,7 +153,7 @@
         } );
     </script>
 
-    <script defer>
+    <script async defer>
         $('#confirm-delete').on('show.bs.modal', function(e) {
             var imageName = $(e.relatedTarget).data('href');
             var imageUrl = "http://localhost:8080/upload/delete/" + imageName;

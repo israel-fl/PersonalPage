@@ -166,7 +166,7 @@ def edit_entry(slug):
         post()
 
     slug = Post.query.filter(Post.slug == slug).first()
-    return render_template("dashboard/edit_post.html",
+    return render_template("dashboard/editor.html",
                            title=slug.title,
                            subtitle=slug.subtitle,
                            content=slug.content,
@@ -181,8 +181,7 @@ def edit_entry(slug):
 def show_pending_approvals():
 
     article_list = list()
-    articles = Post.query.filter(Post.published == False).all()
-    print(articles)
+    articles = Post.query.all()
     if articles:
         for article in articles:
             article_list.append({
@@ -205,6 +204,24 @@ def approve(slug):
         try:
             db.commit()
             flash("Article approved", "success")
+        except Exception:
+            db.rollback()
+            flash("There was an error processing your request", "danger")
+    else:
+        abort(404)
+
+    return redirect(url_for("dashboard.show_pending_approvals"))
+
+
+@blueprint.route("/approvals/<slug>/delete", methods=["GET"])
+@validate_access(3)
+def delete_article(slug):
+
+    article = Post.query.filter(Post.slug == slug).delete()
+    if article:
+        try:
+            db.commit()
+            flash("Article deleted", "info")
         except Exception:
             db.rollback()
             flash("There was an error processing your request", "danger")
@@ -255,6 +272,7 @@ def create_admin():
         post()
 
     return render_template("dashboard/create_user.html")
+
 
 # Parse markdown content
 @blueprint.route("/parse", methods=["POST"])

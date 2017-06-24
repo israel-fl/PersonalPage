@@ -50,8 +50,12 @@ def login():
         print(current_user.is_active)
         # check if there is a user logged in, if so send him to the dashboard
         if (current_user.is_active):
-            return redirect(url_for("dashboard.dashboard"))
-        return render_template("login/login.html")
+            if (current_user.access_level >= 2):
+                return redirect(url_for("dashboard.dashboard"))
+            else:
+                return redirect(url_for("home.account"))
+        else:
+            return render_template("login/login.html")
 
 
 @blueprint.route("/forgot-password", methods=["GET", "POST"])

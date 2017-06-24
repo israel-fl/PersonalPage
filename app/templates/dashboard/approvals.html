@@ -31,6 +31,7 @@
                             <th>Title</th>
                             <th>Author</th>
                             <th>Approve</th>
+                            <th>Delete</th>
                         </tr>
                     </thead>
                 </table>
@@ -46,7 +47,7 @@
     <script async defer src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
     <script async defer src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
     <script async defer src="https://cdn.datatables.net/select/1.2.1/js/dataTables.select.min.js"></script>
-    <script type="text/javascript">
+    <script async defer type="text/javascript">
         $(document).ready(function() {
             var articles = {{ articles|safe }};
             console.log(articles);
@@ -65,7 +66,16 @@
                     },
                     { "data": null, "sClass": "col-md-1",
                       "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                          $(nTd).html("<a href='/dashboard/approvals/"+oData.slug+"'><i class='material-icons'>done</i></a>");
+                          if (oData.approved) {
+                            $(nTd).html("<a href='/dashboard/approvals/"+oData.slug+"'>Approved</a>");
+                          } else {
+                            $(nTd).html("<a href='/dashboard/approvals/"+oData.slug+"'><i class='material-icons'>done</i></a>");
+                          }
+                      }
+                    },
+                    { "data": null, "sClass": "col-md-1",
+                      "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                          $(nTd).html("<a href='#confirm-delete' data-href='"+oData.slug+"' data-toggle='modal' data-target='#confirm-delete'><i class='material-icons'>delete_forever</i></a>");
                       }
                     }
                 ]
@@ -73,4 +83,30 @@
         });
 
     </script>
+    <script async defer>
+        $('#confirm-delete').on('show.bs.modal', function(e) {
+            var slug = $(e.relatedTarget).data('href');
+            var slug = "/dashboard/approvals/"+ slug + "/delete";
+            $(this).find('.btn-ok').attr('href', slug);
+        });
+    </script>
+{% endblock %}
+
+{% block modals %}
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form>
+                    <div class="modal-header">
+                        Do you really want to delete this post? It can't be undone.
+                    </div>
+                     <div class="modal-footer">
+                        <button type="button" class="mui-btn" data-dismiss="modal">Cancel</button>
+                        <a class="mui-btn mui-btn--danger btn-ok" id="image-url">Delete</a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+</div>
 {% endblock %}

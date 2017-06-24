@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 import json
 
 
-with open("database/db_config.json") as config_file:
+with open("/home/israel/Documents/PersonalPage/env.json") as config_file:
     keys = json.load(config_file)
     driver = keys.get("db_driver")
     user = keys.get("db_user")

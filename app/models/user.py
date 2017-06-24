@@ -22,7 +22,7 @@ class User(Base):
     description = Column("description", String, nullable=True)
     articles = relationship("Post", back_populates="author")
     comments = relationship("Comment", back_populates="user")
-    remote_user = relationship("RemoteSourceUser", back_populates="user")
+    remote_user = relationship("RemoteSourceUser", uselist=False, back_populates="user")
 
     def __init__(self, name, email, password, profile_image_url,
                  access_level="1", verified=False):
@@ -39,8 +39,10 @@ class User(Base):
 
     def is_active(self):
         if (self.verified):
+            print("verified")
             return True
         else:
+            print("not verified")
             return False
 
     def is_anonymous(self):

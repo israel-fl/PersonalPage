@@ -39,11 +39,11 @@ $('#login').submit(function () {
 
 function onGoogleSignin(googleUser) {
     var profile = googleUser.getBasicProfile();
-    console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+    console.log('ID: ' + googleUser.getAuthResponse().id_token);
     console.log('Name: ' + profile.getName());
     console.log('Image URL: ' + profile.getImageUrl());
     console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-    $("#google-id").val(profile.getId());
+    $("#google-id").val(googleUser.getAuthResponse().id_token);
     $("#social-email").val(profile.getEmail());
     $("#social-name").val(profile.getName());
     $("#social-image").val(profile.getImageUrl());

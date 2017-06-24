@@ -51,4 +51,6 @@ def account():
     # Determine the request type
     if request.method == "POST":
         return post()
-    return render_template("home/account.html")
+    return render_template("home/account.html",
+                           name=current_user.name,
+                           profile_image_url=current_user.profile_image_url)

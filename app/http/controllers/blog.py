@@ -51,12 +51,15 @@ def build_article_list(articles):
     # create a dictionary that contains the rest of the articles
     article_list = list()
     for article in articles:
-        article_list.append({
-                                "title": article.title,
-                                "url": url_for("blog.show_entry", slug=article.slug),
-                                "featured_image_url": article.featured_image_url,
-                                "content": article.content[0:300] + "..."
-                            })
+        # Only show published articles
+        if article.published:
+            print(article.published)
+            article_list.append({
+                                    "title": article.title,
+                                    "url": url_for("blog.show_entry", slug=article.slug),
+                                    "featured_image_url": article.featured_image_url,
+                                    "content": article.content[0:300] + "..."
+                                })
     return article_list
 
 
