@@ -17,4 +17,4 @@ def shutdown_session(exception=None):
 
 if __name__ == "__main__":
     # start the database engine
-    socketio.run(app, host="0.0.0.0", port=8080)
+    socketio.run(app, host="0.0.0.0", port=5000)

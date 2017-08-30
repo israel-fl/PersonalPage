@@ -2,6 +2,7 @@ env/
 __pycache__
 *.pyc
 alembic.ini
+alembic_test.ini
 .idea
 error.log
 access.log

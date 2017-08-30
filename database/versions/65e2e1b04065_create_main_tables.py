@@ -81,7 +81,7 @@ def seed_user_table():
                         column("modified", String)
                         )
 
-    with open("db_config.json") as config_file:
+    with open("/home/israel/Documents/PersonalPage/env.json") as config_file:
         keys = json.load(config_file)
         email = keys.get("ADMIN_EMAIL")
         password = generate_password_hash(keys.get("ADMIN_PASSWORD"))

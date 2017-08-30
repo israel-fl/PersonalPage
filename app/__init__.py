@@ -13,13 +13,17 @@ socketio = SocketIO()
 mail = Mail()
 
 
-def create_app():
+def create_app(testing=False):
     app = Flask(__name__)
     app.secret_key = "26OxAJGy4r#FhIkiluQQrel$@EJcBi9b"
     app.config.SERVICE_NAME = "IsraelFL"
 
-    # Init database
-    init_db()
+    # if this is a test, use the test database
+    if not testing:
+        init_db()
+    else:
+        # Init database
+        pass
 
     with open("/home/israel/Documents/PersonalPage/env.json") as config_file:
         keys = json.load(config_file)

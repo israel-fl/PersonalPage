@@ -1,0 +1,5 @@
+{
+  "test_models.py::test_email_verification": true, 
+  "test_models.py::test_password_reset": true, 
+  "test_models.py::test_user_model": true
+}
